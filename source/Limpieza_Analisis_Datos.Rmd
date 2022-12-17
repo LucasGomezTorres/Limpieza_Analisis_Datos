@@ -1,7 +1,7 @@
 ---
 title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
-date: "13 de marzo, 2023"
+date: "13 de enero, 2023"
 header-includes:
    - \renewcommand{\contentsname}{Índice General}
 output:
