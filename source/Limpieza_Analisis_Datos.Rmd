@@ -1,0 +1,99 @@
+---
+title: "Limpieza y Análisis de Datos"
+author: "Lucas Gómez Torres y Joan Amengual Mesquida"
+date: "13 de marzo, 2023"
+header-includes:
+   - \renewcommand{\contentsname}{Índice General}
+output:
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
+    latex_engine : xelatex 
+
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
+     
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_libraries, include=FALSE}
+library(knitr)
+```
+
+
+\($\newpage$\)
+
+
+# Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
+
+# Integración y selección de los datos de interés a analizar.
+
+Puede ser el resultado de adicionar diferentes datasets o una subselección útil de los datos originales, en base al objetivo que se quiera conseguir.
+
+# Limpieza de los datos.
+
+## ¿Los datos contienen ceros o elementos vacíos? Gestiona cada uno de estos casos.
+
+## Identifica y gestiona los valores extremos.
+
+# Análisis de los datos.
+
+## Selección de los grupos de datos que se quieren analizar/comparar (p.ej., si se van a comparar grupos de datos, ¿cuáles son estos grupos y qué tipo de análisis se van a aplicar?).
+
+## Comprobación de la normalidad y homogeneidad de la varianza.
+
+## Aplicación de pruebas estadísticas para comparar los grupos de datos. En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes.
+
+# Representación de los resultados a partir de tablas y gráficas.
+
+Este apartado se puede responder a lo largo de la práctica, sin necesidad de concentrar todas las representaciones en este punto de la práctica.
+
+# Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
+
+# Código. 
+
+Hay que adjuntar el código, preferiblemente en R, con el que se ha realizado la limpieza, análisis y representación de los datos. Si lo preferís, también podéis trabajar en Python.
+
+# Vídeo.
+
+Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde ambos integrantes del equipo expliquen con sus propias palabras el desarrollo de la práctica, basándose en las preguntas del enunciado para justificar y explicar el código desarrollado. Este vídeo se deberá entregar a través de un enlace al Google Drive de la UOC, junto con enlace al repositorio Git entregafo.
+
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
