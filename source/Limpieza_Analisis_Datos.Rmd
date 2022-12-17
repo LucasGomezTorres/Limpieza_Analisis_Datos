@@ -30,7 +30,7 @@ library(knitr)
 \($\newpage$\)
 
 
-# Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
+# 1. Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
 
 # Integración y selección de los datos de interés a analizar.
 
