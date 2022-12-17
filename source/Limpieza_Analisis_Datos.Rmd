@@ -32,10 +32,96 @@ library(knitr)
 
 # Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
 
+Actualmente cada vez sufren más personas ataques al corazón originados por diferentes factores como pueden ser el exceso de colesterol, el nivel de azúcar en la sangre, el consumo de tabaco, la presión arterial, la obesidad, la edad o la falta de ejercicio, entre muchos otros más, que pueden dar lugar a un daño permanente en el corazón como la insuficiencia cardiaca o a la muerte. 
+
+Por ello, los ataques al corazón son un problema muy grave que hay que intentar prevenir, analizando las diferentes variables que pueden influir a la hora de que una persona sufra un ataque al corazón o no, pudiendo responder a preguntas como por ejemplo: 
+
+- ¿Los hombres son más probables a sufrir un ataque?
+
+- ¿ El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque ? 
+
+- ¿ Las personas mayores tienen más probabilidad de sufrir un ataque?
+
+- ¿ Qué factor es el más influye en un ataque ?
+
+El dataset tiene 303 observaciones (casos de personas que han sufrido o no un ataque al corazón) y 14 atributos. De estos 14 atributos, 13 son variables independientes y 1 la variable dependiente (nuestra variable objetivo que servirá para predecir si ese paciente tendrá un ataque o no). A continuación, se describen todos los atributos del dataset:
+
+- **age**: Variable de tipo numérica. Determina la edad de la persona.
+
+- **sex**: Variable de tipo numérica. Refleja el género de la persona *(1 = masculino, 0 = femenino)*.
+
+- **cp**: Variable de tipo numérica. Identifica el tipo de dolor en el pecho *(0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático)*.
+
+- **trtbps**: Variable de tipo numérica. Indica la presión arterial en reposo en mg/dl.
+
+- **chol**: Variable de tipo numérica. Hace referencia al nivel de colesterol en mg/dl.
+
+- **fbs**: Variable de tipo numérica. Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl *(1 = verdadero, 0 = falso)*.
+
+- **restecg**: Variable de tipo numérica. Muestra los resultados electrocardiográficos en reposo *(0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes)*.
+
+- **thalachh**: Variable de tipo numérica. Determina la frecuencia cardiaca máxima alcanzada.
+
+- **exng:**: Variable de tipo numérica. Indica si la angina ha sido inducida por el ejercicio *(1 = sí, 0 = no)*.
+
+- **oldpeak**: Variable de tipo numérica. Señala la depresión ST inducida por el ejercicio en relación con el descanso. 
+
+- **slp**: Variable de tipo numérica. Muestra la pendiente del segmento ST de ejercicio máximo *(0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba)*.
+
+- **caa**: Variable de tipo numérica. Indica el número de buques principales *(0, 1, 2, 3)*.
+
+- **thall**: Variable de tipo numérica. Señala el ratio de un trastorno sanguíneo llamado talasemia *(0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal))*.
+
+- **output**: Variable de tipo numérica. Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la variable objetivo o dependiente que pretenderemos predecir.
+
+
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Se carga el dataset
+heart_data <- read.csv("heart.csv", header = TRUE)
+
+# Modificamos los nombres de las variables para que sean más intuitivos
+colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure","cholesterol",	
+                     "fasting_blood_sugar","rest_ecg_type",	"max_heart_rate_achieved",
+                    "exercise_induced_angina", "st_depression", "st_slope_type", "num_major_vessels",
+                      "thalassemia_type","heart_attack")
+
+# Mostramos los tipos de datos de las variables tal y como las interpreta R 
+sapply(heart_data,class)
+
+# Mostramos un resumen de los datos
+summary(heart_data)
+
+# Se muestran las 6 primeras observaciones de los datos
+head(heart_data)
+
+dim(heart_data)
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Se carga el dataset
+O2_saturation <- read.csv("o2Saturation.csv", header = TRUE)
+
+# Mostramos los tipos de datos de las variables tal y como las interpreta R 
+sapply(O2_saturation,class)
+
+# Mostramos un resumen de los datos
+summary(O2_saturation)
+
+# Se muestran las 6 primeras observaciones de los datos
+head(O2_saturation)
+```
+
 # Integración y selección de los datos de interés a analizar.
 
 Puede ser el resultado de adicionar diferentes datasets o una subselección útil de los datos originales, en base al objetivo que se quiera conseguir.
 
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+sum(rowSums(is.na(heart_data))>0)
+colMeans(is.na(heart_data))
+```
 # Limpieza de los datos.
 
 ## ¿Los datos contienen ceros o elementos vacíos? Gestiona cada uno de estos casos.
