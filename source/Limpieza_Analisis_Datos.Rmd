@@ -44,87 +44,171 @@ Por ello, los ataques al corazón son un problema muy grave que hay que intentar
 
 - ¿ Qué factor es el más influye en un ataque ?
 
-El dataset tiene 303 observaciones (casos de personas que han sufrido o no un ataque al corazón) y 14 atributos. De estos 14 atributos, 13 son variables independientes y 1 la variable dependiente (nuestra variable objetivo que servirá para predecir si ese paciente tendrá un ataque o no). A continuación, se describen todos los atributos del dataset:
+El conjunto de datos está dividido en dos subconjuntos de datos:
 
-- **age**: Variable de tipo numérica. Determina la edad de la persona.
+- *heart.csv*: contiene toda la información sobre los pacientes, incluyendo si finalmente sufrieron un ataque al corazón o no. Tiene 303 observaciones y 14 atributos. De estos 14 atributos, 13 son variables independientes y 1 la variable dependiente (nuestra variable objetivo que servirá para construir un modelo de aprendizaje supervisado que nos permita predecir si un paciente tendrá un ataque al corazón o no). A continuación, se describen todos los atributos de este dataset:
 
-- **sex**: Variable de tipo numérica. Refleja el género de la persona *(1 = masculino, 0 = femenino)*.
+    - **age**: Variable de tipo numérica. Determina la edad de la persona.
 
-- **cp**: Variable de tipo numérica. Identifica el tipo de dolor en el pecho *(0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático)*.
+    - **sex**: Variable de tipo numérica. Refleja el género de la persona *(1 = masculino, 0 = femenino)*.
 
-- **trtbps**: Variable de tipo numérica. Indica la presión arterial en reposo en mg/dl.
+    - **cp**: Variable de tipo numérica. Identifica el tipo de dolor en el pecho *(0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático)*.
 
-- **chol**: Variable de tipo numérica. Hace referencia al nivel de colesterol en mg/dl.
+    - **trtbps**: Variable de tipo numérica. Indica la presión arterial en reposo en mg/dl.
 
-- **fbs**: Variable de tipo numérica. Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl *(1 = verdadero, 0 = falso)*.
+    - **chol**: Variable de tipo numérica. Hace referencia al nivel de colesterol en mg/dl.
 
-- **restecg**: Variable de tipo numérica. Muestra los resultados electrocardiográficos en reposo *(0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes)*.
+    - **fbs**: Variable de tipo numérica. Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl *(1 = verdadero, 0 = falso)*.
 
-- **thalachh**: Variable de tipo numérica. Determina la frecuencia cardiaca máxima alcanzada.
+    - **restecg**: Variable de tipo numérica. Muestra los resultados electrocardiográficos en reposo *(0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes)*.
 
-- **exng:**: Variable de tipo numérica. Indica si la angina ha sido inducida por el ejercicio *(1 = sí, 0 = no)*.
+    - **thalachh**: Variable de tipo numérica. Determina la frecuencia cardiaca máxima alcanzada.
 
-- **oldpeak**: Variable de tipo numérica. Señala la depresión ST inducida por el ejercicio en relación con el descanso. 
+    - **exng:**: Variable de tipo numérica. Indica si la angina ha sido inducida por el ejercicio *(1 = sí, 0 = no)*.
 
-- **slp**: Variable de tipo numérica. Muestra la pendiente del segmento ST de ejercicio máximo *(0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba)*.
+    - **oldpeak**: Variable de tipo numérica. Señala la depresión ST inducida por el ejercicio en relación con el descanso. 
 
-- **caa**: Variable de tipo numérica. Indica el número de buques principales *(0, 1, 2, 3)*.
+    - **slp**: Variable de tipo numérica. Muestra la pendiente del segmento ST de ejercicio máximo *(0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba)*.
 
-- **thall**: Variable de tipo numérica. Señala el ratio de un trastorno sanguíneo llamado talasemia *(0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal))*.
+    - **caa**: Variable de tipo numérica. Indica el número de buques principales *(0, 1, 2, 3)*.
 
-- **output**: Variable de tipo numérica. Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la variable objetivo o dependiente que pretenderemos predecir.
+    - **thall**: Variable de tipo numérica. Señala el ratio de un trastorno sanguíneo llamado talasemia *(0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal))*.
 
+    - **output**: Variable de tipo numérica. Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la variable objetivo o dependiente que pretenderemos predecir.
 
+- *o2Saturation.csv*: contiene 3585 observaciones sobre los niveles de oxígeno en la sangre de distintos pacientes y solo tiene 1 atributo.
 
+# Integración y selección de los datos de interés a analizar.
+
+Puede ser el resultado de adicionar diferentes datasets o una subselección útil de los datos originales, en base al objetivo que se quiera conseguir.
+
+En este apartado se van a cargar ambos conjuntos de datos, para decidir si se van a unificar ambos o no, o si nos vamos a centrar en unos pasajeros concretos limitando el número de registros o de características con el fin de reducir el dataset. Además, en el dataset de *heart.csv* se van a renombrar los atributos para que se entiendan mejor y sean más intuitivos a la hora de utilizarlos más adelante.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se carga el dataset
 heart_data <- read.csv("heart.csv", header = TRUE)
 
 # Modificamos los nombres de las variables para que sean más intuitivos
-colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure","cholesterol",	
-                     "fasting_blood_sugar","rest_ecg_type",	"max_heart_rate_achieved",
-                    "exercise_induced_angina", "st_depression", "st_slope_type", "num_major_vessels",
+colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure",
+                          "cholesterol",	"fasting_blood_sugar","rest_ecg_type",	
+                          "max_heart_rate_achieved","exercise_induced_angina", 
+                          "st_depression", "st_slope_type", "num_major_vessels",
                       "thalassemia_type","heart_attack")
 
-# Mostramos los tipos de datos de las variables tal y como las interpreta R 
-sapply(heart_data,class)
-
-# Mostramos un resumen de los datos
-summary(heart_data)
-
-# Se muestran las 6 primeras observaciones de los datos
-head(heart_data)
-
+# Dimensión del dataset
 dim(heart_data)
-
 ```
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se carga el dataset
 O2_saturation <- read.csv("o2Saturation.csv", header = TRUE)
 
-# Mostramos los tipos de datos de las variables tal y como las interpreta R 
-sapply(O2_saturation,class)
-
-# Mostramos un resumen de los datos
-summary(O2_saturation)
-
-# Se muestran las 6 primeras observaciones de los datos
-head(O2_saturation)
+# Dimensión del dataset
+dim(O2_saturation)
 ```
 
-# Integración y selección de los datos de interés a analizar.
+Podemos observar que ambos conjuntos de datos tienen dimensiones diferentes. El que contiene los niveles de oxígeno en la sangre consta de 3.585 observaciones, es decir, diferentes niveles de oxígeno para 3.585 pacientes, en cambio, el otro, contiene información sobre 303 pacientes y 14 características distintas. Como ya tenemos suficientes características en el dataset de *heart.csv* con las que poder realizar un estudio detallado y completo a las preguntas que hemos planteado al principio, se va a optar por descartar el otro conjunto y perder este atributo adicional de los pacientes.
 
-Puede ser el resultado de adicionar diferentes datasets o una subselección útil de los datos originales, en base al objetivo que se quiera conseguir.
+En el caso de haber querido unificarlos y por lo tanto añadir otro atributo al dataset de *heart.csv* (saturación de oxígeno), se podría haber utilizado la función *merge* permitiéndonos fusionarlos de forma horizontal. Posteriormente, se podría comprobar que no existen inconsistencias ni duplicidades en los registros con la función *duplicated* o *unique*. No obstante, no existe un identificador único para cada uno de los pacientes como podría ser un id o un nombre, por lo que suponemos que podría haber dos pacientes con los mismos valores de atributos. Asimismo comprobaremos si hay muchos registros duplicados con el fin de que no pueda afectar significamente en los análisis posteriores.
+
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-sum(rowSums(is.na(heart_data))>0)
-colMeans(is.na(heart_data))
+
+# Comprobamos si existen registros duplicados con los mismos valores en todos los campos 
+# (dado que no tenemos identificador) Y contamos cuántos son
+
+nrow(heart_data[duplicated(heart_data), ])
+
+# Vemos los registros que están duplicados
+heart_data[duplicated(heart_data), ]
 ```
+
+Dado que solo existe un registro duplicado, con los mismos valores en todos los campos, no se va a eliminar porque es un porcentaje muy bajo del total y no afectará de manera significativa a los resultados que obtendremos más adelante. Además, al ser solo un registro, podría ser el caso de que esos dos pacientes fueran distintos y tuvieran las mismas características. Si tuviéramos muchos más, entonces seguramente serían los mismos pacientes y tendríamos que eliminarlos.
+
+A continuación, se muestran algunos registros e información general de los datos que servirá para posteriomente proceder a la limpieza y conversión de los datos.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Mostramos los tipos de datos de las variables tal y como las interpreta R 
+sapply(heart_data,class)
+
+# Mostramos un resumen de los datos
+summary(heart_data)
+
+# Se muestran las 4 primeras observaciones de los datos
+head(heart_data,4)
+
+```
+
+Por último, para nuestro análisis no se van a descartar registros porque no nos vamos a centrar en un tramo de edad concreto, sexo o una cantidad de colesterol, sino que se van a considerar a todos los pacientes con todas sus características para extraer el mayor número de conclusiones posibles teniendo en cuenta todos los atributos.
+
+
 # Limpieza de los datos.
 
 ## ¿Los datos contienen ceros o elementos vacíos? Gestiona cada uno de estos casos.
+
+### Caso: Ceros 
+
+### Caso: Elementos Vacíos 
+
+IDEA: Para imputar valores perdidos se podría utilizar KNN.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+#colMeans(is.na(heart_data))
+
+#colMeans(heart_data == "")
+```
+
+### Conversión y adaptación de los datos
+
+Se van a realizar algunas conversiones de los tipos de algunas variables para realizar un análisis más eficiente y que nos facilite la interpretación de los resultados.
+
+Primero convertiremos las siguientes variables numéricas a categóricas:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+# Transformamos a tipo factor las siguientes variables
+heart_data$sex <- factor(heart_data$sex, levels = c(0,1), labels= 
+                           c("Femenino", "Masculino"))
+heart_data$chest_pain_type <- factor(heart_data$chest_pain_type, levels = c(0,1,2,3), labels= 
+                                       c("Angina típica", "Angina atípica",
+                                        "Dolor no anginoso","Asintomático"))
+
+heart_data$fasting_blood_sugar <- factor(heart_data$fasting_blood_sugar, levels = c(0,1),
+                                         labels= 
+                                           c("Azúcar Bajo", "Azúcar Alto"))
+
+heart_data$rest_ecg_type <- factor(heart_data$rest_ecg_type, levels = c(0,1,2), labels= 
+                                     c("Normal", "Anomalía de onda ST-T",
+                                      "Hipertrofia ventricular izquierda"))    
+
+heart_data$exercise_induced_angina <- factor(heart_data$exercise_induced_angina, 
+                                             levels = c(0,1), labels= c("No", "Sí"))
+
+heart_data$st_slope_type <- factor(heart_data$st_slope_type, levels = c(0,1,2), 
+                                   labels= c("Baja", "Normal","Alta"))
+heart_data$thalassemia_type <- factor(heart_data$thalassemia_type, levels = c(0,1,2,3), 
+                                      labels= c("Inexistente", "Fijo",
+                                          "Normal","Reversible"))
+```
+
+También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización usando la función *scale* para normalizar las variables cuantitativas.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+# Indices de las variables cuantitativas
+idx_var_cuant <- c(1,4,5,8,10,12)
+
+# Normalización variables cuantitativas
+heart_norm <- scale(heart_data[,idx_var_cuant])
+```
+
+Es posible que se tengan que utilizar más adelanete será estos datos normalizados, sin embargo, se van a mantener sin normalizar ya que para mostrar los resultados resulta más intuitivo verlos en su escala natural.
+
+En el caso de las variables que no presenten una distribución normal, una opción sería realizar transformaciones de tipo Box-Cox para poder mejorar su normalidad y su homocedasticidad.
+
+Asimismo, para algunas variables como por ejemplo la edad del paciente, sería interesante realizar un proceso de discretización. Esto nos permitiría agrupar las edades en diferentes grupos y poder sacar conclusiones que nos aporten un valor simbólico más allá de solo un número, aportándonos mayor información. HACERRRRR JEJEJ
+
 
 ## Identifica y gestiona los valores extremos.
 
