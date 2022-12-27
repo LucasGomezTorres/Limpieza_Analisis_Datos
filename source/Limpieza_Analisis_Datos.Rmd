@@ -238,43 +238,63 @@ Asimismo, para algunas variables como por ejemplo la edad del paciente, sería i
 
 ## Identifica y gestiona los valores extremos.
 
-```{r}
-heart_data
+````{r}
+# Selección de la información a gestionar
+row_heart_data <- read.csv("heart.csv", header = TRUE)
+data_selected <- subset(row_heart_data, 
+                       select=c("age", "chol", "thalachh", "trtbps", "oldpeak"))
 ```
 
-
-```{r}
-
-colnames(heart_data)
-#data_to_show <- subset(heart_data, select=c("age", "chol", "thalachh", "trtbps", "oldpeak"))
-```
 
 ```{r}
 # Valores extremos en formato boxplot de la variable age
-boxplot(data_to_show$age, main = "Valores extremos de de la variable age", ylab="Valor", col = "lightblue", horizontal = FALSE)
-```
-
-```{r}
-# Valores extremos en formato boxplot de la variable chol
-boxplot(data_to_show$chol, main = "Valores extremos de de la variable chol", ylab="Valor", col = "lightblue", horizontal = FALSE)
-```
-
-```{r}
-# Valores extremos en formato boxplot de la variable thalachh
-boxplot(data_to_show$thalachh, main = "Valores extremos de de la variable thalachh", ylab="Valor", col = "lightblue", horizontal = FALSE)
-```
-
-```{r}
-# Valores extremos en formato boxplot de la variable trtbps
-boxplot(data_to_show$trtbps, main = "Valores extremos de de la variable trtbps", ylab="Valor", col = "lightblue", horizontal = FALSE)
+boxplot(data_selected$age, main = "Valores extremos de de la variable age", 
+        ylab="Valor", col = "lightblue", horizontal = FALSE)
 ```
 
 
 ```{r}
-# Valores extremos en formato boxplot de la variable oldpeak
-boxplot(data_to_show$oldpeak, main = "Valores extremos de de la variable oldpeak", ylab="Valor", col = "lightblue", horizontal = FALSE)
+outlier_info <- function(var) {
+  # Valores extremos en formato boxplot de la variable
+  box = boxplot(var, main = "Valores extremos de la variable", 
+        ylab="Valor", col = "lightblue", horizontal = FALSE)
+  # Identificar los valores atípicos
+  outliers <- boxplot.stats(var)$out
+  if (length(outliers) == 0) {
+    cat("No se han identificado valores atípicos")
+  } else {
+    # Imprimir el número de valores atípicos
+    cat("Outliers identificados:", unique(outliers), "\n")
+    # Imprimir los valores máximo y mínimo de los valores atípicos
+    cat("Máximos y mínimos de los valores extremos identificados:", range(outliers))
+    }
+  }
 ```
 
+```{r}
+outlier_info(data_selected$age)
+```
+
+```{r}
+outlier_info(data_selected$chol)
+```
+
+```{r}
+outlier_info(data_selected$thalachh)
+```
+
+```{r}
+outlier_info(data_selected$trtbps)
+```
+
+```{r}
+outlier_info(data_selected$oldpeak)
+```
+
+
+
+# Vemos el mínimo y el máximo de los anteriores valores atípicos
+range(boxplot.stats(dataset_gpa$sat)$out)
 
 # Análisis de los datos.
 
