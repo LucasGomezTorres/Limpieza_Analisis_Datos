@@ -9,7 +9,7 @@ output:
     toc: yes
     number_sections: yes
     toc_depth: 6
-    latex_engine : xelatex 
+    #latex_engine : xelatex 
 
   html_document:
     toc: yes
@@ -148,16 +148,43 @@ Por último, para nuestro análisis no se van a descartar registros porque no no
 
 ### Caso: Ceros 
 
+```{r}
+# Analisis de las columnas que contienen ceros en sus valores
+cols_with_zeros <- which(apply(heart_data, 2, function(x) sum(x == 0)) > 0)
+colnames(heart_data)[cols_with_zeros]
+```
+
+Las variables que contienen algún valor igual a cero son variables que esperan reflejar este valor tal y como se ha definido en el enunciado, por lo tanto no se va a realizar una limpieza de datos para este caso en particular. Véase a continuación las variables que aparecen con algún valor cero son las siguientes:
+
+– *sex*: Refleja el género de la persona (1 = masculino, 0 = femenino).
+
+– *cp*: Identifica el tipo de dolor en el pecho (0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático).
+
+– *fbs*: Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
+
+– *restecg*: Muestra los resultados electrocardiográficos en reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes).
+
+– *exng*: Indica si la angina ha sido inducida por el ejercicio (1 = sí, 0 = no).
+
+– *oldpeak*: Señala la depresión ST inducida por el ejercicio en relación con el descanso.
+
+– *slp*: Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
+
+– *caa*: Indica el número de buques principales (0, 1, 2, 3).
+
+– *thall*: Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
+
+– *output*: Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). 
+
 ### Caso: Elementos Vacíos 
 
-IDEA: Para imputar valores perdidos se podría utilizar KNN.
+A continuación se realiza la comprobación de si hay elementos vacíos en el dataset, para cada columna se realiza el conteo de elementos vacíos existentes. 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-
-#colMeans(is.na(heart_data))
-
-#colMeans(heart_data == "")
+```{r}
+# Elementos vacíos de las variables del dataset
+colSums(is.na(heart_data))
 ```
+Como se visualiza en los resultados anteriores no existen elementos vacíos en el conjunto de datos. Con ello, no será necesario realizar ningún procedimiento de limpieza de datos para valores vacíos de las variables del dataset.
 
 ### Conversión y adaptación de los datos
 
@@ -195,7 +222,6 @@ heart_data$thalassemia_type <- factor(heart_data$thalassemia_type, levels = c(0,
 También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización usando la función *scale* para normalizar las variables cuantitativas.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 # Indices de las variables cuantitativas
 idx_var_cuant <- c(1,4,5,8,10,12)
 
@@ -207,7 +233,7 @@ Es posible que se tengan que utilizar más adelanete será estos datos normaliza
 
 En el caso de las variables que no presenten una distribución normal, una opción sería realizar transformaciones de tipo Box-Cox para poder mejorar su normalidad y su homocedasticidad.
 
-Asimismo, para algunas variables como por ejemplo la edad del paciente, sería interesante realizar un proceso de discretización. Esto nos permitiría agrupar las edades en diferentes grupos y poder sacar conclusiones que nos aporten un valor simbólico más allá de solo un número, aportándonos mayor información. HACERRRRR JEJEJ
+Asimismo, para algunas variables como por ejemplo la edad del paciente, sería interesante realizar un proceso de discretización. Esto nos permitiría agrupar las edades en diferentes grupos y poder sacar conclusiones que nos aporten un valor simbólico más allá de solo un número, aportándonos mayor información. 
 
 
 ## Identifica y gestiona los valores extremos.
