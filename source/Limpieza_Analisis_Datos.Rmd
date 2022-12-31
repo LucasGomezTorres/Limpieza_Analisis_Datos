@@ -88,6 +88,9 @@ En este apartado se van a cargar ambos conjuntos de datos, para decidir si se va
 # Se carga el dataset
 heart_data <- read.csv("heart.csv", header = TRUE)
 
+# Guardar datos crudos para posterior análisis
+row_heart_data <- heart_data
+
 # Modificamos los nombres de las variables para que sean más intuitivos
 colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure",
                           "cholesterol",	"fasting_blood_sugar","rest_ecg_type",	
@@ -150,31 +153,31 @@ Por último, para nuestro análisis no se van a descartar registros porque no no
 
 ```{r}
 # Analisis de las columnas que contienen ceros en sus valores
-cols_with_zeros <- which(apply(heart_data, 2, function(x) sum(x == 0)) > 0)
+cols_with_zeros <- which(apply(row_heart_data, 2, function(x) sum(x == 0)) > 0)
 colnames(heart_data)[cols_with_zeros]
 ```
 
 Las variables que contienen algún valor igual a cero son variables que esperan reflejar este valor tal y como se ha definido en el enunciado, por lo tanto no se va a realizar una limpieza de datos para este caso en particular. Véase a continuación las variables que aparecen con algún valor cero son las siguientes:
 
-– *sex*: Refleja el género de la persona (1 = masculino, 0 = femenino).
+– "sex": Refleja el género de la persona (1 = masculino, 0 = femenino).
 
-– *cp*: Identifica el tipo de dolor en el pecho (0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático).
+– "chest_pain_type": Identifica el tipo de dolor en el pecho (0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático).
 
-– *fbs*: Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
+– "fasting_blood_sugar": Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
 
-– *restecg*: Muestra los resultados electrocardiográficos en reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes).
+– "rest_ecg_type": Muestra los resultados electrocardiográficos en reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes).
 
-– *exng*: Indica si la angina ha sido inducida por el ejercicio (1 = sí, 0 = no).
+– "exercise_induced_angina": Indica si la angina ha sido inducida por el ejercicio (1 = sí, 0 = no).
 
-– *oldpeak*: Señala la depresión ST inducida por el ejercicio en relación con el descanso.
+– "st_depression": Señala la depresión ST inducida por el ejercicio en relación con el descanso.
 
-– *slp*: Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
+– "st_slope_type": Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
 
-– *caa*: Indica el número de buques principales (0, 1, 2, 3).
+– "num_major_vessels": Indica el número de buques principales (0, 1, 2, 3).
 
-– *thall*: Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
+– "thalassemia_type": Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
 
-– *output*: Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). 
+– "heart_attack": Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). 
 
 ### Caso: Elementos Vacíos 
 
@@ -193,10 +196,10 @@ Se van a realizar algunas conversiones de los tipos de algunas variables para re
 Primero convertiremos las siguientes variables numéricas a categóricas:
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 # Transformamos a tipo factor las siguientes variables
 heart_data$sex <- factor(heart_data$sex, levels = c(0,1), labels= 
                            c("Femenino", "Masculino"))
+
 heart_data$chest_pain_type <- factor(heart_data$chest_pain_type, levels = c(0,1,2,3), labels= 
                                        c("Angina típica", "Angina atípica",
                                         "Dolor no anginoso","Asintomático"))
@@ -236,65 +239,60 @@ En el caso de las variables que no presenten una distribución normal, una opci�
 Asimismo, para algunas variables como por ejemplo la edad del paciente, sería interesante realizar un proceso de discretización. Esto nos permitiría agrupar las edades en diferentes grupos y poder sacar conclusiones que nos aporten un valor simbólico más allá de solo un número, aportándonos mayor información. 
 
 
-## Identifica y gestiona los valores extremos.
+## Identifica y gestiona los valores extremos
 
-````{r}
-# Selección de la información a gestionar
-row_heart_data <- read.csv("heart.csv", header = TRUE)
+En primer lugar se realiza la visualización de los valores extremos para las variables: 
+
+*"age", "chol", "thalachh", "trtbps", "oldpeak"*.
+
+```{r}
+# Selección de las variables del conjunto de datos
 data_selected <- subset(row_heart_data, 
                        select=c("age", "chol", "thalachh", "trtbps", "oldpeak"))
 ```
 
-
 ```{r}
-# Valores extremos en formato boxplot de la variable age
-boxplot(data_selected$age, main = "Valores extremos de de la variable age", 
-        ylab="Valor", col = "lightblue", horizontal = FALSE)
-```
-
-
-```{r}
-outlier_info <- function(var) {
+# Función para simplificar la extracción de información de valores extremos
+outlier_info <- function(var, name_var) {
   # Valores extremos en formato boxplot de la variable
-  box = boxplot(var, main = "Valores extremos de la variable", 
-        ylab="Valor", col = "lightblue", horizontal = FALSE)
+  box = boxplot(var, main = name_var, 
+        ylab="Valor", col = "lightblue", horizontal = FALSE, outline = TRUE)
   # Identificar los valores atípicos
   outliers <- boxplot.stats(var)$out
   if (length(outliers) == 0) {
-    cat("No se han identificado valores atípicos")
+    cat("No se han identificado valores atípicos", "\n")
   } else {
     # Imprimir el número de valores atípicos
     cat("Outliers identificados:", unique(outliers), "\n")
-    # Imprimir los valores máximo y mínimo de los valores atípicos
-    cat("Máximos y mínimos de los valores extremos identificados:", range(outliers))
-    }
   }
+  # Imprimir los valores máximo y mínimo de los valores atípicos
+  cat("Máximos y mínimos de los valores extremos identificados:", range(var))
+}
 ```
 
 ```{r}
-outlier_info(data_selected$age)
+par(mfrow=c(2, 3))
+outlier_info(data_selected$age, "age")
+outlier_info(data_selected$chol, "chol")
+outlier_info(data_selected$thalachh, "thalachh")
+outlier_info(data_selected$trtbps, "trtbps")
+outlier_info(data_selected$oldpeak, "oldpeak")
 ```
 
-```{r}
-outlier_info(data_selected$chol)
-```
+A continuación vamos a extraer las conclusiones pertinentes respectos a los valores extremos detectados en los resultados y los gráficos previos:
 
-```{r}
-outlier_info(data_selected$thalachh)
-```
+- En la variable "age", no se han identificado valores atípicos. Los valores máximo y mínimo de la variable son 29 y 77, respectivamente.
 
-```{r}
-outlier_info(data_selected$trtbps)
-```
+- En la variable "chol", se han identificado 5 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 126 y 564, respectivamente.
 
-```{r}
-outlier_info(data_selected$oldpeak)
-```
+- En la variable "thalach", se ha identificado 1 valor atípico (outlier). Los valores máximo y mínimo de los outliers identificados son 71 y 202, respectivamente.
 
+- En la variable "trtbps", se han identificado 6 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 94 y 200, respectivamente.
 
+- En la variable "oldpeak", se han identificado 4 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 0 y 6.2, respectivamente.
 
-# Vemos el mínimo y el máximo de los anteriores valores atípicos
-range(boxplot.stats(dataset_gpa$sat)$out)
+Estos resultados indican que algunas de las variables tienen valores extremos que se alejan significativamente del resto y que pueden afectar el rendimiento de algunos algoritmos de análisis de datos. 
+
 
 # Análisis de los datos.
 
