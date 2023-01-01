@@ -300,6 +300,28 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 
 ## Comprobación de la normalidad y homogeneidad de la varianza.
 
+!#TODO: ESTO ES UN EJEMPLO DE PARTIDA 
+
+Para comprobar la normalidad de los datos, utilizamos la función `shapiro.test()`. Esta función toma un vector de datos y realiza un test de normalidad de Shapiro-Wilk. Si el p-valor devuelto es superior al nivel de significación, entonces se puede concluir que los datos siguen una distribución normal. 
+
+```{r}
+# Carga el conjunto de datos iris
+data(iris)
+
+# Extrae la longitud del sépalo y realiza un test de normalidad
+shapiro.test(iris$Sepal.Length)
+```
+Para comprobar la homogeneidad de la varianza, utilizamos la función `var.test()`. Esta función toma dos vectores de datos y realiza un test de igualdad de varianzas. Si el p-valor devuelto es superior al nivel de significación que hayas elegido, entonces se puede concluir que las varianzas de los dos conjuntos de datos son iguales. 
+
+```{r}
+# Carga el conjunto de datos iris
+data(iris)
+
+# Compara la varianza de la longitud del sépalo y la longitud del pétalo
+var.test(iris$Sepal.Length, iris$Petal.Length)
+```
+
+
 ## Aplicación de pruebas estadísticas para comparar los grupos de datos. En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes.
 
 # Representación de los resultados a partir de tablas y gráficas.
