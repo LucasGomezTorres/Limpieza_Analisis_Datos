@@ -286,7 +286,12 @@ outlier_info <- function(var, name_var) {
     cat("Outliers identificados:", unique(outliers), "\n")
   }
   # Imprimir los valores máximo y mínimo de los valores atípicos
-  cat("Máximos y mínimos de los valores extremos identificados:", range(var))
+  estadisticas <- boxplot.stats(var)$stats
+  cat("Valor mínimo:", estadisticas[1], "\n")
+  cat("Primer cuartil:", estadisticas[2], "\n")
+  cat("Media:", estadisticas[3], "\n")
+  cat("Tercer cuartil:", estadisticas[4], "\n")
+  cat("Valor máximo:", estadisticas[5], "\n")
 }
 ```
 
