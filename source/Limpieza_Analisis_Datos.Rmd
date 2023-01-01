@@ -88,9 +88,6 @@ En este apartado se van a cargar ambos conjuntos de datos, para decidir si se va
 # Se carga el dataset
 heart_data <- read.csv("heart.csv", header = TRUE)
 
-# Guardar datos crudos para posterior análisis
-row_heart_data <- heart_data
-
 # Modificamos los nombres de las variables para que sean más intuitivos
 colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure",
                           "cholesterol",	"fasting_blood_sugar","rest_ecg_type",	
@@ -183,7 +180,7 @@ visualize_distribution("heart_attack")
 
 ```{r}
 # Analisis de las columnas que contienen ceros en sus valores
-cols_with_zeros <- which(apply(row_heart_data, 2, function(x) sum(x == 0)) > 0)
+cols_with_zeros <- which(apply(heart_data, 2, function(x) sum(x == 0)) > 0)
 colnames(heart_data)[cols_with_zeros]
 ```
 
@@ -272,13 +269,13 @@ Asimismo, para algunas variables como por ejemplo la edad del paciente, sería i
 ## Identifica y gestiona los valores extremos
 
 En primer lugar se realiza la visualización de los valores extremos para las variables: 
-
-*"age", "chol", "thalachh", "trtbps", "oldpeak"*.
+*"age", "cholesterol", "max_heart_rate_achieved", "resting_blood_pressure", "st_depression"*.
 
 ```{r}
 # Selección de las variables del conjunto de datos
-data_selected <- subset(row_heart_data, 
-                       select=c("age", "chol", "thalachh", "trtbps", "oldpeak"))
+data_selected <- subset(heart_data, 
+                select=c("age", "cholesterol", "max_heart_rate_achieved", "resting_blood_pressure", "st_depression"))
+data_selected
 ```
 
 ```{r}
@@ -303,23 +300,23 @@ outlier_info <- function(var, name_var) {
 ```{r}
 par(mfrow=c(2, 3))
 outlier_info(data_selected$age, "age")
-outlier_info(data_selected$chol, "chol")
-outlier_info(data_selected$thalachh, "thalachh")
-outlier_info(data_selected$trtbps, "trtbps")
-outlier_info(data_selected$oldpeak, "oldpeak")
+outlier_info(data_selected$cholesterol, "cholesterol")
+outlier_info(data_selected$max_heart_rate_achieved, "max_heart_rate_achieved")
+outlier_info(data_selected$resting_blood_pressure, "resting_blood_pressure")
+outlier_info(data_selected$st_depression, "st_depression")
 ```
 
 A continuación vamos a extraer las conclusiones pertinentes respectos a los valores extremos detectados en los resultados y los gráficos previos:
 
 - En la variable "age", no se han identificado valores atípicos. Los valores máximo y mínimo de la variable son 29 y 77, respectivamente.
 
-- En la variable "chol", se han identificado 5 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 126 y 564, respectivamente.
+- En la variable "cholesterol", se han identificado 5 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 126 y 564, respectivamente.
 
-- En la variable "thalach", se ha identificado 1 valor atípico (outlier). Los valores máximo y mínimo de los outliers identificados son 71 y 202, respectivamente.
+- En la variable "max_heart_rate_achieved", se ha identificado 1 valor atípico (outlier). Los valores máximo y mínimo de los outliers identificados son 71 y 202, respectivamente.
 
-- En la variable "trtbps", se han identificado 6 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 94 y 200, respectivamente.
+- En la variable "resting_blood_pressure", se han identificado 6 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 94 y 200, respectivamente.
 
-- En la variable "oldpeak", se han identificado 4 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 0 y 6.2, respectivamente.
+- En la variable "st_depression", se han identificado 4 valores atípicos (outliers). Los valores máximo y mínimo de los outliers identificados son 0 y 6.2, respectivamente.
 
 Estos resultados indican que algunas de las variables tienen valores extremos que se alejan significativamente del resto y que pueden afectar el rendimiento de algunos algoritmos de análisis de datos. 
 
@@ -366,7 +363,6 @@ data(iris)
 # Compara la varianza
 var.test(iris$Sepal.Length, iris$Petal.Length)
 ```
-
 
 ## Aplicación de pruebas estadísticas para comparar los grupos de datos. En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes.
 
