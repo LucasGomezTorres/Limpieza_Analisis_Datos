@@ -145,7 +145,7 @@ Por último, para nuestro análisis no se van a descartar registros porque no no
 visualize_distribution <- function(variable) {
   # Seleccionamos la columna de la variable del conjunto de datos
   values <- heart_data[[variable]]
-  # Creamos el histograma
+  # Creación del histograma
   hist(values, xlab = variable, main = variable)
 }
 ```
@@ -272,13 +272,6 @@ En primer lugar se realiza la visualización de los valores extremos para las va
 *"age", "cholesterol", "max_heart_rate_achieved", "resting_blood_pressure", "st_depression"*.
 
 ```{r}
-# Selección de las variables del conjunto de datos
-data_selected <- subset(heart_data, 
-                select=c("age", "cholesterol", "max_heart_rate_achieved", "resting_blood_pressure", "st_depression"))
-data_selected
-```
-
-```{r}
 # Función para simplificar la extracción de información de valores extremos
 outlier_info <- function(var, name_var) {
   # Valores extremos en formato boxplot de la variable
@@ -299,11 +292,11 @@ outlier_info <- function(var, name_var) {
 
 ```{r}
 par(mfrow=c(2, 3))
-outlier_info(data_selected$age, "age")
-outlier_info(data_selected$cholesterol, "cholesterol")
-outlier_info(data_selected$max_heart_rate_achieved, "max_heart_rate_achieved")
-outlier_info(data_selected$resting_blood_pressure, "resting_blood_pressure")
-outlier_info(data_selected$st_depression, "st_depression")
+outlier_info(heart_data$age, "age")
+outlier_info(heart_data$cholesterol, "cholesterol")
+outlier_info(heart_data$max_heart_rate_achieved, "max_heart_rate_achieved")
+outlier_info(heart_data$resting_blood_pressure, "resting_blood_pressure")
+outlier_info(heart_data$st_depression, "st_depression")
 ```
 
 A continuación vamos a extraer las conclusiones pertinentes respectos a los valores extremos detectados en los resultados y los gráficos previos:
