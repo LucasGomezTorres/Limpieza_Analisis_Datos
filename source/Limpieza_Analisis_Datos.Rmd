@@ -298,6 +298,22 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 
 ## Selección de los grupos de datos que se quieren analizar/comparar (p.ej., si se van a comparar grupos de datos, ¿cuáles son estos grupos y qué tipo de análisis se van a aplicar?).
 
+==== JOAN ====
+
+En este caso, se quiere analizar el conjunto de datos "heart.csv" para predecir si un paciente tiene un ataque al corazón o no. El conjunto de datos "o2Saturation.csv" no parece estar relacionado con este propósito y, por tanto, no se incluiría en el análisis.
+
+Para analizar el conjunto de datos "heart.csv", se podría utilizar un modelo de aprendizaje supervisado para entrenar un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se puede evaluar su desempeño y utilizarlo para hacer predicciones sobre pacientes futuros.
+
+También se pueden comparar los resultados de distintos modelos de aprendizaje supervisado para ver cuál tiene mejor desempeño en este problema en particular. También se puede comparar el desempeño del modelo entrenado con diferentes subconjuntos de datos (por ejemplo, separando los pacientes por género o por edad).
+
+Se podría utilizar un árbol de decisión para construir un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se podría utilizar para hacer predicciones sobre pacientes futuros.
+
+Para evaluar el desempeño del modelo, se podrían utilizar métricas como la precisión, la sensibilidad o el valor F1. También se podría comparar el desempeño del árbol de decisión con otros modelos de aprendizaje supervisado para ver cuál tiene mejor desempeño en este problema en particular.
+
+Además, podríamos utilizar el test Chi cuadrado para ver si existe alguna asociación entre el género de un paciente y el resultado (ataque al corazón o no).
+
+Para utilizar el test Chi cuadrado, necesitaríamos crear una tabla de contingencia con las frecuencias absolutas o relativas de cada combinación de variables. Luego, se calcularía el valor Chi cuadrado y se compararía con una tabla de valores críticos para determinar si existe una asociación significativa entre las variables.
+
 ## Comprobación de la normalidad y homogeneidad de la varianza.
 
 !#TODO: ESTO ES UN EJEMPLO DE PARTIDA 
@@ -305,19 +321,19 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 Para comprobar la normalidad de los datos, utilizamos la función `shapiro.test()`. Esta función toma un vector de datos y realiza un test de normalidad de Shapiro-Wilk. Si el p-valor devuelto es superior al nivel de significación, entonces se puede concluir que los datos siguen una distribución normal. 
 
 ```{r}
-# Carga el conjunto de datos iris
+# Carga el conjunto de datos 
 data(iris)
 
-# Extrae la longitud del sépalo y realiza un test de normalidad
+# Extrae la longitud del conjunto de datos y realiza un test de normalidad
 shapiro.test(iris$Sepal.Length)
 ```
 Para comprobar la homogeneidad de la varianza, utilizamos la función `var.test()`. Esta función toma dos vectores de datos y realiza un test de igualdad de varianzas. Si el p-valor devuelto es superior al nivel de significación que hayas elegido, entonces se puede concluir que las varianzas de los dos conjuntos de datos son iguales. 
 
 ```{r}
-# Carga el conjunto de datos iris
+# Carga el conjunto de datos
 data(iris)
 
-# Compara la varianza de la longitud del sépalo y la longitud del pétalo
+# Compara la varianza
 var.test(iris$Sepal.Length, iris$Petal.Length)
 ```
 
