@@ -22,8 +22,31 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ```{r load_libraries, include=FALSE}
 library(knitr)
+# Librería necesaria para eliminar espacios en blanco
+if (!require("stringr")) install.packages("stringr")
+library(stringr)
+
+# Librería necesaria para hacer mutación de datos
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+# Librería necesaria para la imputación de registros
+if (!require("VIM")) install.packages("VIM")
+library(VIM)
+
+# Librería necesaria para la visualización de gráficos
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+
+# Librería necesaria para la visualización de gráficos de forma interactiva
+if (!require("plotly")) install.packages("plotly")
+library(plotly)
+
+# Evitar visualizar warnings
+options(warn=-1)
 ```
 
 
@@ -272,26 +295,30 @@ En primer lugar se realiza la visualización de los valores extremos para las va
 *"age", "cholesterol", "max_heart_rate_achieved", "resting_blood_pressure", "st_depression"*.
 
 ```{r}
-# Función para simplificar la extracción de información de valores extremos
-outlier_info <- function(var, name_var) {
+outlier_info <- function(var, name_var, show_plot = TRUE) {
   # Valores extremos en formato boxplot de la variable
-  box = boxplot(var, main = name_var, 
-        ylab="Valor", col = "lightblue", horizontal = FALSE, outline = TRUE)
+  if (show_plot) {
+    boxplot(var, main = name_var, 
+            ylab="Valor", col = "lightblue", horizontal = FALSE, outline = TRUE)
+  }
+  
   # Identificar los valores atípicos
   outliers <- boxplot.stats(var)$out
+  
+  # Imprimir los valores máximo y mínimo de los valores atípicos
+  stats <- boxplot.stats(var)$stats
+  cat("Valor mínimo:", stats[1], "\n")
+  cat("Primer cuartil:", stats[2], "\n")
+  cat("Media:", stats[3], "\n")
+  cat("Tercer cuartil:", stats[4], "\n")
+  cat("Valor máximo:", stats[5], "\n")
+  
   if (length(outliers) == 0) {
     cat("No se han identificado valores atípicos", "\n")
   } else {
     # Imprimir el número de valores atípicos
     cat("Outliers identificados:", unique(outliers), "\n")
   }
-  # Imprimir los valores máximo y mínimo de los valores atípicos
-  estadisticas <- boxplot.stats(var)$stats
-  cat("Valor mínimo:", estadisticas[1], "\n")
-  cat("Primer cuartil:", estadisticas[2], "\n")
-  cat("Media:", estadisticas[3], "\n")
-  cat("Tercer cuartil:", estadisticas[4], "\n")
-  cat("Valor máximo:", estadisticas[5], "\n")
 }
 ```
 
@@ -318,6 +345,59 @@ A continuación vamos a extraer las conclusiones pertinentes respectos a los val
 
 Estos resultados indican que algunas de las variables tienen valores extremos que se alejan significativamente del resto y que pueden afectar el rendimiento de algunos algoritmos de análisis de datos. 
 
+## Corrección de los outliers
+
+```{r}
+outliers_treatment <- function(variable, threshold){
+  
+  # Número de outliers que superan el valor determinado en la variable tratada
+  num_outliers = nrow(heart_data[heart_data$variable] > threshold)
+  
+  # Número de NA's en la variable tratada
+  num_nas = sum(is.na(heart_data[heart_data$variable]))
+  
+  # Se guardan para luego comprobar que se han imputado bien
+  atipicos_dataset = heart_data %>% select(variable) %>% filter(variable > threshold) %>% head(5)
+
+  # Se substituyen esos valores atípicos por el valor NA
+  heart_data = heart_data %>% mutate(variable = ifelse(variable > threshold, NA, variable)) 
+  
+  # Numero de NA's en la variable tratada
+  num_nas_final = sum(is.na(heart_data$variable))
+
+  # Se muestran los resultados
+  print(paste("Número de outliers:", num_outliers))
+  print(paste("Número de NA's iniciales:", num_nas))
+  print(paste("Número de NA's finales:", num_nas_final))
+}
+```
+
+```{r}
+cholesterol_clean <- outliers_treatment("cholesterol", 500)
+# Una vez realizada la modificación de estos valores atípicos por valores NA 
+# podemos ver que se ha realizado con éxito este procedimiento
+heart_data %>% select("cholesterol") %>%filter(is.na("cholesterol"))
+```
+
+```{r}
+#max_heart_rate_achieved_clean <- outliers_treatment("max_heart_rate_achieved", 300, 80)
+```
+
+```{r}
+#resting_blood_pressure_clean <- outliers_treatment("resting_blood_pressure", 190)
+```
+
+```{r}
+#st_depression_clean <- outliers_treatment("st_depression", 5.5)
+```
+
+============
+Eliminar del conjunto de datos: 
+
+- cholesterol:  564
+- max_heart_rate_achieved: 71 
+- resting_blood_pressure: 192, 200
+- st_depression: 5.6, 6.2
 
 # Análisis de los datos.
 
