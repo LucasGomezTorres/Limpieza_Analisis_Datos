@@ -157,15 +157,11 @@ visualize_distribution <- function(variable) {
 par(mfrow=c(2, 3))
 # Ejecutamos la función con las variables
 visualize_distribution("age")
-visualize_distribution("sex")
-visualize_distribution("chest_pain_type")
 visualize_distribution("resting_blood_pressure")
 visualize_distribution("cholesterol")
 visualize_distribution("fasting_blood_sugar")
 par(mfrow=c(2, 3))
-visualize_distribution("rest_ecg_type")
 visualize_distribution("max_heart_rate_achieved")
-visualize_distribution("exercise_induced_angina")
 visualize_distribution("st_depression")
 visualize_distribution("st_slope_type")
 visualize_distribution("num_major_vessels")
@@ -250,6 +246,8 @@ heart_data$st_slope_type <- factor(heart_data$st_slope_type, levels = c(0,1,2),
 heart_data$thalassemia_type <- factor(heart_data$thalassemia_type, levels = c(0,1,2,3), 
                                       labels= c("Inexistente", "Fijo",
                                           "Normal","Reversible"))
+heart_data$heart_attack <- factor(heart_data$heart_attack, levels = c(0,1), 
+                                      labels= c("No", "Yes"))
 ```
 
 También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización usando la función *scale* para normalizar las variables cuantitativas.
@@ -323,6 +321,19 @@ A continuación vamos a extraer las conclusiones pertinentes respectos a los val
 
 Estos resultados indican que algunas de las variables tienen valores extremos que se alejan significativamente del resto y que pueden afectar el rendimiento de algunos algoritmos de análisis de datos. 
 
+## Generación del archivo con los datos tratados
+
+Se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica.
+
+```{r}
+# Dataframe tratado
+df_heart_final <- heart_data
+# Se incluyen las variables cuantitativas normalizadas
+df_heart_final[, idx_var_cuant] <- heart_norm
+# Se exporta a formato csv
+write.csv(df_heart_final, file = "clean_data.csv", row.names = FALSE, col.names = TRUE)
+```
+
 
 # Análisis de los datos.
 
@@ -344,7 +355,73 @@ Además, podríamos utilizar el test Chi cuadrado para ver si existe alguna asoc
 
 Para utilizar el test Chi cuadrado, necesitaríamos crear una tabla de contingencia con las frecuencias absolutas o relativas de cada combinación de variables. Luego, se calcularía el valor Chi cuadrado y se compararía con una tabla de valores críticos para determinar si existe una asociación significativa entre las variables.
 
+==== LUCAS ====
+
+Como comentamos al principio de la práctica, queremos responder a las siguientes preguntas:
+
+- ¿Los hombres son más probables a sufrir un ataque?
+
+- ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
+
+- ¿Tuvieron los pacientes con una angina de pecho producida por el ejercicio físico más probabilidad de sufrir un ataque que los que no?
+
+- ¿Las personas mayores tienen más probabilidad de sufrir un ataque que los demás?
+
+- ¿ Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente ?
+
+En nuestro caso, se va a analizar el conjunto de datos "heart.csv" para poder predecir si un paciente tiene un ataque al corazón o no. Para ello, se podría utilizar un modelo de aprendizaje supervisado como un árbol de decisión para construir un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se puede evaluar su desempeño con métricas como la precisión, la sensibilidad o el valor F1 y utilizarlo para hacer predicciones sobre pacientes futuros. 
+
+Además, se van a aplicar algunos tests estadísticos que dependerá de la normalidad y la homocedasticidad de las variables que se verá en el apartado siguiente.
+
 ## Comprobación de la normalidad y homogeneidad de la varianza.
+
+Se va a analizar la normalidad y la homocedasticidad de las variables cuantitativas que nos servirán para dar respuesta a las preguntas anteriores. 
+
+Para ello, vamos a representar mediante histogramas la distribución de los datos de las variables en comparación con la normal teórica para poder ver visualmente si siguen una distribución normal. No obstante, después lo verificaremos mediante el test de *Shapiro Wilk* y mediante el gráfico *Q-Q plot* mediante las funciones de R `qqnorm` y `qqline`.
+
+```{r}
+# Se carga la libreria psych
+library(psych)
+
+# Histograma de la distribución de la variable VS la distribucion normal teorica
+multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
+```
+
+Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, sin embargo hay algunas como 
+
+```{r}
+
+# Devuelve el p-valor aplicando el test de Shapiro Wilk
+p_value_shapiro_wilk <- function(x) {  
+  p_value <- shapiro.test(x)["p.value"]
+  return (p_value)
+}
+
+# Se crea una dataframe con los p-valores obtenidos para cada variable
+df_p_value_shapiro_wilk <- data.frame(
+"P-Value" = sapply(heart_data[,idx_var_cuant],p_value_shapiro_wilk))
+
+# Se le añade el nombre a las variables
+colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure","Cholesterol","Max_heart_rate_achieved","st_depression","num_major_vessels")
+
+# Se visualiza el dataframe creado
+kable(df_p_value_shapiro_wilk,digits=3, caption="P-Valores de las variables cuantitativas aplicando Shapiro Wilk")
+
+```
+
+Viendo los resultados del test se rechaza la hipótesis nula y se confirma que la distribución de las variables no siguen una distribución normal al $95 \%$ de confianza ya que el p-valor obtenido en cada caso es inferior al nivel de significancia del 5 % (0.05).
+
+Por último, se muestra el *Q-Q plot* para comprobar si los cuantiles siguen o no una distribución normal.
+
+```{r}
+par(mfrow = c(2, 3)) 
+for (var in idx_var_cuant){
+  qqnorm(heart_data[,var], main=colnames(heart_data)[var], pch=1)
+  qqline(heart_data[,var],col='red', lwd=2) }
+```
+
+
+
 
 !#TODO: ESTO ES UN EJEMPLO DE PARTIDA 
 
