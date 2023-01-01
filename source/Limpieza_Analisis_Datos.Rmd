@@ -38,11 +38,11 @@ Por ello, los ataques al corazón son un problema muy grave que hay que intentar
 
 - ¿Los hombres son más probables a sufrir un ataque?
 
-- ¿ El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque ? 
+- ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
 
-- ¿ Las personas mayores tienen más probabilidad de sufrir un ataque?
+- ¿Las personas mayores tienen más probabilidad de sufrir un ataque?
 
-- ¿ Qué factor es el más influye en un ataque ?
+- ¿Qué factor es el más influye en un ataque?
 
 El conjunto de datos está dividido en dos subconjuntos de datos:
 
@@ -96,7 +96,7 @@ colnames(heart_data) <- c("age","sex","chest_pain_type","resting_blood_pressure"
                           "cholesterol",	"fasting_blood_sugar","rest_ecg_type",	
                           "max_heart_rate_achieved","exercise_induced_angina", 
                           "st_depression", "st_slope_type", "num_major_vessels",
-                      "thalassemia_type","heart_attack")
+                          "thalassemia_type","heart_attack")
 
 # Dimensión del dataset
 dim(heart_data)
@@ -116,7 +116,6 @@ En el caso de haber querido unificarlos y por lo tanto añadir otro atributo al 
 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 # Comprobamos si existen registros duplicados con los mismos valores en todos los campos 
 # (dado que no tenemos identificador) Y contamos cuántos son
 
@@ -139,11 +138,47 @@ summary(heart_data)
 
 # Se muestran las 4 primeras observaciones de los datos
 head(heart_data,4)
-
 ```
 
 Por último, para nuestro análisis no se van a descartar registros porque no nos vamos a centrar en un tramo de edad concreto, sexo o una cantidad de colesterol, sino que se van a considerar a todos los pacientes con todas sus características para extraer el mayor número de conclusiones posibles teniendo en cuenta todos los atributos.
 
+# Visualización de los datos
+
+```{r}
+visualize_distribution <- function(variable) {
+  # Seleccionamos la columna de la variable del conjunto de datos
+  values <- heart_data[[variable]]
+  # Creamos el histograma
+  hist(values, xlab = variable, main = variable)
+}
+```
+
+```{r}
+par(mfrow=c(2, 3))
+# Ejecutamos la función con las variables
+visualize_distribution("age")
+visualize_distribution("sex")
+visualize_distribution("chest_pain_type")
+visualize_distribution("resting_blood_pressure")
+visualize_distribution("cholesterol")
+visualize_distribution("fasting_blood_sugar")
+```
+
+```{r}
+par(mfrow=c(2, 3))
+visualize_distribution("rest_ecg_type")
+visualize_distribution("max_heart_rate_achieved")
+visualize_distribution("exercise_induced_angina")
+visualize_distribution("st_depression")
+visualize_distribution("st_slope_type")
+visualize_distribution("num_major_vessels")
+```
+
+```{r}
+par(mfrow=c(2, 3))
+visualize_distribution("thalassemia_type")
+visualize_distribution("heart_attack")
+```
 
 # Limpieza de los datos.
 
