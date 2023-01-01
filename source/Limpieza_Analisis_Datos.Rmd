@@ -153,7 +153,7 @@ visualize_distribution <- function(variable) {
 }
 ```
 
-```{r}
+```{r, echo=FALSE}
 par(mfrow=c(2, 3))
 # Ejecutamos la función con las variables
 visualize_distribution("age")
@@ -162,9 +162,6 @@ visualize_distribution("chest_pain_type")
 visualize_distribution("resting_blood_pressure")
 visualize_distribution("cholesterol")
 visualize_distribution("fasting_blood_sugar")
-```
-
-```{r}
 par(mfrow=c(2, 3))
 visualize_distribution("rest_ecg_type")
 visualize_distribution("max_heart_rate_achieved")
@@ -172,13 +169,11 @@ visualize_distribution("exercise_induced_angina")
 visualize_distribution("st_depression")
 visualize_distribution("st_slope_type")
 visualize_distribution("num_major_vessels")
-```
-
-```{r}
 par(mfrow=c(2, 3))
 visualize_distribution("thalassemia_type")
 visualize_distribution("heart_attack")
 ```
+
 
 # Limpieza de los datos.
 
