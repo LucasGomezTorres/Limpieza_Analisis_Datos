@@ -164,6 +164,8 @@ Por último, para nuestro análisis no se van a descartar registros porque no no
 
 # Visualización de los datos
 
+A continuación se lleva a cabo una visualización de datos que nos permite entender y analizar de forma gráfica el contenido del dataset. Existen diferentes tipos de gráficos que nos permiten visualizar la distribución de las variables de un dataset, como gráficos de barras, diagramas de cajas o histogramas. Para este caso se han utilizado histogramas, estos gráficos nos ayudan a comprender mejor la forma en que se distribuyen los valores de cada variable y a detectar posibles patrones o tendencias.
+
 ```{r}
 visualize_distribution <- function(variable) {
   # Seleccionamos la columna de la variable del conjunto de datos
@@ -180,16 +182,17 @@ visualize_distribution("age")
 visualize_distribution("resting_blood_pressure")
 visualize_distribution("cholesterol")
 visualize_distribution("fasting_blood_sugar")
-par(mfrow=c(2, 3))
 visualize_distribution("max_heart_rate_achieved")
 visualize_distribution("st_depression")
+```
+
+```{r, echo=FALSE}
+par(mfrow=c(2, 2))
 visualize_distribution("st_slope_type")
 visualize_distribution("num_major_vessels")
-par(mfrow=c(2, 3))
 visualize_distribution("thalassemia_type")
 visualize_distribution("heart_attack")
 ```
-
 
 # Limpieza de los datos.
 
@@ -401,7 +404,7 @@ print(paste("Número final de NA's en la variable después del tratado:", num_na
 ```{r}
 # Parámetros iniciales
 variable_tratada = heart_data$st_depression
-limit = 5
+limit = 6
 
 # Número de outliers que superan el valor establecido en la variable tratada
 num_outliers_var = nrow(heart_data[variable_tratada >limit,])
@@ -420,6 +423,14 @@ print(paste("Número de outliers que superan el valor establecido en la variable
 print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
 print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
+
+## Imputación de valores
+
+A continuación se va a realizar una imputación de valores perdidos. Aplicaremos imputación por vecinos más cercanos, utilizando la distancia de Gower, considerando en el cómputo de los vecinos más cercanos el resto de variables cuantitativas. 
+
+Para realizar esta imputación, usaremos la función “kNN” de la librería VIM con un número de vecinos igual a 11. Se mostrarña que la imputación se ha realizado correctamente, mostrando el resultado de los datos afectados por la imputación.
+
+
 
 ## Generación del archivo con los datos tratados
 
