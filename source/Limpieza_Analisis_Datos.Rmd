@@ -162,7 +162,7 @@ head(heart_data,4)
 
 Por último, para nuestro análisis no se van a descartar registros porque no nos vamos a centrar en un tramo de edad concreto, sexo o una cantidad de colesterol, sino que se van a considerar a todos los pacientes con todas sus características para extraer el mayor número de conclusiones posibles teniendo en cuenta todos los atributos.
 
-# Visualización de los datos
+# Visualización de la distribución de las variables
 
 A continuación se lleva a cabo una visualización de datos que nos permite entender y analizar de forma gráfica el contenido del dataset. Existen diferentes tipos de gráficos que nos permiten visualizar la distribución de las variables de un dataset, como gráficos de barras, diagramas de cajas o histogramas. Para este caso se han utilizado histogramas, estos gráficos nos ayudan a comprender mejor la forma en que se distribuyen los valores de cada variable y a detectar posibles patrones o tendencias.
 
@@ -194,6 +194,60 @@ visualize_distribution("thalassemia_type")
 visualize_distribution("heart_attack")
 ```
 
+```{r}
+# Esta función recibe como argumento una variable 'x' y devuelve un vector con la media, la mediana y la desviación típica de 'x'
+describe_variable <- function(x) {
+  # Calcula la media de 'x' y la redondea a 3 decimales
+  mean <- round(mean(x),3)
+  # Calcula la mediana de 'x'
+  median <- median(x)
+  # Calcula la desviación típica de 'x' y la redondea a 3 decimales
+  sd <- round(sd(x),3)
+  # Crea un vector con la media, la mediana y la desviación típica
+  result <- c(mean, median, sd)
+  # Asigna nombres a los elementos del vector
+  names(result) <- c("Media", "Mediana", "Desviación típica")
+  # Devuelve el vector resultado
+  return(result)
+}
+```
+
+```{r}
+# Ejecutamos la función con las variables
+describe_variable(heart_data$age)
+describe_variable(heart_data$resting_blood_pressure)
+describe_variable(heart_data$cholesterol)
+describe_variable(heart_data$fasting_blood_sugar)
+describe_variable(heart_data$max_heart_rate_achieved)
+describe_variable(heart_data$st_depression)
+describe_variable(heart_data$st_slope_type)
+describe_variable(heart_data$num_major_vessels)
+describe_variable(heart_data$thalassemia_type)
+describe_variable(heart_data$heart_attack)
+```
+
+A partir de estos datos, se pueden obtener algunas conclusiones sobre las variables del dataset:
+
+- La edad media de los pacientes es de 54.366 años, con una mediana de 55 años y una desviación típica de 9.082. Esto indica que la mayoría de los pacientes tienen una edad cercana a los 55 años, pero hay algunos pacientes más jóvenes y otros más mayores.
+
+- La presión arterial media de reposo de los pacientes es de 131.624, con una mediana de 130 y una desviación típica de 17.538. Esto indica que la mayoría de los pacientes tienen una presión arterial cercana a los 130, pero hay algunos pacientes con presión arterial más baja y otros con presión arterial más alta.
+
+- El colesterol medio de los pacientes es de 246.264, con una mediana de 240 y una desviación típica de 51.831. Esto indica que la mayoría de los pacientes tienen un nivel de colesterol cercano a los 240, pero hay algunos pacientes con niveles de colesterol más bajos y otros con niveles de colesterol más altos.
+
+- El azúcar en sangre en ayunas medio de los pacientes es de 0.149, con una mediana de 0 y una desviación típica de 0.356. Esto indica que la mayoría de los pacientes tienen un nivel de azúcar en sangre en ayunas cercano a 0, pero hay algunos pacientes con niveles de azúcar en sangre en ayunas más bajos y otros con niveles de azúcar en sangre en ayunas más altos.
+
+- La frecuencia cardíaca máxima alcanzada durante el ejercicio medio de los pacientes es de 149.647, con una mediana de 153 y una desviación típica de 22.905. Esto indica que la mayoría de los pacientes tienen una frecuencia cardíaca máxima alcanzada durante el ejercicio cercana a los 153, pero hay algunos pacientes con frecuencias cardíacas máximas alcanzadas durante el ejercicio más bajas y otros con frecuencias cardíacas máximas alcanzadas durante el ejercicio más altas.
+
+- En la variable "st_depression" se puede observar que la media de esta variable es 1.04, lo que indica que en promedio, la depresión durante el ejercicio es de 1.04 unidades. La mediana de esta variable es 0.8, lo que significa que la mitad de los valores de esta variable son inferiores a 0.8. Por último, la desviación típica de esta variable es 1.161, lo que indica que los valores de esta variable tienen una gran variabilidad, ya que se extienden en un rango de 1.161 unidades a partir de la media.
+
+- La media de la variable "st_slope_type" es 1.399, lo que indica que en promedio, la inclinación del segmento ST durante el ejercicio es de 1.399 unidades. La mediana de esta variable es 1, lo que significa que la mitad de los valores de esta variable son iguales a 1. La desviación típica de esta variable es 0.616, lo que indica que los valores de esta variable tienen una moderada variabilidad, ya que se extienden en un rango de 0.616 unidades a partir de la media.
+
+- La media de la variable "num_major_vessels" es 0.729, lo que indica que en promedio, hay 0.729 vasos principales coloreados por fluoroscopía. La mediana de esta variable es 0, lo que significa que la mitad de los valores de esta variable son iguales a 0. La desviación típica de esta variable es 1.023, lo que indica que los valores de esta variable tienen una gran variabilidad, ya que se extienden en un rango de 1.023 unidades a partir de la media.
+
+- La media de la variable "thalassemia_type" es 2.314, lo que indica que en promedio, el tipo de trombocitopenia es 2.314. La mediana de esta variable es 2, lo que significa que la mitad de los valores de esta variable son iguales a 2. La desviación típica de esta variable es 0.612, lo que indica que los valores de esta variable tienen una moderada variabilidad, ya que se extienden en un rango de 0.612 unidades a partir de la media.
+
+- En el caso de la variable "heart_attack", podemos observar que el 54.5% de los pacientes del dataset no han sufrido un ataque al corazón. La media de esta variable es de 0.545 y su mediana es de 1, lo que indica que la mayoría de los pacientes no han sufrido un ataque al corazón. Además, su desviación típica es de 0.499, lo que sugiere que hay una cierta variabilidad en los datos.
+
 # Limpieza de los datos.
 
 ## ¿Los datos contienen ceros o elementos vacíos? Gestiona cada uno de estos casos.
@@ -208,25 +262,25 @@ colnames(heart_data)[cols_with_zeros]
 
 Las variables que contienen algún valor igual a cero son variables que esperan reflejar este valor tal y como se ha definido en el enunciado, por lo tanto no se va a realizar una limpieza de datos para este caso en particular. Véase a continuación las variables que aparecen con algún valor cero son las siguientes:
 
-– "sex": Refleja el género de la persona (1 = masculino, 0 = femenino).
+- "sex": Refleja el género de la persona (1 = masculino, 0 = femenino).
 
-– "chest_pain_type": Identifica el tipo de dolor en el pecho (0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático).
+- "chest_pain_type": Identifica el tipo de dolor en el pecho (0 = angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 = asintomático).
 
-– "fasting_blood_sugar": Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
+- "fasting_blood_sugar": Indica si el nivel de azúcar en sangre en ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
 
-– "rest_ecg_type": Muestra los resultados electrocardiográficos en reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes).
+- "rest_ecg_type": Muestra los resultados electrocardiográficos en reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T y/o elevación o depresión ST de > 0,05 mV), 2 = hipertrofia ventricular izquierda probable o definida por los criterios de Estes).
 
-– "exercise_induced_angina": Indica si la angina ha sido inducida por el ejercicio (1 = sí, 0 = no).
+- "exercise_induced_angina": Indica si la angina ha sido inducida por el ejercicio (1 = sí, 0 = no).
 
-– "st_depression": Señala la depresión ST inducida por el ejercicio en relación con el descanso.
+- "st_depression": Señala la depresión ST inducida por el ejercicio en relación con el descanso.
 
-– "st_slope_type": Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
+- "st_slope_type": Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
 
-– "num_major_vessels": Indica el número de buques principales (0, 1, 2, 3).
+- "num_major_vessels": Indica el número de buques principales (0, 1, 2, 3).
 
-– "thalassemia_type": Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
+- "thalassemia_type": Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
 
-– "heart_attack": Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). 
+- "heart_attack": Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). 
 
 ### Caso: Elementos Vacíos 
 
@@ -332,6 +386,7 @@ outlier_info(heart_data$resting_blood_pressure, "resting_blood_pressure")
 outlier_info(heart_data$st_depression, "st_depression")
 ```
 
+
 A continuación vamos a extraer las conclusiones pertinentes respectos a los valores extremos detectados en los resultados y los gráficos previos:
 
 - En la variable "age", no se han identificado valores atípicos. Los valores máximo y mínimo de la variable son 29 y 77, respectivamente.
@@ -349,24 +404,23 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 
 ## Corrección de los outliers
 
-### Variable: cholesterol
+Se van a tratar los valores de outliers que hemos considerado como no válidos. Es importante destacar que un valor extremo no tiene por que ser no válido, para determinar si un valor extremo es válido o no hemos realizado una investigación sobre las variables y los posibles valores que estás pueden tener. De todos los outliers detectados simplemente nos centramos en el caso de la variable *cholesterol*. 
+
+Realizando una búsqueda sobre los valores comúnes y menos comúnes de cholesterol ( mg / dL) en 300 mg/dl o más ya se considera un nivel muy alto. Para casos más elevados se habla de sufrir hipertrigliceridemia. Nosotros hemos establecido que para un valor mayor a 550 se va a realizar una corrección de este valor.
+
 
 ```{r}
-# Parámetros iniciales
-variable_tratada = heart_data$cholesterol
-limit = 500
-
 # Número de outliers que superan el valor establecido en la variable tratada
-num_outliers_var = nrow(heart_data[variable_tratada >limit,])
+num_outliers_var = nrow(heart_data[heart_data$cholesterol >550,])
 
 # Número de NA's en la variable tratada
-num_nas_variable_inicio = sum(is.na(variable_tratada))
+num_nas_variable_inicio = sum(is.na(heart_data$cholesterol))
 
 # Se substituyen esos valores atipicos por el valor NA
-heart_data = heart_data %>% mutate(cholesterol = ifelse(cholesterol > limit, NA, cholesterol))
+heart_data = heart_data %>% mutate(cholesterol = ifelse(cholesterol > 550, NA, cholesterol))
 
 # Numero de NA's final después del tratado en la variable
-num_nas_variable_final = sum(is.na(variable_tratada))
+num_nas_variable_final = sum(is.na(heart_data$cholesterol))
 
 # Visualización de los resultados
 print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
@@ -374,63 +428,39 @@ print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
 print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
 
-### Variable: resting_blood_pressure
-
-```{r}
-# Parámetros iniciales
-variable_tratada = heart_data$resting_blood_pressure
-limit = 190
-
-# Número de outliers que superan el valor establecido en la variable tratada
-num_outliers_var = nrow(heart_data[variable_tratada >limit,])
-
-# Número de NA's en la variable tratada
-num_nas_variable_inicio = sum(is.na(variable_tratada))
-
-# Se substituyen esos valores atipicos por el valor NA
-heart_data = heart_data %>% mutate(resting_blood_pressure = ifelse(resting_blood_pressure > limit, NA, resting_blood_pressure))
-
-# Numero de NA's final después del tratado en la variable
-num_nas_variable_final = sum(is.na(variable_tratada))
-
-# Visualización de los resultados
-print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
-print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
-print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
-```
-
-### Variable: st_depression
-
-```{r}
-# Parámetros iniciales
-variable_tratada = heart_data$st_depression
-limit = 6
-
-# Número de outliers que superan el valor establecido en la variable tratada
-num_outliers_var = nrow(heart_data[variable_tratada >limit,])
-
-# Número de NA's en la variable tratada
-num_nas_variable_inicio = sum(is.na(variable_tratada))
-
-# Se substituyen esos valores atipicos por el valor NA
-heart_data = heart_data %>% mutate(st_depression = ifelse(st_depression > limit, NA, st_depression))
-
-# Numero de NA's final después del tratado en la variable
-num_nas_variable_final = sum(is.na(variable_tratada))
-
-# Visualización de los resultados
-print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
-print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
-print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
-```
-
-## Imputación de valores
+## Imputación de valores mediante kNN
 
 A continuación se va a realizar una imputación de valores perdidos. Aplicaremos imputación por vecinos más cercanos, utilizando la distancia de Gower, considerando en el cómputo de los vecinos más cercanos el resto de variables cuantitativas. 
 
 Para realizar esta imputación, usaremos la función “kNN” de la librería VIM con un número de vecinos igual a 11. Se mostrarña que la imputación se ha realizado correctamente, mostrando el resultado de los datos afectados por la imputación.
 
 
+```{r}
+# Selección de los datos a imputar
+df_auxiliar <- heart_data %>% 
+  select(cholesterol, fasting_blood_sugar, rest_ecg_type, resting_blood_pressure, st_depression) %>% 
+  filter((is.na(cholesterol)))
+```
+
+```{r}
+# Se aplica imputación por vecinos mas cercanos (KNN)
+# Se imputan los registros de género masculino
+df_auxiliar_knn <- kNN(df_auxiliar, 
+                       variable = c("cholesterol"), 
+                       k = 11, 
+                       dist_var = c("rest_ecg_type", "resting_blood_pressure", "st_depression"))
+```
+```{r}
+# Ahora se eliminarán del dataset original los registros de los dataframes auxiliares
+# Dimensión actual del dataframe original
+dim(heart_data)
+```
+```{r}
+# Se elimina del dataset original los registros que ya están imputados
+heart_data = heart_data %>% filter(!(is.na(cholesterol)))
+# Dimension del dataframe original
+dim(heart_data)
+```
 
 ## Generación del archivo con los datos tratados
 
