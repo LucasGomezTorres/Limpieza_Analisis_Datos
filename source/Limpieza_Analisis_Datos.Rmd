@@ -343,61 +343,84 @@ A continuación vamos a extraer las conclusiones pertinentes respectos a los val
 
 Estos resultados indican que algunas de las variables tienen valores extremos que se alejan significativamente del resto y que pueden afectar el rendimiento de algunos algoritmos de análisis de datos. 
 
-<<<<<<< HEAD
+
 ## Corrección de los outliers
 
-```{r}
-outliers_treatment <- function(variable, threshold){
-  
-  # Número de outliers que superan el valor determinado en la variable tratada
-  num_outliers = nrow(heart_data[heart_data$variable] > threshold)
-  
-  # Número de NA's en la variable tratada
-  num_nas = sum(is.na(heart_data[heart_data$variable]))
-  
-  # Se guardan para luego comprobar que se han imputado bien
-  atipicos_dataset = heart_data %>% select(variable) %>% filter(variable > threshold) %>% head(5)
-
-  # Se substituyen esos valores atípicos por el valor NA
-  heart_data = heart_data %>% mutate(variable = ifelse(variable > threshold, NA, variable)) 
-  
-  # Numero de NA's en la variable tratada
-  num_nas_final = sum(is.na(heart_data$variable))
-
-  # Se muestran los resultados
-  print(paste("Número de outliers:", num_outliers))
-  print(paste("Número de NA's iniciales:", num_nas))
-  print(paste("Número de NA's finales:", num_nas_final))
-}
-```
+### Variable: cholesterol
 
 ```{r}
-cholesterol_clean <- outliers_treatment("cholesterol", 500)
-# Una vez realizada la modificación de estos valores atípicos por valores NA 
-# podemos ver que se ha realizado con éxito este procedimiento
-heart_data %>% select("cholesterol") %>%filter(is.na("cholesterol"))
+# Parámetros iniciales
+variable_tratada = heart_data$cholesterol
+limit = 500
+
+# Número de outliers que superan el valor establecido en la variable tratada
+num_outliers_var = nrow(heart_data[variable_tratada >limit,])
+
+# Número de NA's en la variable tratada
+num_nas_variable_inicio = sum(is.na(variable_tratada))
+
+# Se substituyen esos valores atipicos por el valor NA
+heart_data = heart_data %>% mutate(cholesterol = ifelse(cholesterol > limit, NA, cholesterol))
+
+# Numero de NA's final después del tratado en la variable
+num_nas_variable_final = sum(is.na(variable_tratada))
+
+# Visualización de los resultados
+print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
+print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
+print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
+
+### Variable: resting_blood_pressure
 
 ```{r}
-#max_heart_rate_achieved_clean <- outliers_treatment("max_heart_rate_achieved", 300, 80)
+# Parámetros iniciales
+variable_tratada = heart_data$resting_blood_pressure
+limit = 190
+
+# Número de outliers que superan el valor establecido en la variable tratada
+num_outliers_var = nrow(heart_data[variable_tratada >limit,])
+
+# Número de NA's en la variable tratada
+num_nas_variable_inicio = sum(is.na(variable_tratada))
+
+# Se substituyen esos valores atipicos por el valor NA
+heart_data = heart_data %>% mutate(resting_blood_pressure = ifelse(resting_blood_pressure > limit, NA, resting_blood_pressure))
+
+# Numero de NA's final después del tratado en la variable
+num_nas_variable_final = sum(is.na(variable_tratada))
+
+# Visualización de los resultados
+print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
+print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
+print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
+
+### Variable: st_depression
 
 ```{r}
-#resting_blood_pressure_clean <- outliers_treatment("resting_blood_pressure", 190)
+# Parámetros iniciales
+variable_tratada = heart_data$st_depression
+limit = 5
+
+# Número de outliers que superan el valor establecido en la variable tratada
+num_outliers_var = nrow(heart_data[variable_tratada >limit,])
+
+# Número de NA's en la variable tratada
+num_nas_variable_inicio = sum(is.na(variable_tratada))
+
+# Se substituyen esos valores atipicos por el valor NA
+heart_data = heart_data %>% mutate(st_depression = ifelse(st_depression > limit, NA, st_depression))
+
+# Numero de NA's final después del tratado en la variable
+num_nas_variable_final = sum(is.na(variable_tratada))
+
+# Visualización de los resultados
+print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
+print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
+print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
 
-```{r}
-#st_depression_clean <- outliers_treatment("st_depression", 5.5)
-```
-
-============
-Eliminar del conjunto de datos: 
-
-- cholesterol:  564
-- max_heart_rate_achieved: 71 
-- resting_blood_pressure: 192, 200
-- st_depression: 5.6, 6.2
-=======
 ## Generación del archivo con los datos tratados
 
 Se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica.
@@ -410,8 +433,6 @@ df_heart_final[, idx_var_cuant] <- heart_norm
 # Se exporta a formato csv
 write.csv(df_heart_final, file = "clean_data.csv", row.names = FALSE, col.names = TRUE)
 ```
-
->>>>>>> 91c8bfc125297c6e330790b39ca3eaffeb028221
 
 # Análisis de los datos.
 
@@ -459,10 +480,10 @@ Para ello, vamos a representar mediante histogramas la distribución de los dato
 
 ```{r}
 # Se carga la libreria psych
-library(psych)
+#library(psych)
 
 # Histograma de la distribución de la variable VS la distribucion normal teorica
-multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
+#multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
 ```
 
 Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, sin embargo hay algunas como 
@@ -497,8 +518,6 @@ for (var in idx_var_cuant){
   qqnorm(heart_data[,var], main=colnames(heart_data)[var], pch=1)
   qqline(heart_data[,var],col='red', lwd=2) }
 ```
-
-
 
 
 !#TODO: ESTO ES UN EJEMPLO DE PARTIDA 
