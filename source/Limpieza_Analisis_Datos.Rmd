@@ -515,19 +515,23 @@ Además, se van a aplicar algunos tests estadísticos que dependerá de la norma
 
 ## Comprobación de la normalidad y homogeneidad de la varianza.
 
+### Normalidad
+
 Se va a analizar la normalidad y la homocedasticidad de las variables cuantitativas que nos servirán para dar respuesta a las preguntas anteriores. 
 
 Para ello, vamos a representar mediante histogramas la distribución de los datos de las variables en comparación con la normal teórica para poder ver visualmente si siguen una distribución normal. No obstante, después lo verificaremos mediante el test de *Shapiro Wilk* y mediante el gráfico *Q-Q plot* mediante las funciones de R `qqnorm` y `qqline`.
 
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se carga la libreria psych
-#library(psych)
+library(psych)
 
 # Histograma de la distribución de la variable VS la distribucion normal teorica
-#multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
+multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
 ```
 
-Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, sin embargo hay algunas como 
+Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, no obstante, algunas variables como *age*, *cholesterol*, *max_heart_rate_achieved* y *resting_blood_pressure* no se le alejan mucho de la normal.
+
+A continuación, se va a ratificar lo anterior aplicando el test de Shapiro Wilk a cada una de las variables.
 
 ```{r}
 
@@ -549,9 +553,9 @@ kable(df_p_value_shapiro_wilk,digits=3, caption="P-Valores de las variables cuan
 
 ```
 
-Viendo los resultados del test se rechaza la hipótesis nula y se confirma que la distribución de las variables no siguen una distribución normal al $95 \%$ de confianza ya que el p-valor obtenido en cada caso es inferior al nivel de significancia del 5 % (0.05).
+Viendo los resultados del test con unos p-valores inferiores al nivel de signficancia de 0.05, se rechaza la hipótesis nula y se confirma que la distribución de las variables no siguen una distribución normal al $95 \%$ de confianza.
 
-Por último, se muestra el *Q-Q plot* para comprobar si los cuantiles siguen o no una distribución normal.
+Por último, se muestra el *Q-Q plot* que representa en el eje X los cuantiles teóricos (la variable normal estándar) y en el eje Y los valores ordenados de la muestra de cada variable, con el fin de ver la similitud entre la distribución de la muestra y una distribución normal con media 0 y desviación estándar 1.
 
 ```{r}
 par(mfrow = c(2, 3)) 
@@ -560,29 +564,139 @@ for (var in idx_var_cuant){
   qqline(heart_data[,var],col='red', lwd=2) }
 ```
 
+Como podíamos comprobar con el histograma y con el test de *Shapiro Wilk*, las variables *age*, *cholesterol*, *max_heart_rate_achieved* y *resting_blood_pressure* no se ajustan del todo a una distribución normal porque presentan un gran número de muestras en los extremos izquierdo y derecho que se encuentran fuera de la recta de regresión, sin embargo, se puede ver que la mayoría de las muestras sí. Las demás variables, *st_depression* y *num_major_vessels* sí que se alejan mucho de una distribución normal. 
 
-!#TODO: ESTO ES UN EJEMPLO DE PARTIDA 
+Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, para las que más se acercan se intentará transformar los datos para que sean normales con la transformación de *Box-Cox* y volviendo a aplicar el test de *Shapiro Wilk*.
 
-Para comprobar la normalidad de los datos, utilizamos la función `shapiro.test()`. Esta función toma un vector de datos y realiza un test de normalidad de Shapiro-Wilk. Si el p-valor devuelto es superior al nivel de significación, entonces se puede concluir que los datos siguen una distribución normal. 
-
-```{r}
-# Carga el conjunto de datos 
-data(iris)
-
-# Extrae la longitud del conjunto de datos y realiza un test de normalidad
-shapiro.test(iris$Sepal.Length)
-```
-Para comprobar la homogeneidad de la varianza, utilizamos la función `var.test()`. Esta función toma dos vectores de datos y realiza un test de igualdad de varianzas. Si el p-valor devuelto es superior al nivel de significación que hayas elegido, entonces se puede concluir que las varianzas de los dos conjuntos de datos son iguales. 
 
 ```{r}
-# Carga el conjunto de datos
-data(iris)
+# Se carga la libreria DescTools
+library(DescTools)
 
-# Compara la varianza
-var.test(iris$Sepal.Length, iris$Petal.Length)
+# Se aplica la transformación de Box Cox a las variables age, cholesterol, max_heart_rate_achieved y resting_blood_pressure
+
+# Age
+age_norm <- BoxCox(heart_data$age, lambda = BoxCoxLambda(heart_data$age))
+shapiro.test(age_norm)
+
+# cholesterol
+cholesterol_norm <- BoxCox(heart_data$cholesterol, lambda = BoxCoxLambda(heart_data$cholesterol))
+shapiro.test(cholesterol_norm)
+
+# max_heart_rate_achieved
+max_heart_rate_achieved_norm <- BoxCox(heart_data$max_heart_rate_achieved, lambda = BoxCoxLambda(heart_data$max_heart_rate_achieved))
+shapiro.test(max_heart_rate_achieved_norm)
+
+# max_heart_rate_achieved
+resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
+shapiro.test(resting_blood_pressure_norm)
+
 ```
+
+Podemos comprobar como después de aplicar la transformación de Box-Cox las variables *cholesterol* y *max_heart_rate_achieved* siguen una distribución normal al tener el p-valor superior a 0.05 aceptando la hipótesis nula de que la muestra es normal. En cambio, *age* y *resting_blood_pressure_* siguen sin ser normales.
+
+Por último, incluimos al dataset la variable normal transformada de *cholesterol* para que se pueda aplicar con ella tests de tipo paramétricos.
+
+```{r}
+# Sustituimos en la variable colesterol la variable transformada para que siga una distribución normal
+heart_data$cholesterol <- cholesterol_norm
+```
+
+
+### Homogeneidad de varianzas
+
+Para comprobar si las variables que usamos para responder a las preguntas previamente planteadas tienen o no homogeneidad de varianzas, se aplicará el *test de Levene* (parámetrico) si las variables cuantitativas son normales (en este caso es *cholesterol* ) y el *test de Fligner* (no paramétrico) si no lo son (el resto de variables). Para ambos tests, la hipótesis nula asume igualdad de varianzas en los diferentes grupos de datos, por lo que un p-valor inferior al nivel de significancia indicará heterocedasticidad.
+
+```{r}
+# Comprobación de homocedasticidad Cholesterol - Heart attack
+LeveneTest(cholesterol ~ heart_attack,data = heart_data) #-> Homo
+
+# Comprobación de homocedasticidad Cholesterol - Sex
+LeveneTest(cholesterol ~ sex,data = heart_data) # -> Hetero
+
+# Comprobación de homocedasticidad Age - Heart attack
+fligner.test(age ~ heart_attack,data = heart_data)  # -> Hetero
+
+# Comprobación de homocedasticidad resting_blood_pressure - Heart attack
+fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)  # -> Hetero
+
+```
+
+Las conclusiones de estos tests son las siguientes:
+
+- La variable *cholesterol* presenta homocedasticidad con el hecho de si sufrieron un ataque al corazón y  heterocedastidad con el sexo del paciente, es decir, la varianza variará entre los hombres y las mujeres y será similar cuando se tiene en cuenta si un paciente tiene un ataque o no.
+
+- La variable *age* presenta heterocedastidad con la variable *heart_attack*, por lo que la varianza de la edad de los pacientes no será constante con el hecho de si un paciente sufre o no un ataque.
+
+- La variable *resting_blood_pressure* presenta homocedasticidad para padecer o no un ataque cardiaco, concluyendo que la varianza de la presión arterial es similar entre padecer un ataque o no.
+
+
+AGE - Heart attack
+
+Cholesterol - Heart attack
+Cholesterol - Sex
+
+resting_blood_pressure - Heart attack
+
+Chi cuadrado: Sex-Survived
+
 
 ## Aplicación de pruebas estadísticas para comparar los grupos de datos. En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes.
+
+Con los resultados anteriores, se van a aplicar varios tests estadísticos con la finalidad de responder a las preguntas planteadas al principio del enunciado.
+
+En este caso, podemos aplicar tanto pruebas paramétricas como no paramétricas dado que tenemos variables normales y no normales. 
+
+Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que presenta homocedasticidad con la variable *heart_attack* (más adelante será la variable dependiente en nuestros modelos), se va a aplicar la prueba de *t de student*, donde la hipótesis nula asume que las medias de los grupos de los datos son las mismas.
+
+```{r}
+# se aplica el test t de student cholesterol y heart_attack
+t.test(cholesterol ~ heart_attack, data = heart_data)
+```
+
+Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack.
+
+Los siguientes tests a aplicar serán no parámetricos dado que las variables no son normales o no presentan homocedasticidad y por lo tanto no cumplen las supociones requeridas por los tests paramétricos. Se aplicará el *test de Wilcoxon o Mann-Whitney* (ambos se aplican igual con la misma función *wilcox.test*) donde la hipótesis nula asume igualdad de distribución para los diferentes grupos de la variable categórica.
+
+```{r}
+# Se aplica el test no paramétrico con el resto de variables
+
+# cholesterol vs sex
+wilcox.test(cholesterol ~ sex, data = heart_data)
+
+# age vs heart_attack
+wilcox.test(age ~ heart_attack, data = heart_data)
+
+# resting_blood_pressure vs heart_attack
+wilcox.test(resting_blood_pressure ~ heart_attack, data = heart_data)
+
+```
+
+En los 3 casos se puede ver que no se puede determinar que la distribución de las variables sea la misma en los diferentes grupos, tanto de la variable *heart_attack* como de *sex*.
+
+El último contraste de hipótesis que se va a realizar va a ser el test de $\chi^2$ para comprobar si existen diferencias significativas entre las variables categóricas *heart_attack* y *sex*, entre *fasting_blood_sugar* y *sex* y entre *fasting_blood_sugar* y *heart_attack*. La hipótesis nula que asume es que no existen diferencias significativas entre los grupos de ambas variables.
+
+```{r}
+# Se comprueba la proporción de hombres y mujeres que sufrieron un ataque
+table(heart_data$sex, heart_data$heart_attack)
+chisq.test(table(heart_data$sex, heart_data$heart_attack))
+
+# Tuvo alguna influencia el nivel de azúcar en sangre
+table(heart_data$fasting_blood_sugar, heart_data$heart_attack)
+chisq.test(table(heart_data$fasting_blood_sugar, heart_data$heart_attack))
+
+# Tiene alguna relacion el nivel de azúcar en sangre con el sexo del paciente
+table(heart_data$fasting_blood_sugar, heart_data$sex)
+chisq.test(table(heart_data$fasting_blood_sugar, heart_data$sex))
+```
+
+Viendo los resultados podemos decir:
+
+- El hecho de ser hombre o mujer muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo es una variable que repercute a la hora de sufrir un ataque al corazón, siendo dependientes entre ellas.
+
+- El nivel de azúcar en sangre no muestra diferencias significativas con padecer un ataque ya que se cumple la hipótesis nula, por lo que no existe a priori una relación entre ambas variables.
+
+- No hay una repercusión directa entre el sexo del paciente y el nivel de azúcar en sangre puesto que se acepta la hipótesis nula concluyendo que entre hombres y mujeres no existen diferencias significativas en el nivel de azúcar.
 
 # Representación de los resultados a partir de tablas y gráficas.
 
