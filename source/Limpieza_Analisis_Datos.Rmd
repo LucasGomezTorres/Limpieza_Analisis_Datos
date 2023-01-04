@@ -631,16 +631,6 @@ Las conclusiones de estos tests son las siguientes:
 - La variable *resting_blood_pressure* presenta homocedasticidad para padecer o no un ataque cardiaco, concluyendo que la varianza de la presión arterial es similar entre padecer un ataque o no.
 
 
-AGE - Heart attack
-
-Cholesterol - Heart attack
-Cholesterol - Sex
-
-resting_blood_pressure - Heart attack
-
-Chi cuadrado: Sex-Survived
-
-
 ## Aplicación de pruebas estadísticas para comparar los grupos de datos. En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes.
 
 ### Contrastes de hipótesis
