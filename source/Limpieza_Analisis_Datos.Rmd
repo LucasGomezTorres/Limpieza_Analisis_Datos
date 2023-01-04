@@ -2,20 +2,16 @@
 title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
-header-includes:
-   - \renewcommand{\contentsname}{Índice General}
 output:
-  pdf_document:
-    toc: yes
-    number_sections: yes
-    toc_depth: 6
-    #latex_engine : xelatex 
-
   html_document:
     toc: yes
     number_sections: yes
     toc_depth: 6
-     
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
+header-includes: \renewcommand{\contentsname}{Índice General}
 ---
 
 ```{r setup, include=FALSE}
@@ -161,92 +157,6 @@ head(heart_data,4)
 ```
 
 Por último, para nuestro análisis no se van a descartar registros porque no nos vamos a centrar en un tramo de edad concreto, sexo o una cantidad de colesterol, sino que se van a considerar a todos los pacientes con todas sus características para extraer el mayor número de conclusiones posibles teniendo en cuenta todos los atributos.
-
-# Visualización de la distribución de las variables
-
-A continuación se lleva a cabo una visualización de datos que nos permite entender y analizar de forma gráfica el contenido del dataset. Existen diferentes tipos de gráficos que nos permiten visualizar la distribución de las variables de un dataset, como gráficos de barras, diagramas de cajas o histogramas. Para este caso se han utilizado histogramas, estos gráficos nos ayudan a comprender mejor la forma en que se distribuyen los valores de cada variable y a detectar posibles patrones o tendencias.
-
-```{r}
-visualize_distribution <- function(variable) {
-  # Seleccionamos la columna de la variable del conjunto de datos
-  values <- heart_data[[variable]]
-  # Creación del histograma
-  hist(values, xlab = variable, main = variable)
-}
-```
-
-```{r, echo=FALSE}
-par(mfrow=c(2, 3))
-# Ejecutamos la función con las variables
-visualize_distribution("age")
-visualize_distribution("resting_blood_pressure")
-visualize_distribution("cholesterol")
-visualize_distribution("fasting_blood_sugar")
-visualize_distribution("max_heart_rate_achieved")
-visualize_distribution("st_depression")
-```
-
-```{r, echo=FALSE}
-par(mfrow=c(2, 2))
-visualize_distribution("st_slope_type")
-visualize_distribution("num_major_vessels")
-visualize_distribution("thalassemia_type")
-visualize_distribution("heart_attack")
-```
-
-```{r}
-# Esta función recibe como argumento una variable 'x' y devuelve un vector con la media, la mediana y la desviación típica de 'x'
-describe_variable <- function(x) {
-  # Calcula la media de 'x' y la redondea a 3 decimales
-  mean <- round(mean(x),3)
-  # Calcula la mediana de 'x'
-  median <- median(x)
-  # Calcula la desviación típica de 'x' y la redondea a 3 decimales
-  sd <- round(sd(x),3)
-  # Crea un vector con la media, la mediana y la desviación típica
-  result <- c(mean, median, sd)
-  # Asigna nombres a los elementos del vector
-  names(result) <- c("Media", "Mediana", "Desviación típica")
-  # Devuelve el vector resultado
-  return(result)
-}
-```
-
-```{r}
-# Ejecutamos la función con las variables
-describe_variable(heart_data$age)
-describe_variable(heart_data$resting_blood_pressure)
-describe_variable(heart_data$cholesterol)
-describe_variable(heart_data$fasting_blood_sugar)
-describe_variable(heart_data$max_heart_rate_achieved)
-describe_variable(heart_data$st_depression)
-describe_variable(heart_data$st_slope_type)
-describe_variable(heart_data$num_major_vessels)
-describe_variable(heart_data$thalassemia_type)
-describe_variable(heart_data$heart_attack)
-```
-
-A partir de estos datos, se pueden obtener algunas conclusiones sobre las variables del dataset:
-
-- La edad media de los pacientes es de 54.366 años, con una mediana de 55 años y una desviación típica de 9.082. Esto indica que la mayoría de los pacientes tienen una edad cercana a los 55 años, pero hay algunos pacientes más jóvenes y otros más mayores.
-
-- La presión arterial media de reposo de los pacientes es de 131.624, con una mediana de 130 y una desviación típica de 17.538. Esto indica que la mayoría de los pacientes tienen una presión arterial cercana a los 130, pero hay algunos pacientes con presión arterial más baja y otros con presión arterial más alta.
-
-- El colesterol medio de los pacientes es de 246.264, con una mediana de 240 y una desviación típica de 51.831. Esto indica que la mayoría de los pacientes tienen un nivel de colesterol cercano a los 240, pero hay algunos pacientes con niveles de colesterol más bajos y otros con niveles de colesterol más altos.
-
-- El azúcar en sangre en ayunas medio de los pacientes es de 0.149, con una mediana de 0 y una desviación típica de 0.356. Esto indica que la mayoría de los pacientes tienen un nivel de azúcar en sangre en ayunas cercano a 0, pero hay algunos pacientes con niveles de azúcar en sangre en ayunas más bajos y otros con niveles de azúcar en sangre en ayunas más altos.
-
-- La frecuencia cardíaca máxima alcanzada durante el ejercicio medio de los pacientes es de 149.647, con una mediana de 153 y una desviación típica de 22.905. Esto indica que la mayoría de los pacientes tienen una frecuencia cardíaca máxima alcanzada durante el ejercicio cercana a los 153, pero hay algunos pacientes con frecuencias cardíacas máximas alcanzadas durante el ejercicio más bajas y otros con frecuencias cardíacas máximas alcanzadas durante el ejercicio más altas.
-
-- En la variable "st_depression" se puede observar que la media de esta variable es 1.04, lo que indica que en promedio, la depresión durante el ejercicio es de 1.04 unidades. La mediana de esta variable es 0.8, lo que significa que la mitad de los valores de esta variable son inferiores a 0.8. Por último, la desviación típica de esta variable es 1.161, lo que indica que los valores de esta variable tienen una gran variabilidad, ya que se extienden en un rango de 1.161 unidades a partir de la media.
-
-- La media de la variable "st_slope_type" es 1.399, lo que indica que en promedio, la inclinación del segmento ST durante el ejercicio es de 1.399 unidades. La mediana de esta variable es 1, lo que significa que la mitad de los valores de esta variable son iguales a 1. La desviación típica de esta variable es 0.616, lo que indica que los valores de esta variable tienen una moderada variabilidad, ya que se extienden en un rango de 0.616 unidades a partir de la media.
-
-- La media de la variable "num_major_vessels" es 0.729, lo que indica que en promedio, hay 0.729 vasos principales coloreados por fluoroscopía. La mediana de esta variable es 0, lo que significa que la mitad de los valores de esta variable son iguales a 0. La desviación típica de esta variable es 1.023, lo que indica que los valores de esta variable tienen una gran variabilidad, ya que se extienden en un rango de 1.023 unidades a partir de la media.
-
-- La media de la variable "thalassemia_type" es 2.314, lo que indica que en promedio, el tipo de trombocitopenia es 2.314. La mediana de esta variable es 2, lo que significa que la mitad de los valores de esta variable son iguales a 2. La desviación típica de esta variable es 0.612, lo que indica que los valores de esta variable tienen una moderada variabilidad, ya que se extienden en un rango de 0.612 unidades a partir de la media.
-
-- En el caso de la variable "heart_attack", podemos observar que el 54.5% de los pacientes del dataset no han sufrido un ataque al corazón. La media de esta variable es de 0.545 y su mediana es de 1, lo que indica que la mayoría de los pacientes no han sufrido un ataque al corazón. Además, su desviación típica es de 0.499, lo que sugiere que hay una cierta variabilidad en los datos.
 
 # Limpieza de los datos.
 
