@@ -78,12 +78,14 @@ Por ello, los ataques al corazón son un problema muy grave que hay que intentar
 
 - ¿Las personas mayores sufren más ataques?
 
+- ¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente ?
+
 - ¿Qué factores son los más influyentes para sufrir un ataque?
 
 
 El conjunto de datos está dividido en dos subconjuntos de datos:
 
-- *heart.csv*: contiene toda la información sobre los pacientes, incluyendo si finalmente sufrieron un ataque al corazón o no. Tiene 303 observaciones y 14 atributos. De estos 14 atributos, 13 son variables independientes y 1 la variable dependiente (nuestra variable objetivo que servirá para construir un modelo de aprendizaje supervisado que nos permita predecir si un paciente tendrá un ataque al corazón o no). A continuación, se describen todos los atributos de este dataset:
+- *heart.csv*: contiene toda la información sobre los pacientes, incluyendo si finalmente sufrieron un ataque al corazón o no. Tiene 303 observaciones y 14 atributos. De estos 14 atributos, 13 son variables independientes y 1 la variable dependiente (variable objetivo que podría servir para construir un modelo de aprendizaje supervisado que nos permita predecir si un paciente tendrá un ataque al corazón o no). A continuación, se describen todos los atributos de este dataset:
 
     - **age**: Variable de tipo numérica. Determina la edad de la persona.
 
@@ -111,7 +113,7 @@ El conjunto de datos está dividido en dos subconjuntos de datos:
 
     - **thall**: Variable de tipo numérica. Señala el ratio de un trastorno sanguíneo llamado talasemia *(0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal))*.
 
-    - **output**: Variable de tipo numérica. Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la variable objetivo o dependiente que pretenderemos predecir.
+    - **output**: Variable de tipo numérica. Indica si el paciente sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la variable objetivo o dependiente que se puede utilizar para predecir.
 
 - *o2Saturation.csv*: contiene 3585 observaciones sobre los niveles de oxígeno en la sangre de distintos pacientes y solo tiene 1 atributo.
 
@@ -119,9 +121,9 @@ El conjunto de datos está dividido en dos subconjuntos de datos:
 
 Puede ser el resultado de adicionar diferentes datasets o una subselección útil de los datos originales, en base al objetivo que se quiera conseguir.
 
-En este apartado se van a cargar ambos conjuntos de datos, para decidir si se van a unificar ambos o no, o si nos vamos a centrar en unos pasajeros concretos limitando el número de registros o de características con el fin de reducir el dataset. Además, en el dataset de *heart.csv* se van a renombrar los atributos para que se entiendan mejor y sean más intuitivos a la hora de utilizarlos más adelante.
+En este apartado se van a cargar ambos conjuntos de datos, para decidir si se van a unificar ambos o no, o si nos vamos a centrar en unos pacientes concretos limitando el número de registros o de características con el fin de reducir el dataset. Además, en el dataset de *heart.csv* se van a renombrar los atributos para que se entiendan mejor y sean más intuitivos a la hora de utilizarlos más adelante.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE,include=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se carga el dataset
 heart_data <- read.csv("heart.csv", header = TRUE)
 
@@ -204,7 +206,7 @@ Las variables que contienen algún valor igual a cero son variables que esperan 
 
 - "st_slope_type": Muestra la pendiente del segmento ST de ejercicio máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia arriba).
 
-- "num_major_vessels": Indica el número de buques principales (0, 1, 2, 3).
+- "num_major_vessels": Indica el número de vasos principales (0, 1, 2, 3).
 
 - "thalassemia_type": Señala el ratio de un trastorno sanguíneo llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo sanguíneo, pero no es normal)).
 
@@ -255,7 +257,7 @@ heart_data$heart_attack <- factor(heart_data$heart_attack, levels = c(0,1),
                                       labels= c("No", "Yes"))
 ```
 
-También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización usando la función *scale* para normalizar las variables cuantitativas.
+También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización utilizando la función *scale* para normalizar las variables cuantitativas.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Indices de las variables cuantitativas
@@ -265,9 +267,9 @@ idx_var_cuant <- c(1,4,5,8,10,12)
 heart_norm <- scale(heart_data[,idx_var_cuant])
 ```
 
-Es posible que se tengan que utilizar más adelanete será estos datos normalizados, sin embargo, se van a mantener sin normalizar ya que para mostrar los resultados resulta más intuitivo verlos en su escala natural.
+Es posible que se tengan que utilizar más adelante estos datos normalizados, sin embargo, se van a mantener sin normalizar ya que para mostrar los resultados resulta más intuitivo verlos en su escala natural.
 
-En el caso de las variables que no presenten una distribución normal, una opción sería realizar transformaciones de tipo Box-Cox para poder mejorar su normalidad y su homocedasticidad.
+En el caso de las variables que no presenten una distribución normal, como será el caso de *cholesterol*, una opción sería realizar transformaciones de tipo Box-Cox para poder mejorar su normalidad y su homocedasticidad.
 
 Asimismo, para algunas variables como por ejemplo la edad del paciente, sería interesante realizar un proceso de discretización. Esto nos permitiría agrupar las edades en diferentes grupos y poder sacar conclusiones que nos aporten un valor simbólico más allá de solo un número, aportándonos mayor información. 
 
@@ -332,9 +334,9 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 
 ## Corrección de los outliers
 
-Se van a tratar los valores de outliers que hemos considerado como no válidos. Es importante destacar que un valor extremo no tiene por que ser no válido, para determinar si un valor extremo es válido o no hemos realizado una investigación sobre las variables y los posibles valores que estás pueden tener. De todos los outliers detectados simplemente nos centramos en el caso de la variable *cholesterol*. 
+Se van a tratar los valores de outliers que hemos considerado como no válidos. Es importante destacar que un valor extremo no tiene por que ser no válido, para determinar si un valor extremo es válido o no hemos realizado una investigación sobre las variables y los posibles valores que estas pueden tener. De todos los outliers detectados simplemente nos centramos en el caso de la variable *cholesterol*. 
 
-Realizando una búsqueda sobre los valores comúnes y menos comúnes de cholesterol ( mg / dL) en 300 mg/dl o más ya se considera un nivel muy alto. Para casos más elevados se habla de sufrir hipertrigliceridemia. Nosotros hemos establecido que para un valor mayor a 550 se va a realizar una corrección de este valor.
+Realizando una búsqueda sobre los valores comúnes y menos comúnes de cholesterol (mg / dL), en 300 mg/dl o más ya se considera un nivel muy alto. Para casos más elevados se habla de sufrir hipertrigliceridemia. Nosotros hemos establecido que para un valor mayor a 550 se va a realizar una corrección de este valor.
 
 
 ```{r}
@@ -360,7 +362,7 @@ print(paste("Número final de NA's en la variable después del tratado:", num_na
 
 A continuación se va a realizar una imputación de valores perdidos. Aplicaremos imputación por vecinos más cercanos, utilizando la distancia de Gower, considerando en el cómputo de los vecinos más cercanos el resto de variables cuantitativas. 
 
-Para realizar esta imputación, usaremos la función “kNN” de la librería VIM con un número de vecinos igual a 11. Se mostrarña que la imputación se ha realizado correctamente, mostrando el resultado de los datos afectados por la imputación.
+Para realizar esta imputación, usaremos la función “kNN” de la librería VIM con un número de vecinos igual a 11. Se mostrará que la imputación se ha realizado correctamente, mostrando el resultado de los datos afectados por la imputación.
 
 
 ```{r}
@@ -427,19 +429,21 @@ Para utilizar el test Chi cuadrado, necesitaríamos crear una tabla de contingen
 
 Como comentamos al principio de la práctica, queremos responder a las siguientes preguntas:
 
-- ¿Los hombres son más probables a sufrir un ataque?
+- ¿Los hombres son más probables a sufrir un ataque que las mujeres?
 
 - ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
 
-- ¿Tuvieron los pacientes con una angina de pecho producida por el ejercicio físico más probabilidad de sufrir un ataque que los que no?
+- ¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque y según el sexo del paciente?
 
-- ¿Las personas mayores tienen más probabilidad de sufrir un ataque que los demás?
+- ¿Las personas mayores sufren más ataques?
 
-- ¿ Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente ?
+- ¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente ?
 
-En nuestro caso, se va a analizar el conjunto de datos "heart.csv" para poder predecir si un paciente tiene un ataque al corazón o no. Para ello, se podría utilizar un modelo de aprendizaje supervisado como un árbol de decisión para construir un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se puede evaluar su desempeño con métricas como la precisión, la sensibilidad o el valor F1 y utilizarlo para hacer predicciones sobre pacientes futuros. 
+- ¿Qué factores son los más influyentes para sufrir un ataque?
 
-Además, se van a aplicar algunos tests estadísticos que dependerá de la normalidad y la homocedasticidad de las variables que se verá en el apartado siguiente.
+En nuestro caso, se va a analizar el conjunto de datos *heart.csv* para intentar respuesta a las preguntas anteriores. Para ello, se harán diferentes contrastes de hipótesis realizando diferentes análisis estádisticos como la *prueba t de student*, el *test de Wilcoxon* y el *test de chi cuadrado*. Además, se construirá un modelo de regresión logística para poder analizar qué variables son las que más influyen a la hora de un paciente sufra o no un ataque al corazón, tomando como variable dependiente *heart_attack*.  
+
+A la hora de aplicar algunos tests estadísticos, se tendrá que tener en cuenta la normalidad y la homocedasticidad de las variables que se verá en el apartado siguiente. FALTA AÑADIR LOS GRUPOS DE DATOS.
 
 ## Comprobación de la normalidad y homogeneidad de la varianza.
 
@@ -450,10 +454,9 @@ Se va a analizar la normalidad y la homocedasticidad de las variables cuantitati
 Para ello, vamos a representar mediante histogramas la distribución de los datos de las variables en comparación con la normal teórica para poder ver visualmente si siguen una distribución normal. No obstante, después lo verificaremos mediante el test de *Shapiro Wilk* y mediante el gráfico *Q-Q plot* mediante las funciones de R `qqnorm` y `qqline`.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
-
 # Histograma de la distribución de la variable VS la distribucion normal teorica
-multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
+multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), 
+           dlty = c("dotted", "solid"),global=FALSE)
 ```
 
 Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, no obstante, algunas variables como *age*, *cholesterol*, *max_heart_rate_achieved* y *resting_blood_pressure* no se le alejan mucho de la normal.
@@ -473,10 +476,12 @@ df_p_value_shapiro_wilk <- data.frame(
 "P-Value" = sapply(heart_data[,idx_var_cuant],p_value_shapiro_wilk))
 
 # Se le añade el nombre a las variables
-colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure","Cholesterol","Max_heart_rate_achieved","st_depression","num_major_vessels")
+colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure","Cholesterol",
+                                       "Max_heart_rate_achieved","st_depression","num_major_vessels")
 
 # Se visualiza el dataframe creado
-kable(df_p_value_shapiro_wilk,digits=3, caption="P-Valores de las variables cuantitativas aplicando Shapiro Wilk")
+kable(df_p_value_shapiro_wilk,digits=3, 
+      caption="P-Valores de las variables cuantitativas aplicando Shapiro Wilk")
 
 ```
 
@@ -493,12 +498,13 @@ for (var in idx_var_cuant){
 
 Como podíamos comprobar con el histograma y con el test de *Shapiro Wilk*, las variables *age*, *cholesterol*, *max_heart_rate_achieved* y *resting_blood_pressure* no se ajustan del todo a una distribución normal porque presentan un gran número de muestras en los extremos izquierdo y derecho que se encuentran fuera de la recta de regresión, sin embargo, se puede ver que la mayoría de las muestras sí. Las demás variables, *st_depression* y *num_major_vessels* sí que se alejan mucho de una distribución normal. 
 
-Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, para las que más se acercan se intentará transformar los datos para que sean normales con la transformación de *Box-Cox* y volviendo a aplicar el test de *Shapiro Wilk*.
+Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, para las que más se acercan se intentará transformar los datos para que sean normales con la transformación de *Box-Cox* y volviendo a aplicar el test de *Shapiro Wilk* para verificar la transformación.
 
 
 ```{r}
 
-# Se aplica la transformación de Box Cox a las variables age, cholesterol, max_heart_rate_achieved y resting_blood_pressure
+# Se aplica la transformación de Box Cox a las variables age,
+# cholesterol, max_heart_rate_achieved y resting_blood_pressure
 
 # Age
 age_norm <- BoxCox(heart_data$age, lambda = BoxCoxLambda(heart_data$age))
@@ -512,7 +518,7 @@ shapiro.test(cholesterol_norm)
 max_heart_rate_achieved_norm <- BoxCox(heart_data$max_heart_rate_achieved, lambda = BoxCoxLambda(heart_data$max_heart_rate_achieved))
 shapiro.test(max_heart_rate_achieved_norm)
 
-# max_heart_rate_achieved
+# resting_blood_pressure
 resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
 shapiro.test(resting_blood_pressure_norm)
 
@@ -520,17 +526,17 @@ shapiro.test(resting_blood_pressure_norm)
 
 Podemos comprobar como después de aplicar la transformación de Box-Cox las variables *cholesterol* y *max_heart_rate_achieved* siguen una distribución normal al tener el p-valor superior a 0.05 aceptando la hipótesis nula de que la muestra es normal. En cambio, *age* y *resting_blood_pressure_* siguen sin ser normales.
 
-Por último, incluimos al dataset la variable normal transformada de *cholesterol* para que se pueda aplicar con ella tests de tipo paramétricos.
+Por último, incluimos al dataset la variable normal transformada de *cholesterol* para que se pueda aplicar con ella tests de tipo paramétricos. No incluimos *max_heart_rate_achieved* aunque sea normal porque no se utilizará para nuestros contrastes de hipótesis.
 
 ```{r}
-# Sustituimos en la variable colesterol la variable transformada para que siga una distribución normal
+# Sustituimos en la variable colesterol la variable transformada para que siga normal
 heart_data$cholesterol <- cholesterol_norm
 ```
 
 
 ### Homogeneidad de varianzas
 
-Para comprobar si las variables que usamos para responder a las preguntas previamente planteadas tienen o no homogeneidad de varianzas, se aplicará el *test de Levene* (parámetrico) si las variables cuantitativas son normales (en este caso es *cholesterol* ) y el *test de Fligner* (no paramétrico) si no lo son (el resto de variables). Para ambos tests, la hipótesis nula asume igualdad de varianzas en los diferentes grupos de datos, por lo que un p-valor inferior al nivel de significancia indicará heterocedasticidad.
+Para comprobar si las variables que usamos para responder a las preguntas previamente planteadas tienen o no homogeneidad de varianzas, se aplicará el *test de Levene* (parámetrico) si las variables cuantitativas son normales (en este caso es *cholesterol*) y el *test de Fligner* (no paramétrico) si no lo son (el resto de variables). Para ambos tests, la hipótesis nula asume igualdad de varianzas en los diferentes grupos de datos, por lo que un p-valor inferior al nivel de significancia indicará heterocedasticidad.
 
 ```{r}
 # Comprobación de homocedasticidad Cholesterol - Heart attack
@@ -543,7 +549,7 @@ LeveneTest(cholesterol ~ sex,data = heart_data) # -> Hetero
 fligner.test(age ~ heart_attack,data = heart_data)  # -> Hetero
 
 # Comprobación de homocedasticidad resting_blood_pressure - Heart attack
-fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)  # -> Hetero
+fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)  # -> Homo
 
 ```
 
