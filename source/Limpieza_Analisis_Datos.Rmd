@@ -2,17 +2,22 @@
 title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
+header-includes: 
+   - \renewcommand{\contentsname}{Índice General}
 output:
-  html_document:
-    toc: yes
-    number_sections: yes
-    toc_depth: 6
   pdf_document:
     toc: yes
     number_sections: yes
     toc_depth: 6
-header-includes: \renewcommand{\contentsname}{Índice General}
+    latex_engine : xelatex 
+
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
 ---
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -41,6 +46,16 @@ library(ggplot2)
 if (!require("plotly")) install.packages("plotly")
 library(plotly)
 
+# Librería necesaria para la visualización de multi histogramas
+if (!require("psych")) install.packages("psych")
+library(psych)
+
+# Librería necesaria para la visualización para la transformación de Box Cox
+library(DescTools)
+
+# Librería necesaria para hacer tablas
+library(kableExtra)
+
 # Evitar visualizar warnings
 options(warn=-1)
 ```
@@ -55,13 +70,16 @@ Actualmente cada vez sufren más personas ataques al corazón originados por dif
 
 Por ello, los ataques al corazón son un problema muy grave que hay que intentar prevenir, analizando las diferentes variables que pueden influir a la hora de que una persona sufra un ataque al corazón o no, pudiendo responder a preguntas como por ejemplo: 
 
-- ¿Los hombres son más probables a sufrir un ataque?
+- ¿Los hombres son más probables a sufrir un ataque que las mujeres?
 
 - ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
 
-- ¿Las personas mayores tienen más probabilidad de sufrir un ataque?
+- ¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque y según el sexo del paciente?
 
-- ¿Qué factor es el más influye en un ataque?
+- ¿Las personas mayores sufren más ataques?
+
+- ¿Qué factores son los más influyentes para sufrir un ataque?
+
 
 El conjunto de datos está dividido en dos subconjuntos de datos:
 
@@ -103,7 +121,7 @@ Puede ser el resultado de adicionar diferentes datasets o una subselección úti
 
 En este apartado se van a cargar ambos conjuntos de datos, para decidir si se van a unificar ambos o no, o si nos vamos a centrar en unos pasajeros concretos limitando el número de registros o de características con el fin de reducir el dataset. Además, en el dataset de *heart.csv* se van a renombrar los atributos para que se entiendan mejor y sean más intuitivos a la hora de utilizarlos más adelante.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE,include=FALSE}
 # Se carga el dataset
 heart_data <- read.csv("heart.csv", header = TRUE)
 
@@ -432,8 +450,7 @@ Se va a analizar la normalidad y la homocedasticidad de las variables cuantitati
 Para ello, vamos a representar mediante histogramas la distribución de los datos de las variables en comparación con la normal teórica para poder ver visualmente si siguen una distribución normal. No obstante, después lo verificaremos mediante el test de *Shapiro Wilk* y mediante el gráfico *Q-Q plot* mediante las funciones de R `qqnorm` y `qqline`.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-# Se carga la libreria psych
-library(psych)
+
 
 # Histograma de la distribución de la variable VS la distribucion normal teorica
 multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), dlty = c("dotted", "solid"),global=FALSE)
@@ -480,8 +497,6 @@ Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, pa
 
 
 ```{r}
-# Se carga la libreria DescTools
-library(DescTools)
 
 # Se aplica la transformación de Box Cox a las variables age, cholesterol, max_heart_rate_achieved y resting_blood_pressure
 
@@ -622,9 +637,6 @@ Se puede observar como las variables más significativas son *num_major_vessels*
 A continuación, se estiman otros modelos de regresión con la combinación de las variables regresoras anteriores para ver cómo afectan a la variable dependiente heart_attack.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-# Uso Libreria KableExtra
-library(kableExtra)
-
 # Se estima varios modelos de regresión logística
 
 model_rg_2 <- glm(formula=heart_attack~chest_pain_type,data=heart_data, 
@@ -684,12 +696,122 @@ Este apartado se puede responder a lo largo de la práctica, sin necesidad de co
 ```{r}
 library(corrplot)
 library(Hmisc)
-corrplot.mixed(cor(heart_norm, method = "spearman"))
+#corrplot.mixed(cor(heart_norm, method = "spearman"))
 
-rcorr(heart_norm, type = "spearman")
+#rcorr(heart_norm, type = "spearman")
 
-pairs.panels(x = heart_norm, ellipses = FALSE, lm = TRUE,
-method = "spearman", hist.col = "cadetblue1")
+#pairs.panels(x = heart_norm, ellipses = FALSE, lm = TRUE,
+#method = "spearman", hist.col = "cadetblue1")
+
+# Diagrama de cajas Cholesterol - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=cholesterol, fill=heart_attack)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot Cholesterol - Heart attack")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+
+# Diagrama de cajas Cholesterol - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=sex, fill=heart_attack)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot Sex - Heart attack")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+
+# Diagrama de cajas Cholesterol - Sex
+ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot Cholesterol - Sex")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+
+# Diagrama de cajas Age - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=age, fill=heart_attack)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot Age - Heart attack")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+
+# Diagrama de cajas Resting blood pressure - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=resting_blood_pressure, fill=heart_attack)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot Resting Blood Pressure - Heart attack")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
 ```
 
 # Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
