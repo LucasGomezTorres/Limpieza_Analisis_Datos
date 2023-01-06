@@ -51,9 +51,11 @@ if (!require("psych")) install.packages("psych")
 library(psych)
 
 # Librería necesaria para la visualización para la transformación de Box Cox
+if (!require("DescTools")) install.packages("DescTools")
 library(DescTools)
 
 # Librería necesaria para hacer tablas
+if (!require("kableExtra")) install.packages("kableExtra")
 library(kableExtra)
 
 # Evitar visualizar warnings
@@ -358,38 +360,28 @@ print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
 print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
 ```
 
-## Imputación de valores mediante kNN
+## Imputación de valores
 
-A continuación se va a realizar una imputación de valores perdidos. Aplicaremos imputación por vecinos más cercanos, utilizando la distancia de Gower, considerando en el cómputo de los vecinos más cercanos el resto de variables cuantitativas. 
-
-Para realizar esta imputación, usaremos la función “kNN” de la librería VIM con un número de vecinos igual a 11. Se mostrará que la imputación se ha realizado correctamente, mostrando el resultado de los datos afectados por la imputación.
-
+Se va a imputar la media aritmética a esos valores NA’s. La imputación de valores por media aritmética es un método utilizado para reemplazar valores faltantes o perdidos en un conjunto de datos. Este método consiste en reemplazar el valor faltante con la media aritmética de los valores presentes en el conjunto de datos.
 
 ```{r}
-# Selección de los datos a imputar
-df_auxiliar <- heart_data %>% 
-  select(cholesterol, fasting_blood_sugar, rest_ecg_type, resting_blood_pressure, st_depression) %>% 
-  filter((is.na(cholesterol)))
+# Se calcula la media aritmética
+mean_cholesterol = mean(heart_data$cholesterol,na.rm=T)
+# Se redondea la media
+mean_cholesterol=round(mean_cholesterol,2)
+mean_cholesterol
 ```
 
 ```{r}
-# Se aplica imputación por vecinos mas cercanos (KNN)
-# Se imputan los registros de género masculino
-df_auxiliar_knn <- kNN(df_auxiliar, 
-                       variable = c("cholesterol"), 
-                       k = 11, 
-                       dist_var = c("rest_ecg_type", "resting_blood_pressure", "st_depression"))
+# Imputamos la media aritmética en los valores nulos
+heart_data$cholesterol[is.na(heart_data$cholesterol)] <- mean_cholesterol
 ```
+
+Finalmente se puede observar que dicha variable ya no contiene valores nulos, ya que estos se han remplazado por la media aritmética.
+
 ```{r}
-# Ahora se eliminarán del dataset original los registros de los dataframes auxiliares
-# Dimensión actual del dataframe original
-dim(heart_data)
-```
-```{r}
-# Se elimina del dataset original los registros que ya están imputados
-heart_data = heart_data %>% filter(!(is.na(cholesterol)))
-# Dimension del dataframe original
-dim(heart_data)
+# Comprobación de no existencia de valores nulos
+sum(is.na(heart_data$cholesterol))
 ```
 
 ## Generación del archivo con los datos tratados
@@ -408,24 +400,6 @@ write.csv(df_heart_final, file = "clean_data.csv", row.names = FALSE, col.names 
 # Análisis de los datos.
 
 ## Selección de los grupos de datos que se quieren analizar/comparar (p.ej., si se van a comparar grupos de datos, ¿cuáles son estos grupos y qué tipo de análisis se van a aplicar?).
-
-==== JOAN ====
-
-En este caso, se quiere analizar el conjunto de datos "heart.csv" para predecir si un paciente tiene un ataque al corazón o no. El conjunto de datos "o2Saturation.csv" no parece estar relacionado con este propósito y, por tanto, no se incluiría en el análisis.
-
-Para analizar el conjunto de datos "heart.csv", se podría utilizar un modelo de aprendizaje supervisado para entrenar un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se puede evaluar su desempeño y utilizarlo para hacer predicciones sobre pacientes futuros.
-
-También se pueden comparar los resultados de distintos modelos de aprendizaje supervisado para ver cuál tiene mejor desempeño en este problema en particular. También se puede comparar el desempeño del modelo entrenado con diferentes subconjuntos de datos (por ejemplo, separando los pacientes por género o por edad).
-
-Se podría utilizar un árbol de decisión para construir un modelo que use las variables independientes (edad, género, tipo de dolor en el pecho, etc.) como entrada y la variable dependiente (ataque al corazón o no) como salida. Una vez entrenado el modelo, se podría utilizar para hacer predicciones sobre pacientes futuros.
-
-Para evaluar el desempeño del modelo, se podrían utilizar métricas como la precisión, la sensibilidad o el valor F1. También se podría comparar el desempeño del árbol de decisión con otros modelos de aprendizaje supervisado para ver cuál tiene mejor desempeño en este problema en particular.
-
-Además, podríamos utilizar el test Chi cuadrado para ver si existe alguna asociación entre el género de un paciente y el resultado (ataque al corazón o no).
-
-Para utilizar el test Chi cuadrado, necesitaríamos crear una tabla de contingencia con las frecuencias absolutas o relativas de cada combinación de variables. Luego, se calcularía el valor Chi cuadrado y se compararía con una tabla de valores críticos para determinar si existe una asociación significativa entre las variables.
-
-==== LUCAS ====
 
 Como comentamos al principio de la práctica, queremos responder a las siguientes preguntas:
 
@@ -464,7 +438,6 @@ Podemos comprobar como visualmente no siguen una distribución normal ninguna de
 A continuación, se va a ratificar lo anterior aplicando el test de Shapiro Wilk a cada una de las variables.
 
 ```{r}
-
 # Devuelve el p-valor aplicando el test de Shapiro Wilk
 p_value_shapiro_wilk <- function(x) {  
   p_value <- shapiro.test(x)["p.value"]
@@ -482,7 +455,6 @@ colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure","Cholester
 # Se visualiza el dataframe creado
 kable(df_p_value_shapiro_wilk,digits=3, 
       caption="P-Valores de las variables cuantitativas aplicando Shapiro Wilk")
-
 ```
 
 Viendo los resultados del test con unos p-valores inferiores al nivel de signficancia de 0.05, se rechaza la hipótesis nula y se confirma que la distribución de las variables no siguen una distribución normal al $95 \%$ de confianza.
@@ -502,7 +474,6 @@ Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, pa
 
 
 ```{r}
-
 # Se aplica la transformación de Box Cox a las variables age,
 # cholesterol, max_heart_rate_achieved y resting_blood_pressure
 
@@ -521,7 +492,6 @@ shapiro.test(max_heart_rate_achieved_norm)
 # resting_blood_pressure
 resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
 shapiro.test(resting_blood_pressure_norm)
-
 ```
 
 Podemos comprobar como después de aplicar la transformación de Box-Cox las variables *cholesterol* y *max_heart_rate_achieved* siguen una distribución normal al tener el p-valor superior a 0.05 aceptando la hipótesis nula de que la muestra es normal. En cambio, *age* y *resting_blood_pressure_* siguen sin ser normales.
@@ -550,7 +520,6 @@ fligner.test(age ~ heart_attack,data = heart_data)  # -> Hetero
 
 # Comprobación de homocedasticidad resting_blood_pressure - Heart attack
 fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)  # -> Homo
-
 ```
 
 Las conclusiones de estos tests son las siguientes:
@@ -592,7 +561,6 @@ wilcox.test(age ~ heart_attack, data = heart_data)
 
 # resting_blood_pressure vs heart_attack
 wilcox.test(resting_blood_pressure ~ heart_attack, data = heart_data)
-
 ```
 
 En los 3 casos se puede ver que no se puede determinar que la distribución de las variables sea la misma en los diferentes grupos, tanto de la variable *heart_attack* como de *sex*.
@@ -829,8 +797,6 @@ Hay que adjuntar el código, preferiblemente en R, con el que se ha realizado la
 # Vídeo.
 
 Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde ambos integrantes del equipo expliquen con sus propias palabras el desarrollo de la práctica, basándose en las preguntas del enunciado para justificar y explicar el código desarrollado. Este vídeo se deberá entregar a través de un enlace al Google Drive de la UOC, junto con enlace al repositorio Git entregafo.
-
-
 
 
 ```{r}
