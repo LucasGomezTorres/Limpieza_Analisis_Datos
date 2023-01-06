@@ -58,6 +58,11 @@ library(DescTools)
 if (!require("kableExtra")) install.packages("kableExtra")
 library(kableExtra)
 
+# Librería necesaria para agregar varios gráficos en un grid
+if (!require("gridExtra")) install.packages("gridExtra")
+library(gridExtra)
+
+
 # Evitar visualizar warnings
 options(warn=-1)
 ```
@@ -659,7 +664,7 @@ Para la variable categórica, *chest_pain_type*, obteniendo varios coeficientes 
 
 Por último, para la variable *sex* obteniendo un coeficiente negativo respecto al nivel de referencia *femenino*, y una odd-ratio de 0.25, nos muestra que la probabilidad de que un paciente hombre sufra un ataque comparado con una paciente mujer es 0.25 veces menor.
 
-En definitiva, la probabilidad para que el paciente sufra un ataque al corazón aumenta teniendo dolor de pecho asintomático, angina atípica y dolor no anginoso, mientras que disminuye siendo hombre, a más número de vasos principales y con la depresión ST inducida por el ejercicio en relación con el descanso.
+En definitiva, la probabilidad para que el paciente sufra un ataque al corazón aumenta teniendo dolor de pecho asintomático, angina atípica y dolor no anginoso, mientras que disminuye siendo hombre, a mayor número de vasos principales y con la depresión ST inducida por el ejercicio en relación con el descanso.
 
 # Representación de los resultados a partir de tablas y gráficas.
 
@@ -674,6 +679,29 @@ library(Hmisc)
 
 #pairs.panels(x = heart_norm, ellipses = FALSE, lm = TRUE,
 #method = "spearman", hist.col = "cadetblue1")
+
+# Diagrama de cajas Cholesterol - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=st_depression, fill=heart_attack)) +
+  
+
+  geom_boxplot() +
+  
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  
+  # Título del gráfico
+  ggtitle ("Box Plot st_depression - Heart attack")+
+   
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+
 
 # Diagrama de cajas Cholesterol - Heart attack
 ggplot(heart_data,aes(x=heart_attack,y=cholesterol, fill=heart_attack)) +
@@ -742,6 +770,10 @@ ggplot(heart_data,aes(x=heart_attack,y=age, fill=heart_attack)) +
         face="bold", 
         color="black"))
 
+g1 <- ggplot(data = heart_data, aes(x=age, fill=heart_attack)) + geom_histogram(binwidth =3)
+g2 <- ggplot(data = heart_data, aes(x=age, fill=heart_attack)) + geom_histogram(binwidth = 3,position="fill") + ylab("Frecuencia")
+grid.arrange(g1, g2, nrow = 1)
+
 # Diagrama de cajas Resting blood pressure - Heart attack
 ggplot(heart_data,aes(x=heart_attack,y=resting_blood_pressure, fill=heart_attack)) +
   
@@ -763,6 +795,24 @@ ggplot(heart_data,aes(x=heart_attack,y=resting_blood_pressure, fill=heart_attack
         size=rel(1.2),
         face="bold", 
         color="black"))
+```
+
+```{r}
+g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
+ylab("Frecuencia") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+grid.arrange(g1, g2, nrow = 1)
+```
+
+```{r}
+g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar() +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g2 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
+ylab("Frecuencia") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+grid.arrange(g1, g2, nrow = 1)
 ```
 
 # Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
