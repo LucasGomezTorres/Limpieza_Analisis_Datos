@@ -443,7 +443,9 @@ Como comentamos al principio de la práctica, queremos responder a las siguiente
 
 En nuestro caso, se va a analizar el conjunto de datos *heart.csv* para intentar respuesta a las preguntas anteriores. Para ello, se harán diferentes contrastes de hipótesis realizando diferentes análisis estádisticos como la *prueba t de student*, el *test de Wilcoxon* y el *test de chi cuadrado*. Además, se construirá un modelo de regresión logística para poder analizar qué variables son las que más influyen a la hora de un paciente sufra o no un ataque al corazón, tomando como variable dependiente *heart_attack*.  
 
-A la hora de aplicar algunos tests estadísticos, se tendrá que tener en cuenta la normalidad y la homocedasticidad de las variables que se verá en el apartado siguiente. FALTA AÑADIR LOS GRUPOS DE DATOS.
+Se comparará el valor de *cholesterol*, la edad de los pacientes (*age*) y la presión arterial en reposo (*resting_blood_pressure*) entre sufrir o no un ataque (*heart_attack*). También se comparará el valor de *cholesterol* entre hombres y mujeres (*sex*), y se analizará si hay diferencias significativas entre las variables categóricas *sex*, *fasting_blood_sugar* y el dolor de pecho (*chest_pain_type*) con *heart_attack* y entre el nivel de azúcar en sangre (*fasting_blood_sugar*) y *sex*.
+
+A la hora de aplicar algunos tests estadísticos, se tendrá que tener en cuenta la normalidad y la homocedasticidad de las variables como se verá en el apartado siguiente. 
 
 ## Comprobación de la normalidad y homogeneidad de la varianza.
 
@@ -570,7 +572,7 @@ Con los resultados anteriores, se van a aplicar varios tests estadísticos con l
 
 En este caso, podemos aplicar tanto pruebas paramétricas como no paramétricas dado que tenemos variables normales y no normales. 
 
-Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que presenta homocedasticidad con la variable *heart_attack* (más adelante será la variable dependiente en nuestros modelos), se va a aplicar la prueba de *t de student*, donde la hipótesis nula asume que las medias de los grupos de los datos son las mismas.
+Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que presenta homocedasticidad con la variable *heart_attack* (más adelante será la variable dependiente en los modelos de regresión logística), se va a aplicar la prueba de *t de student*, donde la hipótesis nula asume que las medias de los grupos de los datos son las mismas.
 
 ```{r}
 # se aplica el test t de student cholesterol y heart_attack
@@ -597,7 +599,7 @@ wilcox.test(resting_blood_pressure ~ heart_attack, data = heart_data)
 
 En los 3 casos se puede ver que no se puede determinar que la distribución de las variables sea la misma en los diferentes grupos, tanto de la variable *heart_attack* como de *sex*.
 
-El último contraste de hipótesis que se va a realizar va a ser el test de $\chi^2$ para comprobar si existen diferencias significativas entre las variables categóricas *heart_attack* y *sex*, entre *fasting_blood_sugar* y *sex*, entre *fasting_blood_sugar* y *heart_attack* y entre *chest_type* y *heart_attack*. La hipótesis nula que asume es que no existen diferencias significativas entre los grupos de ambas variables.
+Otro test que se va a realizar va a ser el de $\chi^2$ para comprobar si existen diferencias significativas entre las variables categóricas *heart_attack* y *sex*, entre *fasting_blood_sugar* y *sex*, entre *fasting_blood_sugar* y *heart_attack*, y entre *chest_pain_type* y *heart_attack*. La hipótesis nula que asume es que no existen diferencias significativas entre los grupos de ambas variables.
 
 ```{r}
 # Se comprueba la proporción de hombres y mujeres que sufrieron un ataque
@@ -628,7 +630,7 @@ Viendo los resultados podemos decir:
 
 ### Modelos de regresión logística
 
-En este apartado se van a construir varios modelo de regresión logística para analizar la influencia de algunas de las variables de forma que se pueda ver cuáles son las más significativas a la hora de determinar si un paciente sufre o no un ataque al corazón. De esta forma, sabremos la relación existente entre los diferentes atributos sobre la variable dicotómica dependiente *heart_attack*. Además, se calcularán las odds-ratio y se interpretarán junto con los coeficientes del modelo, de esta forma sabremos si la probabilidad del suceso de la variable dependiente va a aumentar o disminuir según el signo de estos coeficientes.
+En este apartado se van a construir varios modelos de regresión logística para analizar la influencia de algunas de las variables de forma que se pueda ver cuáles son las más significativas a la hora de determinar si un paciente sufre o no un ataque al corazón. De esta forma, sabremos la relación existente entre los diferentes atributos sobre la variable dicotómica dependiente *heart_attack*. Además, se calcularán las odds-ratio y se interpretarán junto con los coeficientes del modelo, de esta forma sabremos si la probabilidad del suceso de la variable dependiente va a aumentar o disminuir según el signo de estos coeficientes.
 
 ```{r}
 # Se estima el modelo de regresión logística
@@ -640,7 +642,7 @@ summary(model_rg_1)
 
 Se puede observar como las variables más significativas son *num_major_vessels*, *chest_pain_type*, *sex* y *st_depression*, tal y como vimos aplicando el test de chi cuadrado para el caso de *chest_pain_type* y *sex*, por lo tanto, será sobre estas variables sobre las que se centrará este análisis.
 
-A continuación, se estiman otros modelos de regresión con la combinación de las variables regresoras anteriores para ver cómo afectan a la variable dependiente heart_attack.
+A continuación, se estiman otros modelos de regresión con la combinación de las variables regresoras anteriores para ver cómo afectan a la variable dependiente heart_attack y se calculan sus valores AIC para poder compararlos.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se estima varios modelos de regresión logística
@@ -658,7 +660,7 @@ model_rg_5 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels + sex
                   family=binomial(link=logit))
 
 # Guardamos los valores de una tabla
-indices_AIC <- data.frame( c(1:4), c(model_rg_2$aic,model_rg_3$aic,model_rg_4$aic,model_rg_5$aic))
+indices_AIC <- data.frame( c(2:5), c(model_rg_2$aic,model_rg_3$aic,model_rg_4$aic,model_rg_5$aic))
 colnames(indices_AIC) <- c("Modelo", "AIC")
 
 # Se muestran en una tabla los resultados de los valores AIC de cada modelo
@@ -666,7 +668,7 @@ indices_AIC %>% kable() %>% kable_styling(latex_options = "hold_position")
 
 ```
 
-Comparando el valor AIC de cada modelo (aquel que relaciona su bondad de ajuste junto con su complejidad) a medida que se han ido añadiendo variables regresoras, se puede ver que ha ido disminuyendo y por lo tanto han ido mejorando los modelos, es decir, todas ellas son significativas sobre el hecho de sufrir un ataque al corazón.
+Comparando el valor AIC de cada modelo (aquel que relaciona su bondad de ajuste junto con su complejidad) a medida que se han ido añadiendo variables regresoras, se puede ver que ha ido disminuyendo y por lo tanto han ido mejorando los modelos, es decir, todas ellas son significativas para el hecho de sufrir un ataque al corazón.
 
 Por lo tanto, nos quedamos con el modelo *model_rg_5*.
 
@@ -683,17 +685,13 @@ Si calculamos sus odds ratio obtenemos lo siguiente:
 exp(coefficients(model_rg_5))
 ```
 
-Si comentamos los resultados de los coeficientes de los regresores y sus odds-ratio, para el caso de la variable *st_depression* que se ha obtenido un coeficiente estimado negativo y una Odds-Ratio de 0.41, va a indicar que por cada unidad que aumente la variable, la probabilidad de sufrir un ataque es 0.41 veces menor. Para la variable  *num_major_vessels*, con una odds-Ratio de 0.47 y un coeficiente estimado negativo, se interpreta de forma que cuántos más vasos principales tenga el paciente, la probabilidad de sufrir un ataque es 0.47 veces menor.
+Si comentamos los resultados de los coeficientes de los regresores y sus odds-ratio, para el caso de la variable *st_depression* que se ha obtenido un coeficiente estimado negativo y una odds-Ratio de 0.41, va a indicar que por cada unidad que aumente la variable, la probabilidad de sufrir un ataque es 0.41 veces menor. Para la variable  *num_major_vessels*, con una odds-Ratio de 0.47 y un coeficiente estimado negativo, se interpreta de forma que cuántos más vasos principales tenga el paciente, la probabilidad de sufrir un ataque es 0.47 veces menor.
 
-Para la variable categórica, *chest_pain_type*, obteniendo varios coeficientes estimados positivos respecto al nivel de referencia *angina típica*, y unas odds-ratio de 10.15, 5.75, 11.11, indicándonos que la probabilidad de que sufra un ataque con el resto de tipos de anginas de pecho comparado con una angina típica son de 10.15, 5.75, 11.11 respectivamente veces mayor.
+Para la variable categórica, *chest_pain_type*, obteniendo varios coeficientes estimados positivos respecto al nivel de referencia *angina típica*, y unas odds-ratio de 10.15, 5.75, 11.11, nos indican que la probabilidad para que un paciente sufra un ataque con el resto de tipos de anginas de pecho comparado con una angina típica son de 10.15, 5.75, 11.11 respectivamente veces mayor.
 
 Por último, para la variable *sex* obteniendo un coeficiente negativo respecto al nivel de referencia *femenino*, y una odd-ratio de 0.25, nos muestra que la probabilidad de que un paciente hombre sufra un ataque comparado con una paciente mujer es 0.25 veces menor.
 
-En definitiva, la probabilidad para que el paciente sufra un ataque al corazón aumenta teniendo dolor de pecho asintomático, angina atípica y dolor no anginoso, mientras que disminuye siendo hombre, con el número de vasos principales y con la depresión ST inducida por el ejercicio en relación con el descanso.
-
-### Árboles de Decisión
-
-
+En definitiva, la probabilidad para que el paciente sufra un ataque al corazón aumenta teniendo dolor de pecho asintomático, angina atípica y dolor no anginoso, mientras que disminuye siendo hombre, a más número de vasos principales y con la depresión ST inducida por el ejercicio en relación con el descanso.
 
 # Representación de los resultados a partir de tablas y gráficas.
 
@@ -731,27 +729,6 @@ ggplot(heart_data,aes(x=heart_attack,y=cholesterol, fill=heart_attack)) +
         face="bold", 
         color="black"))
 
-# Diagrama de cajas Cholesterol - Heart attack
-ggplot(heart_data,aes(x=heart_attack,y=sex, fill=heart_attack)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot Sex - Heart attack")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
 
 # Diagrama de cajas Cholesterol - Sex
 ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
