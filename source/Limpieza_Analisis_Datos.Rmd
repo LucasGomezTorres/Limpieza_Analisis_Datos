@@ -69,7 +69,7 @@ options(warn=-1)
 ```
 
 
-\($\newpage$\)
+
 
 
 # Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
