@@ -539,7 +539,7 @@ Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que 
 t.test(cholesterol ~ heart_attack, data = heart_data)
 ```
 
-Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack. Estos datos los podemos corroborar mediante el siguiente boxplot, donde sorprendentemente se observa que el rango intercuartilico de no tener un ataque al corazón por el colesterol es más largo que el caso contrario.
+Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack. Estos datos los podemos corroborar mediante el siguiente boxplot.
 
 ```{r}
 # Diagrama de cajas Cholesterol - Heart attack
