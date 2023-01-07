@@ -332,7 +332,7 @@ Estos resultados indican que algunas de las variables tienen valores extremos qu
 
 ## Corrección de los outliers
 
-Se van a tratar los valores de outliers que hemos considerado como no válidos. Es importante destacar que un valor extremo no tiene por que ser no válido, para determinar si un valor extremo es válido o no hemos realizado una investigación sobre las variables y los posibles valores que estas pueden tener. De todos los outliers detectados simplemente nos centramos en el caso de la variable *cholesterol*. 
+Es importante destacar que un valor extremo no tiene por que ser no válido, para determinar si un valor extremo es válido o no hemos realizado una investigación sobre las variables y los posibles valores que estas pueden tener. De todos los outliers detectados simplemente nos centramos en el caso de la variable *cholesterol*. 
 
 Realizando una búsqueda sobre los valores comúnes y menos comúnes de cholesterol (mg / dL), en 300 mg/dl o más ya se considera un nivel muy alto. Para casos más elevados se habla de sufrir hipertrigliceridemia. Nosotros hemos establecido que para un valor mayor a 550 se va a realizar una corrección de este valor.
 
@@ -391,8 +391,6 @@ Como comentamos al principio de la práctica, queremos responder a las siguiente
 - ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
 
 - ¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque?
-
-- ¿Las personas mayores sufren más ataques?
 
 - ¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente ?
 
@@ -537,11 +535,11 @@ En este caso, podemos aplicar tanto pruebas paramétricas como no paramétricas 
 Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que presenta homocedasticidad con la variable *heart_attack* (más adelante será la variable dependiente en los modelos de regresión logística), se va a aplicar la prueba de *t de student*, donde la hipótesis nula asume que las medias de los grupos de los datos son las mismas.
 
 ```{r}
-# se aplica el test t de student cholesterol y heart_attack
+# Se aplica el test t de student cholesterol y heart_attack
 t.test(cholesterol ~ heart_attack, data = heart_data)
 ```
 
-Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack.
+Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack. Estos datos los podemos corroborar mediante el siguiente boxplot, donde sorprendentemente se observa que el rango intercuartilico de no tener un ataque al corazón por el colesterol es más largo que el caso contrario.
 
 ```{r}
 # Diagrama de cajas Cholesterol - Heart attack
@@ -601,15 +599,13 @@ chisq.test(table(heart_data$chest_pain_type, heart_data$heart_attack))
 
 Viendo los resultados podemos decir:
 
-- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack. Véase con los siguientes gráficos la diferencia entre los sexos:
+- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack. Véase con los siguientes gráficos que el sexo femenino es más propoenso a sufrir ataques al corazón. 
 
 ```{r}
-# Crear tabla de contingencia
-sex_heart_attack_table <- table(heart_data$sex, heart_data$heart_attack)
-
 # Dibujar gráfico de barras
 g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar() +
 theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 # Diagrama de cajas Cholesterol - Sex
 g2 <- ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
   geom_boxplot() +
@@ -628,7 +624,7 @@ g2 <- ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
 grid.arrange(g1, g2, nrow = 1)
 ```
 
-- No hay una diferencia significativa en la proporción de personas con azúcar en sangre baja o alta que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.7444). Véase en el siguiente gráfico:
+- No hay una diferencia significativa en la proporción de personas con azúcar en sangre baja o alta que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.7444). Véase en el siguiente gráfico donde se observa que no existe una diferencia destacable. 
 
 ```{r}
 # Dibujar gráfico de barras apiladas
@@ -643,7 +639,7 @@ ggplot(heart_data, aes(x=fasting_blood_sugar, fill=heart_attack)) +
 ```
 
 
-- No hay una diferencia significativa en la proporción de personas de diferentes sexos con azúcar en sangre baja o alta, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.5417). Véase en el siguiente gráfico:
+- No hay una diferencia significativa en la proporción de personas de diferentes sexos con azúcar en sangre baja o alta, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.5417). Véase en el siguiente gráfico donde se observa que no existe una diferencia destacable. 
 
 ```{r}
 # Crear tabla de contingencia
@@ -660,7 +656,7 @@ ggplot(heart_data, aes(x=fasting_blood_sugar, fill=sex)) +
     color="black"))
 ```
 
-- Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). Véase en el siguiente gráfico:
+- Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). El siguiente gráfico demuestra que sufrir un dolor en el pecho como angina típica, dolor no anginoso o asintomático puede repercutir en un ataque del corazón con una alta probabilidad. Por tanto el dolor en el pecho tiene una importancia significativa para los casos de ataque al corazón.
 
 ```{r}
 g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
@@ -737,7 +733,7 @@ En definitiva, la probabilidad para que el paciente sufra un ataque al corazón 
 
 ## Generación del archivo con los datos tratados
 
-Se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica.
+En este punto se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica. Se exporta con el nombre `clean_data.csv`.
 
 ```{r}
 # Dataframe tratado
@@ -765,10 +761,6 @@ El nivel de azúcar en sangre no es determinante para que una persona pueda pade
 • **¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque?**
 
 Curiosamente el nivel de colesterol no tiene un impacto directo en que una persona sufra un ataque o no lo sufra tal y como se ha demostrado en este análisis y mediante su visualización gráfica. 
-
-• **¿Las personas mayores sufren más ataques?**
-
-Las personas mayores no sufren más ataques, de hecho se ha observado que el rango de edad de más ataques al corazón se encuentra entre los 50 y 60 años de edad.
 
 • **¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente?**
 
