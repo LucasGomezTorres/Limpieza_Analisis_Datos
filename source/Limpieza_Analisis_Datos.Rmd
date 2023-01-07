@@ -778,7 +778,7 @@ Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde
 
 A continuación se presentan las contribuciones del proyecto firmadas por los integrantes del grupo.
 
-```{r}
+```{r, echo=FALSE}
 contribuciones <- data.frame(
     Contribución = c("Investigación previa", "Redacción de las respuestas",
                      "Desarrollo del código", "Participación en el vídeo"),
