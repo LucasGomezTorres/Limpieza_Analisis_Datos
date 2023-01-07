@@ -3,6 +3,11 @@ title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
 output:
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
+    latex_engine: xelatex
   html_document:
     code_folding: show
     df_print: paged
@@ -11,11 +16,6 @@ output:
     theme: cosmo
     toc: yes
     toc_depth: 5
-  pdf_document:
-    toc: yes
-    number_sections: yes
-    toc_depth: 6
-    latex_engine: xelatex
 header-includes: \renewcommand{\contentsname}{Índice General}
 ---
 
@@ -241,7 +241,8 @@ Primero convertiremos las siguientes variables numéricas a categóricas:
 heart_data$sex <- factor(heart_data$sex, levels = c(0,1), labels= 
                            c("Femenino", "Masculino"))
 
-heart_data$chest_pain_type <- factor(heart_data$chest_pain_type, levels = c(0,1,2,3), labels= 
+heart_data$chest_pain_type <- factor(heart_data$chest_pain_type, levels = c(0,1,2,3), 
+                                     labels= 
                                        c("Angina típica", "Angina atípica",
                                         "Dolor no anginoso","Asintomático"))
 
@@ -351,9 +352,11 @@ heart_data = heart_data %>% mutate(cholesterol = ifelse(cholesterol > 550, NA, c
 num_nas_variable_final = sum(is.na(heart_data$cholesterol))
 
 # Visualización de los resultados
-print(paste("Número de outliers que superan el valor establecido en la variable:", num_outliers_var))
+print(paste("Número de outliers que superan el valor establecido en la variable:", 
+            num_outliers_var))
 print(paste("Número inicial de NA's en la variable:", num_nas_variable_inicio))
-print(paste("Número final de NA's en la variable después del tratado:", num_nas_variable_final))
+print(paste("Número final de NA's en la variable después del tratado:",
+            num_nas_variable_final))
 ```
 
 ## Imputación de valores
@@ -478,11 +481,13 @@ shapiro.test(cholesterol_norm)
 
 # max_heart_rate_achieved
 max_heart_rate_achieved_norm <- BoxCox(heart_data$max_heart_rate_achieved, 
+                                       
                                        lambda = BoxCoxLambda(heart_data$max_heart_rate_achieved))
 shapiro.test(max_heart_rate_achieved_norm)
 
 # resting_blood_pressure
 resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, 
+                                      
                                       lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
 shapiro.test(resting_blood_pressure_norm)
 ```
@@ -539,7 +544,7 @@ Para el caso de la variable *cholesterol*, como ya es normal, y se ha visto que 
 t.test(cholesterol ~ heart_attack, data = heart_data)
 ```
 
-Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack. Estos datos los podemos corroborar mediante el siguiente boxplot, donde sorprendentemente se observa que el rango intercuartilico de no tener un ataque al corazón por el colesterol es más largo que el caso contrario.
+Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack. Esto se puede corroborar mediante el siguiente boxplot, donde toman valores parecidos de colesterol pacientes que sufren y que no sufren ataques al corazón.
 
 ```{r}
 # Diagrama de cajas Cholesterol - Heart attack
@@ -603,8 +608,10 @@ Viendo los resultados podemos decir:
 
 ```{r}
 # Dibujar gráfico de barras
-g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack))+ geom_bar()  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-g2 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") + ylab("Frecuencia")  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack))+ geom_bar()  +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g2 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) +
+  geom_bar(binwidth = 3,position="fill") + ylab("Frecuencia")  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 grid.arrange(g1, g2, nrow = 1)
 ```
 
@@ -645,7 +652,8 @@ ggplot(heart_data, aes(x=fasting_blood_sugar, fill=sex)) +
 ```{r}
 g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
 theme(axis.text.x = element_text(angle = 90, hjust = 1))
-g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
+g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) +
+  geom_bar(binwidth = 3,position="fill") +
 ylab("Frecuencia") +
 theme(axis.text.x = element_text(angle = 90, hjust = 1))
 grid.arrange(g1, g2, nrow = 1)
@@ -672,17 +680,21 @@ A continuación, se estiman otros modelos de regresión con la combinación de l
 model_rg_2 <- glm(formula=heart_attack~chest_pain_type,data=heart_data, 
                   family=binomial(link=logit))
 
-model_rg_3 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels,data=heart_data, 
+model_rg_3 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels,
+                  data=heart_data, 
                   family=binomial(link=logit))
 
-model_rg_4 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels + sex ,data=heart_data, 
+model_rg_4 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels + sex ,
+                  data=heart_data, 
                   family=binomial(link=logit))
 
-model_rg_5 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels + sex + st_depression ,data=heart_data, 
+model_rg_5 <- glm(formula=heart_attack~chest_pain_type + num_major_vessels + sex + 
+                    st_depression ,data=heart_data, 
                   family=binomial(link=logit))
 
 # Guardamos los valores de una tabla
-indices_AIC <- data.frame( c(2:5), c(model_rg_2$aic,model_rg_3$aic,model_rg_4$aic,model_rg_5$aic))
+indices_AIC <- data.frame( c(2:5), c(model_rg_2$aic,model_rg_3$aic,model_rg_4$aic,
+                                     model_rg_5$aic))
 colnames(indices_AIC) <- c("Modelo", "AIC")
 
 # Se muestran en una tabla los resultados de los valores AIC de cada modelo
@@ -762,24 +774,19 @@ Hay que adjuntar el código, preferiblemente en R, con el que se ha realizado la
 
 Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde ambos integrantes del equipo expliquen con sus propias palabras el desarrollo de la práctica, basándose en las preguntas del enunciado para justificar y explicar el código desarrollado. Este vídeo se deberá entregar a través de un enlace al Google Drive de la UOC, junto con enlace al repositorio Git entregafo.
 
-
-```{r}
-
-
-```
-
-
 # Contribuciones de los integrantes
 
 A continuación se presentan las contribuciones del proyecto firmadas por los integrantes del grupo.
 
 ```{r}
 contribuciones <- data.frame(
-    Contribución = c("Investigación previa", "Redacción de las respuestas", "Desarrollo del código", "Participación en el vídeo"),
-  Firma = c("Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual"),
+    Contribución = c("Investigación previa", "Redacción de las respuestas",
+                     "Desarrollo del código", "Participación en el vídeo"),
+  Firma = c("Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual", 
+            "Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual"),
   stringsAsFactors = FALSE
 )
-contribuciones
+contribuciones %>% kable() %>% kable_styling(latex_options = "hold_position")
 ```
 
 El trabajo ha sido dividido de forma modular para que cada integrante pueda recoger parte de las tareas a resolver y enfocarse de manera individual sacar el trabajo adelante. Continuamente se han ido realizando reuniones de grupo (mediante Zoom) para comentar todos los puntos importantes y tomar las decisiones necesarias en cuanto a las tareas que se han necesitado realizar.
