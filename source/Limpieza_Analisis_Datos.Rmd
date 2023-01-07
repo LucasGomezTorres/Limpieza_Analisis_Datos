@@ -770,27 +770,18 @@ Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde
 ```
 
 
+# Contribuciones de los integrantes
 
+A continuación se presentan las contribuciones del proyecto firmadas por los integrantes del grupo.
 
+```{r}
+contribuciones <- data.frame(
+    Contribución = c("Investigación previa", "Redacción de las respuestas", "Desarrollo del código", "Participación en el vídeo"),
+  Firma = c("Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual", "Lucas Gómez, Joan Amengual"),
+  stringsAsFactors = FALSE
+)
+contribuciones
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+El trabajo ha sido dividido de forma modular para que cada integrante pueda recoger parte de las tareas a resolver y enfocarse de manera individual sacar el trabajo adelante. Continuamente se han ido realizando reuniones de grupo (mediante Zoom) para comentar todos los puntos importantes y tomar las decisiones necesarias en cuanto a las tareas que se han necesitado realizar.
 
