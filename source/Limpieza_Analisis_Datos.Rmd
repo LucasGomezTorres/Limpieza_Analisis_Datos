@@ -599,28 +599,12 @@ chisq.test(table(heart_data$chest_pain_type, heart_data$heart_attack))
 
 Viendo los resultados podemos decir:
 
-- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack. Véase con los siguientes gráficos que el sexo femenino es más propoenso a sufrir ataques al corazón. 
+- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack. Véase en el siguiente gráfico que el sexo femenino es más propenso a sufrir ataques al corazón. 
 
 ```{r}
 # Dibujar gráfico de barras
-g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar() +
-theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-# Diagrama de cajas Cholesterol - Sex
-g2 <- ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
-  geom_boxplot() +
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  # Título del gráfico
-  ggtitle ("Box Plot Cholesterol - Sex")+
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
+g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack))+ geom_bar()  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g2 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") + ylab("Frecuencia")  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 grid.arrange(g1, g2, nrow = 1)
 ```
 
@@ -656,10 +640,11 @@ ggplot(heart_data, aes(x=fasting_blood_sugar, fill=sex)) +
     color="black"))
 ```
 
-- Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). El siguiente gráfico demuestra que sufrir un dolor en el pecho como angina típica, dolor no anginoso o asintomático puede repercutir en un ataque del corazón con una alta probabilidad. Por tanto el dolor en el pecho tiene una importancia significativa para los casos de ataque al corazón.
+- Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). El siguiente gráfico demuestra que sufrir un dolor en el pecho como angina atípica, dolor no anginoso o asintomático puede repercutir en un ataque del corazón con una alta probabilidad. Por tanto el dolor en el pecho tiene una importancia significativa para los casos de ataque al corazón.
 
 ```{r}
-g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
+g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) 
++ geom_bar() +
 theme(axis.text.x = element_text(angle = 90, hjust = 1))
 g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
 ylab("Frecuencia") +
