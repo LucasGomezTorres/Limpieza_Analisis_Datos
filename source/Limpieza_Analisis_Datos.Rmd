@@ -643,8 +643,7 @@ ggplot(heart_data, aes(x=fasting_blood_sugar, fill=sex)) +
 - Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). El siguiente gráfico demuestra que sufrir un dolor en el pecho como angina atípica, dolor no anginoso o asintomático puede repercutir en un ataque del corazón con una alta probabilidad. Por tanto el dolor en el pecho tiene una importancia significativa para los casos de ataque al corazón.
 
 ```{r}
-g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) 
-+ geom_bar() +
+g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
 theme(axis.text.x = element_text(angle = 90, hjust = 1))
 g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
 ylab("Frecuencia") +
