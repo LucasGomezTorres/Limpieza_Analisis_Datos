@@ -2,21 +2,22 @@
 title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
-header-includes: 
-   - \renewcommand{\contentsname}{Índice General}
 output:
+  html_document:
+    code_folding: show
+    df_print: paged
+    highlight: tango
+    number_sections: no
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
   pdf_document:
     toc: yes
     number_sections: yes
     toc_depth: 6
-    latex_engine : xelatex 
-
-  html_document:
-    toc: yes
-    number_sections: yes
-    toc_depth: 6
+    latex_engine: xelatex
+header-includes: \renewcommand{\contentsname}{Índice General}
 ---
-
 
 
 ```{r setup, include=FALSE}
@@ -264,17 +265,7 @@ heart_data$heart_attack <- factor(heart_data$heart_attack, levels = c(0,1),
                                       labels= c("No", "Yes"))
 ```
 
-También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. Usaremos esta normalización utilizando la función *scale* para normalizar las variables cuantitativas.
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-# Indices de las variables cuantitativas
-idx_var_cuant <- c(1,4,5,8,10,12)
-
-# Normalización variables cuantitativas
-heart_norm <- scale(heart_data[,idx_var_cuant])
-```
-
-Es posible que se tengan que utilizar más adelante estos datos normalizados, sin embargo, se van a mantener sin normalizar ya que para mostrar los resultados resulta más intuitivo verlos en su escala natural.
+También se pueden aplicar otro tipo de conversiones como por ejemplo la normalización *z-score* que resta la media a la variable y la divide por su desviación estándar. 
 
 En el caso de las variables que no presenten una distribución normal, como será el caso de *cholesterol*, una opción sería realizar transformaciones de tipo Box-Cox para poder mejorar su normalidad y su homocedasticidad.
 
@@ -389,19 +380,6 @@ Finalmente se puede observar que dicha variable ya no contiene valores nulos, ya
 sum(is.na(heart_data$cholesterol))
 ```
 
-## Generación del archivo con los datos tratados
-
-Se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica.
-
-```{r}
-# Dataframe tratado
-df_heart_final <- heart_data
-# Se incluyen las variables cuantitativas normalizadas
-df_heart_final[, idx_var_cuant] <- heart_norm
-# Se exporta a formato csv
-write.csv(df_heart_final, file = "clean_data.csv", row.names = FALSE, col.names = TRUE)
-```
-
 # Análisis de los datos.
 
 ## Selección de los grupos de datos que se quieren analizar/comparar (p.ej., si se van a comparar grupos de datos, ¿cuáles son estos grupos y qué tipo de análisis se van a aplicar?).
@@ -412,7 +390,7 @@ Como comentamos al principio de la práctica, queremos responder a las siguiente
 
 - ¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque? 
 
-- ¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque y según el sexo del paciente?
+- ¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque?
 
 - ¿Las personas mayores sufren más ataques?
 
@@ -435,9 +413,13 @@ Se va a analizar la normalidad y la homocedasticidad de las variables cuantitati
 Para ello, vamos a representar mediante histogramas la distribución de los datos de las variables en comparación con la normal teórica para poder ver visualmente si siguen una distribución normal. No obstante, después lo verificaremos mediante el test de *Shapiro Wilk* y mediante el gráfico *Q-Q plot* mediante las funciones de R `qqnorm` y `qqline`.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
+# Indices de las variables cuantitativas
+idx_var_cuant <- c(1,4,5,8,10,12)
 # Histograma de la distribución de la variable VS la distribucion normal teorica
-multi.hist(x = heart_data[,idx_var_cuant], dcol = c("blue", "red"), 
-           dlty = c("dotted", "solid"),global=FALSE)
+multi.hist(x = heart_data[,idx_var_cuant], 
+             dcol = c("blue", "red"), 
+             dlty = c("dotted", "solid"),
+             global=FALSE)
 ```
 
 Podemos comprobar como visualmente no siguen una distribución normal ninguna de las variables, no obstante, algunas variables como *age*, *cholesterol*, *max_heart_rate_achieved* y *resting_blood_pressure* no se le alejan mucho de la normal.
@@ -456,8 +438,11 @@ df_p_value_shapiro_wilk <- data.frame(
 "P-Value" = sapply(heart_data[,idx_var_cuant],p_value_shapiro_wilk))
 
 # Se le añade el nombre a las variables
-colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure","Cholesterol",
-                                       "Max_heart_rate_achieved","st_depression","num_major_vessels")
+colnames(df_p_value_shapiro_wilk) <- c("Age","Resting_Blood_Pressure",
+                                       "Cholesterol",
+                                       "Max_heart_rate_achieved",
+                                       "st_depression",
+                                       "num_major_vessels")
 
 # Se visualiza el dataframe creado
 kable(df_p_value_shapiro_wilk,digits=3, 
@@ -479,25 +464,28 @@ Como podíamos comprobar con el histograma y con el test de *Shapiro Wilk*, las 
 
 Por lo tanto, *ninguna variable sigue una distribución normal*. Sin embargo, para las que más se acercan se intentará transformar los datos para que sean normales con la transformación de *Box-Cox* y volviendo a aplicar el test de *Shapiro Wilk* para verificar la transformación.
 
-
 ```{r}
 # Se aplica la transformación de Box Cox a las variables age,
 # cholesterol, max_heart_rate_achieved y resting_blood_pressure
 
 # Age
-age_norm <- BoxCox(heart_data$age, lambda = BoxCoxLambda(heart_data$age))
+age_norm <- BoxCox(heart_data$age, 
+                   lambda = BoxCoxLambda(heart_data$age))
 shapiro.test(age_norm)
 
 # cholesterol
-cholesterol_norm <- BoxCox(heart_data$cholesterol, lambda = BoxCoxLambda(heart_data$cholesterol))
+cholesterol_norm <- BoxCox(heart_data$cholesterol, 
+                           lambda = BoxCoxLambda(heart_data$cholesterol))
 shapiro.test(cholesterol_norm)
 
 # max_heart_rate_achieved
-max_heart_rate_achieved_norm <- BoxCox(heart_data$max_heart_rate_achieved, lambda = BoxCoxLambda(heart_data$max_heart_rate_achieved))
+max_heart_rate_achieved_norm <- BoxCox(heart_data$max_heart_rate_achieved, 
+                                       lambda = BoxCoxLambda(heart_data$max_heart_rate_achieved))
 shapiro.test(max_heart_rate_achieved_norm)
 
 # resting_blood_pressure
-resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
+resting_blood_pressure_norm <- BoxCox(heart_data$resting_blood_pressure, 
+                                      lambda = BoxCoxLambda(heart_data$resting_blood_pressure))
 shapiro.test(resting_blood_pressure_norm)
 ```
 
@@ -517,16 +505,16 @@ Para comprobar si las variables que usamos para responder a las preguntas previa
 
 ```{r}
 # Comprobación de homocedasticidad Cholesterol - Heart attack
-LeveneTest(cholesterol ~ heart_attack,data = heart_data) #-> Homo
+LeveneTest(cholesterol ~ heart_attack,data = heart_data)
 
 # Comprobación de homocedasticidad Cholesterol - Sex
-LeveneTest(cholesterol ~ sex,data = heart_data) # -> Hetero
+LeveneTest(cholesterol ~ sex,data = heart_data)
 
 # Comprobación de homocedasticidad Age - Heart attack
-fligner.test(age ~ heart_attack,data = heart_data)  # -> Hetero
+fligner.test(age ~ heart_attack,data = heart_data)
 
 # Comprobación de homocedasticidad resting_blood_pressure - Heart attack
-fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)  # -> Homo
+fligner.test(resting_blood_pressure ~ heart_attack,data = heart_data)
 ```
 
 Las conclusiones de estos tests son las siguientes:
@@ -554,6 +542,24 @@ t.test(cholesterol ~ heart_attack, data = heart_data)
 ```
 
 Viendo el resultado del test para el caso de la variable cholesterol con heart_attack, como el p-valor es mayor al nivel de significancia de 0.05, se puede observar que no hay diferencias estadísticamente significativas entre las medias de los grupos de datos de heart_attack.
+
+```{r}
+# Diagrama de cajas Cholesterol - Heart attack
+ggplot(heart_data,aes(x=heart_attack,y=cholesterol, fill=heart_attack)) +
+  geom_boxplot() +
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  # Título del gráfico
+  ggtitle ("Box Plot Cholesterol - Heart attack")+
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+```
 
 Los siguientes tests a aplicar serán no parámetricos dado que las variables no son normales o no presentan homocedasticidad y por lo tanto no cumplen las supociones requeridas por los tests paramétricos. Se aplicará el *test de Wilcoxon o Mann-Whitney* (ambos se aplican igual con la misma función *wilcox.test*) donde la hipótesis nula asume igualdad de distribución para los diferentes grupos de la variable categórica.
 
@@ -592,14 +598,78 @@ table(heart_data$chest_pain_type, heart_data$heart_attack)
 chisq.test(table(heart_data$chest_pain_type, heart_data$heart_attack))
 ```
 
+
 Viendo los resultados podemos decir:
 
-- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack.
+- El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra diferencias significativas con padecer un ataque puesto que no se cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de pecho son variables que repercuten a la hora de sufrir un ataque al corazón, siendo dependientes con la variable heart_attack. Véase con los siguientes gráficos la diferencia entre los sexos:
 
-- El nivel de azúcar en sangre no muestra diferencias significativas con padecer un ataque ya que se cumple la hipótesis nula, por lo que no existe a priori una relación entre ambas variables.
+```{r}
+# Crear tabla de contingencia
+sex_heart_attack_table <- table(heart_data$sex, heart_data$heart_attack)
 
-- No hay una repercusión directa entre el sexo del paciente y el nivel de azúcar en sangre puesto que se acepta la hipótesis nula concluyendo que entre hombres y mujeres no existen diferencias significativas en el nivel de azúcar.
+# Dibujar gráfico de barras
+g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar() +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# Diagrama de cajas Cholesterol - Sex
+g2 <- ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
+  geom_boxplot() +
+  # Barras de error
+  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
+  # Etiqueta Eje x y leyenda
+  scale_fill_hue(labels = c("NO", "YES"))+
+  # Título del gráfico
+  ggtitle ("Box Plot Cholesterol - Sex")+
+  # Características del gráfico
+    theme (plot.title = element_text(
+        hjust = 0.5,
+        size=rel(1.2),
+        face="bold", 
+        color="black"))
+grid.arrange(g1, g2, nrow = 1)
+```
 
+- No hay una diferencia significativa en la proporción de personas con azúcar en sangre baja o alta que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.7444). Véase en el siguiente gráfico:
+
+```{r}
+# Dibujar gráfico de barras apiladas
+ggplot(heart_data, aes(x=fasting_blood_sugar, fill=heart_attack)) +
+  geom_bar(position="fill") +
+  ggtitle("Heart Attack by Fasting Blood Sugar Level") +
+  theme (plot.title = element_text(
+    hjust = 0.5,
+    size=rel(1.2),
+    face="bold", 
+    color="black"))
+```
+
+
+- No hay una diferencia significativa en la proporción de personas de diferentes sexos con azúcar en sangre baja o alta, ya que el valor p del test de chi-cuadrado es muy grande (p-value = 0.5417). Véase en el siguiente gráfico:
+
+```{r}
+# Crear tabla de contingencia
+sugar_sex_table <- table(heart_data$fasting_blood_sugar, heart_data$sex)
+
+# Dibujar gráfico de barras apiladas
+ggplot(heart_data, aes(x=fasting_blood_sugar, fill=sex)) +
+  geom_bar(position="fill") +
+  ggtitle("Fasting Blood Sugar Level by Sex") +
+  theme (plot.title = element_text(
+    hjust = 0.5,
+    size=rel(1.2),
+    face="bold", 
+    color="black"))
+```
+
+- Hay una diferencia significativa en la proporción de personas con diferentes tipos de dolor de pecho que han padecido un ataque al corazón, ya que el valor p del test de chi-cuadrado es muy pequeño (p-value < 2.2e-16). Véase en el siguiente gráfico:
+
+```{r}
+g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
+ylab("Frecuencia") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+grid.arrange(g1, g2, nrow = 1)
+```
 
 ### Modelos de regresión logística
 
@@ -619,7 +689,6 @@ A continuación, se estiman otros modelos de regresión con la combinación de l
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Se estima varios modelos de regresión logística
-
 model_rg_2 <- glm(formula=heart_attack~chest_pain_type,data=heart_data, 
                   family=binomial(link=logit))
 
@@ -666,156 +735,48 @@ Por último, para la variable *sex* obteniendo un coeficiente negativo respecto 
 
 En definitiva, la probabilidad para que el paciente sufra un ataque al corazón aumenta teniendo dolor de pecho asintomático, angina atípica y dolor no anginoso, mientras que disminuye siendo hombre, a mayor número de vasos principales y con la depresión ST inducida por el ejercicio en relación con el descanso.
 
+## Generación del archivo con los datos tratados
+
+Se genera el fichero con los datos tratados y limpiados tal y como se pide en la práctica.
+
+```{r}
+# Dataframe tratado
+df_heart_final <- heart_data
+# Se exporta a formato csv
+write.csv(df_heart_final, file = "clean_data.csv", row.names = FALSE, col.names = TRUE)
+```
+
 # Representación de los resultados a partir de tablas y gráficas.
 
-Este apartado se puede responder a lo largo de la práctica, sin necesidad de concentrar todas las representaciones en este punto de la práctica.
-
-```{r}
-library(corrplot)
-library(Hmisc)
-#corrplot.mixed(cor(heart_norm, method = "spearman"))
-
-#rcorr(heart_norm, type = "spearman")
-
-#pairs.panels(x = heart_norm, ellipses = FALSE, lm = TRUE,
-#method = "spearman", hist.col = "cadetblue1")
-
-# Diagrama de cajas Cholesterol - Heart attack
-ggplot(heart_data,aes(x=heart_attack,y=st_depression, fill=heart_attack)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot st_depression - Heart attack")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
-
-
-# Diagrama de cajas Cholesterol - Heart attack
-ggplot(heart_data,aes(x=heart_attack,y=cholesterol, fill=heart_attack)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot Cholesterol - Heart attack")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
-
-
-# Diagrama de cajas Cholesterol - Sex
-ggplot(heart_data,aes(x=sex,y=cholesterol, fill=sex)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot Cholesterol - Sex")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
-
-# Diagrama de cajas Age - Heart attack
-ggplot(heart_data,aes(x=heart_attack,y=age, fill=heart_attack)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot Age - Heart attack")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
-
-g1 <- ggplot(data = heart_data, aes(x=age, fill=heart_attack)) + geom_histogram(binwidth =3)
-g2 <- ggplot(data = heart_data, aes(x=age, fill=heart_attack)) + geom_histogram(binwidth = 3,position="fill") + ylab("Frecuencia")
-grid.arrange(g1, g2, nrow = 1)
-
-# Diagrama de cajas Resting blood pressure - Heart attack
-ggplot(heart_data,aes(x=heart_attack,y=resting_blood_pressure, fill=heart_attack)) +
-  
-
-  geom_boxplot() +
-  
-  # Barras de error
-  stat_boxplot(geom = "errorbar",width = 0.25) + # Ancho
-  
-  # Etiqueta Eje x y leyenda
-  scale_fill_hue(labels = c("NO", "YES"))+
-  
-  # Título del gráfico
-  ggtitle ("Box Plot Resting Blood Pressure - Heart attack")+
-   
-  # Características del gráfico
-    theme (plot.title = element_text(
-        hjust = 0.5,
-        size=rel(1.2),
-        face="bold", 
-        color="black"))
-```
-
-```{r}
-g1 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar() +
-theme(axis.text.x = element_text(angle = 90, hjust = 1))
-g2 <- ggplot(data = heart_data, aes(x=chest_pain_type, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
-ylab("Frecuencia") +
-theme(axis.text.x = element_text(angle = 90, hjust = 1))
-grid.arrange(g1, g2, nrow = 1)
-```
-
-```{r}
-g1 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar() +
-theme(axis.text.x = element_text(angle = 90, hjust = 1))
-g2 <- ggplot(data = heart_data, aes(x=sex, fill=heart_attack)) + geom_bar(binwidth = 3,position="fill") +
-ylab("Frecuencia") +
-theme(axis.text.x = element_text(angle = 90, hjust = 1))
-grid.arrange(g1, g2, nrow = 1)
-```
+La representación de los resultados a partir de tablas y gráficas ha sido realizada durante el desarrollo de la práctica para poder situarlos en su contexto específico.
 
 # Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
+
+A continuación se van a extraer las conclusiones observadas durante el desarrollo de este proyecto. Los resultados nos han permitido extraer muchas conclusiones y dar respuestas a nuestras preguntas iniciales.
+
+• **¿Los hombres son más probables a sufrir un ataque que las mujeres?**
+
+Los hombres son menos probables a sufrir un ataque que las mujeres. Es decir, el sexo si que tiene importancia en cuanto a los ataques del corazón, se ha demostrado que las mujeres sufren muchos más ataques al corazón que los hombres.
+
+• **¿El nivel de azúcar en sangre es determinante para que una persona pueda padecer un ataque?**
+
+El nivel de azúcar en sangre no es determinante para que una persona pueda padecer un ataque, ya que no se encontraron diferencias significativas entre esta variable y el padecimiento de un ataque.
+
+• **¿Hay diferencias significativas en el nivel de colesterol según padezca o no un ataque?**
+
+Curiosamente el nivel de colesterol no tiene un impacto directo en que una persona sufra un ataque o no lo sufra tal y como se ha demostrado en este análisis y mediante su visualización gráfica. 
+
+• **¿Las personas mayores sufren más ataques?**
+
+Las personas mayores no sufren más ataques, de hecho se ha observado que el rango de edad de más ataques al corazón se encuentra entre los 50 y 60 años de edad.
+
+• **¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón según el dolor de pecho del paciente?**
+
+Sí hubo indicios de que el dolor de pecho del paciente es un factor determinante para sufrir un ataque, ya que se encontraron diferencias significativas entre los tipos de dolor de pecho y el padecimiento de un ataque.
+
+• **¿Qué factores son los más influyentes para sufrir un ataque?**
+
+Los factores más influyentes para sufrir un ataque, son el tipo de dolor de pecho, el número de vasos principales y el sexo del paciente.
 
 # Código. 
 

@@ -1,0 +1,1930 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Limpieza y Análisis de Datos},
+  pdfauthor={Lucas Gómez Torres y Joan Amengual Mesquida},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\renewcommand{\contentsname}{Índice General}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Limpieza y Análisis de Datos}
+\author{Lucas Gómez Torres y Joan Amengual Mesquida}
+\date{13 de enero, 2023}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{6}
+\tableofcontents
+}
+\($\newpage$\)
+
+\hypertarget{descripciuxf3n-del-dataset.-por-quuxe9-es-importante-y-quuxe9-preguntaproblema-pretende-responder}{%
+\section{Descripción del dataset. ¿Por qué es importante y qué
+pregunta/problema pretende
+responder?}\label{descripciuxf3n-del-dataset.-por-quuxe9-es-importante-y-quuxe9-preguntaproblema-pretende-responder}}
+
+Actualmente cada vez sufren más personas ataques al corazón originados
+por diferentes factores como pueden ser el exceso de colesterol, el
+nivel de azúcar en la sangre, el consumo de tabaco, la presión arterial,
+la obesidad, la edad o la falta de ejercicio, entre muchos otros más,
+que pueden dar lugar a un daño permanente en el corazón como la
+insuficiencia cardiaca o a la muerte.
+
+Por ello, los ataques al corazón son un problema muy grave que hay que
+intentar prevenir, analizando las diferentes variables que pueden
+influir a la hora de que una persona sufra un ataque al corazón o no,
+pudiendo responder a preguntas como por ejemplo:
+
+\begin{itemize}
+\item
+  ¿Los hombres son más probables a sufrir un ataque que las mujeres?
+\item
+  ¿El nivel de azúcar en sangre es determinante para que una persona
+  pueda padecer un ataque?
+\item
+  ¿Hay diferencias significativas en el nivel de colesterol según
+  padezca o no un ataque y según el sexo del paciente?
+\item
+  ¿Las personas mayores sufren más ataques?
+\item
+  ¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón
+  según el dolor de pecho del paciente ?
+\item
+  ¿Qué factores son los más influyentes para sufrir un ataque?
+\end{itemize}
+
+El conjunto de datos está dividido en dos subconjuntos de datos:
+
+\begin{itemize}
+\item
+  \emph{heart.csv}: contiene toda la información sobre los pacientes,
+  incluyendo si finalmente sufrieron un ataque al corazón o no. Tiene
+  303 observaciones y 14 atributos. De estos 14 atributos, 13 son
+  variables independientes y 1 la variable dependiente (variable
+  objetivo que podría servir para construir un modelo de aprendizaje
+  supervisado que nos permita predecir si un paciente tendrá un ataque
+  al corazón o no). A continuación, se describen todos los atributos de
+  este dataset:
+
+  \begin{itemize}
+  \item
+    \textbf{age}: Variable de tipo numérica. Determina la edad de la
+    persona.
+  \item
+    \textbf{sex}: Variable de tipo numérica. Refleja el género de la
+    persona \emph{(1 = masculino, 0 = femenino)}.
+  \item
+    \textbf{cp}: Variable de tipo numérica. Identifica el tipo de dolor
+    en el pecho \emph{(0 = angina típica, 1 = angina atípica, 2 = dolor
+    no anginoso, 3 = asintomático)}.
+  \item
+    \textbf{trtbps}: Variable de tipo numérica. Indica la presión
+    arterial en reposo en mg/dl.
+  \item
+    \textbf{chol}: Variable de tipo numérica. Hace referencia al nivel
+    de colesterol en mg/dl.
+  \item
+    \textbf{fbs}: Variable de tipo numérica. Indica si el nivel de
+    azúcar en sangre en ayunas es mayor a 120 mg/dl \emph{(1 =
+    verdadero, 0 = falso)}.
+  \item
+    \textbf{restecg}: Variable de tipo numérica. Muestra los resultados
+    electrocardiográficos en reposo \emph{(0 = normal, 1 = anomalía de
+    onda ST-T (inversiones de onda T y/o elevación o depresión ST de
+    \textgreater{} 0,05 mV), 2 = hipertrofia ventricular izquierda
+    probable o definida por los criterios de Estes)}.
+  \item
+    \textbf{thalachh}: Variable de tipo numérica. Determina la
+    frecuencia cardiaca máxima alcanzada.
+  \item
+    \textbf{exng:}: Variable de tipo numérica. Indica si la angina ha
+    sido inducida por el ejercicio \emph{(1 = sí, 0 = no)}.
+  \item
+    \textbf{oldpeak}: Variable de tipo numérica. Señala la depresión ST
+    inducida por el ejercicio en relación con el descanso.
+  \item
+    \textbf{slp}: Variable de tipo numérica. Muestra la pendiente del
+    segmento ST de ejercicio máximo \emph{(0 = inclinación hacia abajo,
+    1 = plano, 2 = inclinación hacia arriba)}.
+  \item
+    \textbf{caa}: Variable de tipo numérica. Indica el número de vasos
+    principales \emph{(0, 1, 2, 3)}.
+  \item
+    \textbf{thall}: Variable de tipo numérica. Señala el ratio de un
+    trastorno sanguíneo llamado talasemia \emph{(0 = no tiene, 1 =
+    defecto fijo (sin flujo sanguíneo en alguna parte del corazón), 2 =
+    flujo sanguíneo normal, 3 = defecto reversible (se observa un flujo
+    sanguíneo, pero no es normal))}.
+  \item
+    \textbf{output}: Variable de tipo numérica. Indica si el paciente
+    sufre un ataque al corazón o no (0 = No, 1 = Sí). Se trata de la
+    variable objetivo o dependiente que se puede utilizar para predecir.
+  \end{itemize}
+\item
+  \emph{o2Saturation.csv}: contiene 3585 observaciones sobre los niveles
+  de oxígeno en la sangre de distintos pacientes y solo tiene 1
+  atributo.
+\end{itemize}
+
+\hypertarget{integraciuxf3n-y-selecciuxf3n-de-los-datos-de-interuxe9s-a-analizar.}{%
+\section{Integración y selección de los datos de interés a
+analizar.}\label{integraciuxf3n-y-selecciuxf3n-de-los-datos-de-interuxe9s-a-analizar.}}
+
+Puede ser el resultado de adicionar diferentes datasets o una
+subselección útil de los datos originales, en base al objetivo que se
+quiera conseguir.
+
+En este apartado se van a cargar ambos conjuntos de datos, para decidir
+si se van a unificar ambos o no, o si nos vamos a centrar en unos
+pacientes concretos limitando el número de registros o de
+características con el fin de reducir el dataset. Además, en el dataset
+de \emph{heart.csv} se van a renombrar los atributos para que se
+entiendan mejor y sean más intuitivos a la hora de utilizarlos más
+adelante.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se carga el dataset}
+\NormalTok{heart\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"heart.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Modificamos los nombres de las variables para que sean más intuitivos}
+\FunctionTok{colnames}\NormalTok{(heart\_data) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"age"}\NormalTok{,}\StringTok{"sex"}\NormalTok{,}\StringTok{"chest\_pain\_type"}\NormalTok{,}\StringTok{"resting\_blood\_pressure"}\NormalTok{,}
+                          \StringTok{"cholesterol"}\NormalTok{,    }\StringTok{"fasting\_blood\_sugar"}\NormalTok{,}\StringTok{"rest\_ecg\_type"}\NormalTok{,  }
+                          \StringTok{"max\_heart\_rate\_achieved"}\NormalTok{,}\StringTok{"exercise\_induced\_angina"}\NormalTok{, }
+                          \StringTok{"st\_depression"}\NormalTok{, }\StringTok{"st\_slope\_type"}\NormalTok{, }\StringTok{"num\_major\_vessels"}\NormalTok{,}
+                          \StringTok{"thalassemia\_type"}\NormalTok{,}\StringTok{"heart\_attack"}\NormalTok{)}
+
+\CommentTok{\# Dimensión del dataset}
+\FunctionTok{dim}\NormalTok{(heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 303  14
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se carga el dataset}
+\NormalTok{O2\_saturation }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"o2Saturation.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Dimensión del dataset}
+\FunctionTok{dim}\NormalTok{(O2\_saturation)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3585    1
+\end{verbatim}
+
+Podemos observar que ambos conjuntos de datos tienen dimensiones
+diferentes. El que contiene los niveles de oxígeno en la sangre consta
+de 3.585 observaciones, es decir, diferentes niveles de oxígeno para
+3.585 pacientes, en cambio, el otro, contiene información sobre 303
+pacientes y 14 características distintas. Como ya tenemos suficientes
+características en el dataset de \emph{heart.csv} con las que poder
+realizar un estudio detallado y completo a las preguntas que hemos
+planteado al principio, se va a optar por descartar el otro conjunto y
+perder este atributo adicional de los pacientes.
+
+En el caso de haber querido unificarlos y por lo tanto añadir otro
+atributo al dataset de \emph{heart.csv} (saturación de oxígeno), se
+podría haber utilizado la función \emph{merge} permitiéndonos
+fusionarlos de forma horizontal. Posteriormente, se podría comprobar que
+no existen inconsistencias ni duplicidades en los registros con la
+función \emph{duplicated} o \emph{unique}. No obstante, no existe un
+identificador único para cada uno de los pacientes como podría ser un id
+o un nombre, por lo que suponemos que podría haber dos pacientes con los
+mismos valores de atributos. Asimismo comprobaremos si hay muchos
+registros duplicados con el fin de que no pueda afectar significamente
+en los análisis posteriores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobamos si existen registros duplicados con los mismos valores en todos los campos }
+\CommentTok{\# (dado que no tenemos identificador) Y contamos cuántos son}
+
+\FunctionTok{nrow}\NormalTok{(heart\_data[}\FunctionTok{duplicated}\NormalTok{(heart\_data), ])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Vemos los registros que están duplicados}
+\NormalTok{heart\_data[}\FunctionTok{duplicated}\NormalTok{(heart\_data), ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     age sex chest_pain_type resting_blood_pressure cholesterol
+## 165  38   1               2                    138         175
+##     fasting_blood_sugar rest_ecg_type max_heart_rate_achieved
+## 165                   0             1                     173
+##     exercise_induced_angina st_depression st_slope_type num_major_vessels
+## 165                       0             0             2                 4
+##     thalassemia_type heart_attack
+## 165                2            1
+\end{verbatim}
+
+Dado que solo existe un registro duplicado, con los mismos valores en
+todos los campos, no se va a eliminar porque es un porcentaje muy bajo
+del total y no afectará de manera significativa a los resultados que
+obtendremos más adelante. Además, al ser solo un registro, podría ser el
+caso de que esos dos pacientes fueran distintos y tuvieran las mismas
+características. Si tuviéramos muchos más, entonces seguramente serían
+los mismos pacientes y tendríamos que eliminarlos.
+
+A continuación, se muestran algunos registros e información general de
+los datos que servirá para posteriomente proceder a la limpieza y
+conversión de los datos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Mostramos los tipos de datos de las variables tal y como las interpreta R }
+\FunctionTok{sapply}\NormalTok{(heart\_data,class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     age                     sex         chest_pain_type 
+##               "integer"               "integer"               "integer" 
+##  resting_blood_pressure             cholesterol     fasting_blood_sugar 
+##               "integer"               "integer"               "integer" 
+##           rest_ecg_type max_heart_rate_achieved exercise_induced_angina 
+##               "integer"               "integer"               "integer" 
+##           st_depression           st_slope_type       num_major_vessels 
+##               "numeric"               "integer"               "integer" 
+##        thalassemia_type            heart_attack 
+##               "integer"               "integer"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Mostramos un resumen de los datos}
+\FunctionTok{summary}\NormalTok{(heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       age             sex         chest_pain_type resting_blood_pressure
+##  Min.   :29.00   Min.   :0.0000   Min.   :0.000   Min.   : 94.0         
+##  1st Qu.:47.50   1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:120.0         
+##  Median :55.00   Median :1.0000   Median :1.000   Median :130.0         
+##  Mean   :54.37   Mean   :0.6832   Mean   :0.967   Mean   :131.6         
+##  3rd Qu.:61.00   3rd Qu.:1.0000   3rd Qu.:2.000   3rd Qu.:140.0         
+##  Max.   :77.00   Max.   :1.0000   Max.   :3.000   Max.   :200.0         
+##   cholesterol    fasting_blood_sugar rest_ecg_type    max_heart_rate_achieved
+##  Min.   :126.0   Min.   :0.0000      Min.   :0.0000   Min.   : 71.0          
+##  1st Qu.:211.0   1st Qu.:0.0000      1st Qu.:0.0000   1st Qu.:133.5          
+##  Median :240.0   Median :0.0000      Median :1.0000   Median :153.0          
+##  Mean   :246.3   Mean   :0.1485      Mean   :0.5281   Mean   :149.6          
+##  3rd Qu.:274.5   3rd Qu.:0.0000      3rd Qu.:1.0000   3rd Qu.:166.0          
+##  Max.   :564.0   Max.   :1.0000      Max.   :2.0000   Max.   :202.0          
+##  exercise_induced_angina st_depression  st_slope_type   num_major_vessels
+##  Min.   :0.0000          Min.   :0.00   Min.   :0.000   Min.   :0.0000   
+##  1st Qu.:0.0000          1st Qu.:0.00   1st Qu.:1.000   1st Qu.:0.0000   
+##  Median :0.0000          Median :0.80   Median :1.000   Median :0.0000   
+##  Mean   :0.3267          Mean   :1.04   Mean   :1.399   Mean   :0.7294   
+##  3rd Qu.:1.0000          3rd Qu.:1.60   3rd Qu.:2.000   3rd Qu.:1.0000   
+##  Max.   :1.0000          Max.   :6.20   Max.   :2.000   Max.   :4.0000   
+##  thalassemia_type  heart_attack   
+##  Min.   :0.000    Min.   :0.0000  
+##  1st Qu.:2.000    1st Qu.:0.0000  
+##  Median :2.000    Median :1.0000  
+##  Mean   :2.314    Mean   :0.5446  
+##  3rd Qu.:3.000    3rd Qu.:1.0000  
+##  Max.   :3.000    Max.   :1.0000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se muestran las 4 primeras observaciones de los datos}
+\FunctionTok{head}\NormalTok{(heart\_data,}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   age sex chest_pain_type resting_blood_pressure cholesterol
+## 1  63   1               3                    145         233
+## 2  37   1               2                    130         250
+## 3  41   0               1                    130         204
+## 4  56   1               1                    120         236
+##   fasting_blood_sugar rest_ecg_type max_heart_rate_achieved
+## 1                   1             0                     150
+## 2                   0             1                     187
+## 3                   0             0                     172
+## 4                   0             1                     178
+##   exercise_induced_angina st_depression st_slope_type num_major_vessels
+## 1                       0           2.3             0                 0
+## 2                       0           3.5             0                 0
+## 3                       0           1.4             2                 0
+## 4                       0           0.8             2                 0
+##   thalassemia_type heart_attack
+## 1                1            1
+## 2                2            1
+## 3                2            1
+## 4                2            1
+\end{verbatim}
+
+Por último, para nuestro análisis no se van a descartar registros porque
+no nos vamos a centrar en un tramo de edad concreto, sexo o una cantidad
+de colesterol, sino que se van a considerar a todos los pacientes con
+todas sus características para extraer el mayor número de conclusiones
+posibles teniendo en cuenta todos los atributos.
+
+\hypertarget{limpieza-de-los-datos.}{%
+\section{Limpieza de los datos.}\label{limpieza-de-los-datos.}}
+
+\hypertarget{los-datos-contienen-ceros-o-elementos-vacuxedos-gestiona-cada-uno-de-estos-casos.}{%
+\subsection{¿Los datos contienen ceros o elementos vacíos? Gestiona cada
+uno de estos
+casos.}\label{los-datos-contienen-ceros-o-elementos-vacuxedos-gestiona-cada-uno-de-estos-casos.}}
+
+\hypertarget{caso-ceros}{%
+\subsubsection{Caso: Ceros}\label{caso-ceros}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Analisis de las columnas que contienen ceros en sus valores}
+\NormalTok{cols\_with\_zeros }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}\FunctionTok{apply}\NormalTok{(heart\_data, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(x }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+\FunctionTok{colnames}\NormalTok{(heart\_data)[cols\_with\_zeros]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "sex"                     "chest_pain_type"        
+##  [3] "fasting_blood_sugar"     "rest_ecg_type"          
+##  [5] "exercise_induced_angina" "st_depression"          
+##  [7] "st_slope_type"           "num_major_vessels"      
+##  [9] "thalassemia_type"        "heart_attack"
+\end{verbatim}
+
+Las variables que contienen algún valor igual a cero son variables que
+esperan reflejar este valor tal y como se ha definido en el enunciado,
+por lo tanto no se va a realizar una limpieza de datos para este caso en
+particular. Véase a continuación las variables que aparecen con algún
+valor cero son las siguientes:
+
+\begin{itemize}
+\item
+  ``sex'': Refleja el género de la persona (1 = masculino, 0 =
+  femenino).
+\item
+  ``chest\_pain\_type'': Identifica el tipo de dolor en el pecho (0 =
+  angina típica, 1 = angina atípica, 2 = dolor no anginoso, 3 =
+  asintomático).
+\item
+  ``fasting\_blood\_sugar'': Indica si el nivel de azúcar en sangre en
+  ayunas es mayor a 120 mg/dl (1 = verdadero, 0 = falso).
+\item
+  ``rest\_ecg\_type'': Muestra los resultados electrocardiográficos en
+  reposo (0 = normal, 1 = anomalía de onda ST-T (inversiones de onda T
+  y/o elevación o depresión ST de \textgreater{} 0,05 mV), 2 =
+  hipertrofia ventricular izquierda probable o definida por los
+  criterios de Estes).
+\item
+  ``exercise\_induced\_angina'': Indica si la angina ha sido inducida
+  por el ejercicio (1 = sí, 0 = no).
+\item
+  ``st\_depression'': Señala la depresión ST inducida por el ejercicio
+  en relación con el descanso.
+\item
+  ``st\_slope\_type'': Muestra la pendiente del segmento ST de ejercicio
+  máximo (0 = inclinación hacia abajo, 1 = plano, 2 = inclinación hacia
+  arriba).
+\item
+  ``num\_major\_vessels'': Indica el número de vasos principales (0, 1,
+  2, 3).
+\item
+  ``thalassemia\_type'': Señala el ratio de un trastorno sanguíneo
+  llamado talasemia (0 = no tiene, 1 = defecto fijo (sin flujo sanguíneo
+  en alguna parte del corazón), 2 = flujo sanguíneo normal, 3 = defecto
+  reversible (se observa un flujo sanguíneo, pero no es normal)).
+\item
+  ``heart\_attack'': Indica si el paciente sufre un ataque al corazón o
+  no (0 = No, 1 = Sí).
+\end{itemize}
+
+\hypertarget{caso-elementos-vacuxedos}{%
+\subsubsection{Caso: Elementos Vacíos}\label{caso-elementos-vacuxedos}}
+
+A continuación se realiza la comprobación de si hay elementos vacíos en
+el dataset, para cada columna se realiza el conteo de elementos vacíos
+existentes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Elementos vacíos de las variables del dataset}
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(heart\_data))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     age                     sex         chest_pain_type 
+##                       0                       0                       0 
+##  resting_blood_pressure             cholesterol     fasting_blood_sugar 
+##                       0                       0                       0 
+##           rest_ecg_type max_heart_rate_achieved exercise_induced_angina 
+##                       0                       0                       0 
+##           st_depression           st_slope_type       num_major_vessels 
+##                       0                       0                       0 
+##        thalassemia_type            heart_attack 
+##                       0                       0
+\end{verbatim}
+
+Como se visualiza en los resultados anteriores no existen elementos
+vacíos en el conjunto de datos. Con ello, no será necesario realizar
+ningún procedimiento de limpieza de datos para valores vacíos de las
+variables del dataset.
+
+\hypertarget{conversiuxf3n-y-adaptaciuxf3n-de-los-datos}{%
+\subsubsection{Conversión y adaptación de los
+datos}\label{conversiuxf3n-y-adaptaciuxf3n-de-los-datos}}
+
+Se van a realizar algunas conversiones de los tipos de algunas variables
+para realizar un análisis más eficiente y que nos facilite la
+interpretación de los resultados.
+
+Primero convertiremos las siguientes variables numéricas a categóricas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Transformamos a tipo factor las siguientes variables}
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{sex }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{labels=} 
+                           \FunctionTok{c}\NormalTok{(}\StringTok{"Femenino"}\NormalTok{, }\StringTok{"Masculino"}\NormalTok{))}
+
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{chest\_pain\_type }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{chest\_pain\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{), }\AttributeTok{labels=} 
+                                       \FunctionTok{c}\NormalTok{(}\StringTok{"Angina típica"}\NormalTok{, }\StringTok{"Angina atípica"}\NormalTok{,}
+                                        \StringTok{"Dolor no anginoso"}\NormalTok{,}\StringTok{"Asintomático"}\NormalTok{))}
+
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+                                         \AttributeTok{labels=} 
+                                           \FunctionTok{c}\NormalTok{(}\StringTok{"Azúcar Bajo"}\NormalTok{, }\StringTok{"Azúcar Alto"}\NormalTok{))}
+
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{rest\_ecg\_type }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{rest\_ecg\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\AttributeTok{labels=} 
+                                     \FunctionTok{c}\NormalTok{(}\StringTok{"Normal"}\NormalTok{, }\StringTok{"Anomalía de onda ST{-}T"}\NormalTok{,}
+                                      \StringTok{"Hipertrofia ventricular izquierda"}\NormalTok{))    }
+
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{exercise\_induced\_angina }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{exercise\_induced\_angina, }
+                                             \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{labels=} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Sí"}\NormalTok{))}
+
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{st\_slope\_type }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{st\_slope\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }
+                                   \AttributeTok{labels=} \FunctionTok{c}\NormalTok{(}\StringTok{"Baja"}\NormalTok{, }\StringTok{"Normal"}\NormalTok{,}\StringTok{"Alta"}\NormalTok{))}
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{thalassemia\_type }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{thalassemia\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{), }
+                                      \AttributeTok{labels=} \FunctionTok{c}\NormalTok{(}\StringTok{"Inexistente"}\NormalTok{, }\StringTok{"Fijo"}\NormalTok{,}
+                                          \StringTok{"Normal"}\NormalTok{,}\StringTok{"Reversible"}\NormalTok{))}
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }
+                                      \AttributeTok{labels=} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Yes"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+También se pueden aplicar otro tipo de conversiones como por ejemplo la
+normalización \emph{z-score} que resta la media a la variable y la
+divide por su desviación estándar.
+
+En el caso de las variables que no presenten una distribución normal,
+como será el caso de \emph{cholesterol}, una opción sería realizar
+transformaciones de tipo Box-Cox para poder mejorar su normalidad y su
+homocedasticidad.
+
+Asimismo, para algunas variables como por ejemplo la edad del paciente,
+sería interesante realizar un proceso de discretización. Esto nos
+permitiría agrupar las edades en diferentes grupos y poder sacar
+conclusiones que nos aporten un valor simbólico más allá de solo un
+número, aportándonos mayor información.
+
+\hypertarget{identifica-y-gestiona-los-valores-extremos}{%
+\subsection{Identifica y gestiona los valores
+extremos}\label{identifica-y-gestiona-los-valores-extremos}}
+
+En primer lugar se realiza la visualización de los valores extremos para
+las variables: \emph{``age'', ``cholesterol'',
+``max\_heart\_rate\_achieved'', ``resting\_blood\_pressure'',
+``st\_depression''}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{outlier\_info }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(var, name\_var, }\AttributeTok{show\_plot =} \ConstantTok{TRUE}\NormalTok{) \{}
+  \CommentTok{\# Valores extremos en formato boxplot de la variable}
+  \ControlFlowTok{if}\NormalTok{ (show\_plot) \{}
+    \FunctionTok{boxplot}\NormalTok{(var, }\AttributeTok{main =}\NormalTok{ name\_var, }
+            \AttributeTok{ylab=}\StringTok{"Valor"}\NormalTok{, }\AttributeTok{col =} \StringTok{"lightblue"}\NormalTok{, }\AttributeTok{horizontal =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{outline =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Identificar los valores atípicos}
+\NormalTok{  outliers }\OtherTok{\textless{}{-}} \FunctionTok{boxplot.stats}\NormalTok{(var)}\SpecialCharTok{$}\NormalTok{out}
+  
+  \CommentTok{\# Imprimir los valores máximo y mínimo de los valores atípicos}
+\NormalTok{  stats }\OtherTok{\textless{}{-}} \FunctionTok{boxplot.stats}\NormalTok{(var)}\SpecialCharTok{$}\NormalTok{stats}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Valor mínimo:"}\NormalTok{, stats[}\DecValTok{1}\NormalTok{], }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Primer cuartil:"}\NormalTok{, stats[}\DecValTok{2}\NormalTok{], }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Media:"}\NormalTok{, stats[}\DecValTok{3}\NormalTok{], }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Tercer cuartil:"}\NormalTok{, stats[}\DecValTok{4}\NormalTok{], }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Valor máximo:"}\NormalTok{, stats[}\DecValTok{5}\NormalTok{], }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(outliers) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"No se han identificado valores atípicos"}\NormalTok{, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \CommentTok{\# Imprimir el número de valores atípicos}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{"Outliers identificados:"}\NormalTok{, }\FunctionTok{unique}\NormalTok{(outliers), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\FunctionTok{outlier\_info}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{age, }\StringTok{"age"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Valor mínimo: 29 
+## Primer cuartil: 47.5 
+## Media: 55 
+## Tercer cuartil: 61 
+## Valor máximo: 77 
+## No se han identificado valores atípicos
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{outlier\_info}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol, }\StringTok{"cholesterol"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Valor mínimo: 126 
+## Primer cuartil: 211 
+## Media: 240 
+## Tercer cuartil: 274.5 
+## Valor máximo: 360 
+## Outliers identificados: 417 564 394 407 409
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{outlier\_info}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{max\_heart\_rate\_achieved, }\StringTok{"max\_heart\_rate\_achieved"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Valor mínimo: 88 
+## Primer cuartil: 133.5 
+## Media: 153 
+## Tercer cuartil: 166 
+## Valor máximo: 202 
+## Outliers identificados: 71
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{outlier\_info}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{resting\_blood\_pressure, }\StringTok{"resting\_blood\_pressure"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Valor mínimo: 94 
+## Primer cuartil: 120 
+## Media: 130 
+## Tercer cuartil: 140 
+## Valor máximo: 170 
+## Outliers identificados: 172 178 180 200 174 192
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{outlier\_info}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{st\_depression, }\StringTok{"st\_depression"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Valor mínimo: 0 
+## Primer cuartil: 0 
+## Media: 0.8 
+## Tercer cuartil: 1.6 
+## Valor máximo: 4 
+## Outliers identificados: 4.2 6.2 5.6 4.4
+\end{verbatim}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+A continuación vamos a extraer las conclusiones pertinentes respectos a
+los valores extremos detectados en los resultados y los gráficos
+previos:
+
+\begin{itemize}
+\item
+  En la variable ``age'', no se han identificado valores atípicos. Los
+  valores máximo y mínimo de la variable son 29 y 77, respectivamente.
+\item
+  En la variable ``cholesterol'', se han identificado 5 valores atípicos
+  (outliers). Los valores máximo y mínimo de los outliers identificados
+  son 126 y 564, respectivamente.
+\item
+  En la variable ``max\_heart\_rate\_achieved'', se ha identificado 1
+  valor atípico (outlier). Los valores máximo y mínimo de los outliers
+  identificados son 71 y 202, respectivamente.
+\item
+  En la variable ``resting\_blood\_pressure'', se han identificado 6
+  valores atípicos (outliers). Los valores máximo y mínimo de los
+  outliers identificados son 94 y 200, respectivamente.
+\item
+  En la variable ``st\_depression'', se han identificado 4 valores
+  atípicos (outliers). Los valores máximo y mínimo de los outliers
+  identificados son 0 y 6.2, respectivamente.
+\end{itemize}
+
+Estos resultados indican que algunas de las variables tienen valores
+extremos que se alejan significativamente del resto y que pueden afectar
+el rendimiento de algunos algoritmos de análisis de datos.
+
+\hypertarget{correcciuxf3n-de-los-outliers}{%
+\subsection{Corrección de los
+outliers}\label{correcciuxf3n-de-los-outliers}}
+
+Se van a tratar los valores de outliers que hemos considerado como no
+válidos. Es importante destacar que un valor extremo no tiene por que
+ser no válido, para determinar si un valor extremo es válido o no hemos
+realizado una investigación sobre las variables y los posibles valores
+que estas pueden tener. De todos los outliers detectados simplemente nos
+centramos en el caso de la variable \emph{cholesterol}.
+
+Realizando una búsqueda sobre los valores comúnes y menos comúnes de
+cholesterol (mg / dL), en 300 mg/dl o más ya se considera un nivel muy
+alto. Para casos más elevados se habla de sufrir hipertrigliceridemia.
+Nosotros hemos establecido que para un valor mayor a 550 se va a
+realizar una corrección de este valor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Número de outliers que superan el valor establecido en la variable tratada}
+\NormalTok{num\_outliers\_var }\OtherTok{=} \FunctionTok{nrow}\NormalTok{(heart\_data[heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol }\SpecialCharTok{\textgreater{}}\DecValTok{550}\NormalTok{,])}
+
+\CommentTok{\# Número de NA\textquotesingle{}s en la variable tratada}
+\NormalTok{num\_nas\_variable\_inicio }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol))}
+
+\CommentTok{\# Se substituyen esos valores atipicos por el valor NA}
+\NormalTok{heart\_data }\OtherTok{=}\NormalTok{ heart\_data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{cholesterol =} \FunctionTok{ifelse}\NormalTok{(cholesterol }\SpecialCharTok{\textgreater{}} \DecValTok{550}\NormalTok{, }\ConstantTok{NA}\NormalTok{, cholesterol))}
+
+\CommentTok{\# Numero de NA\textquotesingle{}s final después del tratado en la variable}
+\NormalTok{num\_nas\_variable\_final }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol))}
+
+\CommentTok{\# Visualización de los resultados}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Número de outliers que superan el valor establecido en la variable:"}\NormalTok{, num\_outliers\_var))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Número de outliers que superan el valor establecido en la variable: 1"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Número inicial de NA\textquotesingle{}s en la variable:"}\NormalTok{, num\_nas\_variable\_inicio))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Número inicial de NA's en la variable: 0"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Número final de NA\textquotesingle{}s en la variable después del tratado:"}\NormalTok{, num\_nas\_variable\_final))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Número final de NA's en la variable después del tratado: 1"
+\end{verbatim}
+
+\hypertarget{imputaciuxf3n-de-valores}{%
+\subsection{Imputación de valores}\label{imputaciuxf3n-de-valores}}
+
+Se va a imputar la media aritmética a esos valores NA's. La imputación
+de valores por media aritmética es un método utilizado para reemplazar
+valores faltantes o perdidos en un conjunto de datos. Este método
+consiste en reemplazar el valor faltante con la media aritmética de los
+valores presentes en el conjunto de datos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se calcula la media aritmética}
+\NormalTok{mean\_cholesterol }\OtherTok{=} \FunctionTok{mean}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol,}\AttributeTok{na.rm=}\NormalTok{T)}
+\CommentTok{\# Se redondea la media}
+\NormalTok{mean\_cholesterol}\OtherTok{=}\FunctionTok{round}\NormalTok{(mean\_cholesterol,}\DecValTok{2}\NormalTok{)}
+\NormalTok{mean\_cholesterol}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 245.21
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Imputamos la media aritmética en los valores nulos}
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol[}\FunctionTok{is.na}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol)] }\OtherTok{\textless{}{-}}\NormalTok{ mean\_cholesterol}
+\end{Highlighting}
+\end{Shaded}
+
+Finalmente se puede observar que dicha variable ya no contiene valores
+nulos, ya que estos se han remplazado por la media aritmética.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobación de no existencia de valores nulos}
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\hypertarget{anuxe1lisis-de-los-datos.}{%
+\section{Análisis de los datos.}\label{anuxe1lisis-de-los-datos.}}
+
+\hypertarget{selecciuxf3n-de-los-grupos-de-datos-que-se-quieren-analizarcomparar-p.ej.-si-se-van-a-comparar-grupos-de-datos-cuuxe1les-son-estos-grupos-y-quuxe9-tipo-de-anuxe1lisis-se-van-a-aplicar.}{%
+\subsection{Selección de los grupos de datos que se quieren
+analizar/comparar (p.ej., si se van a comparar grupos de datos, ¿cuáles
+son estos grupos y qué tipo de análisis se van a
+aplicar?).}\label{selecciuxf3n-de-los-grupos-de-datos-que-se-quieren-analizarcomparar-p.ej.-si-se-van-a-comparar-grupos-de-datos-cuuxe1les-son-estos-grupos-y-quuxe9-tipo-de-anuxe1lisis-se-van-a-aplicar.}}
+
+Como comentamos al principio de la práctica, queremos responder a las
+siguientes preguntas:
+
+\begin{itemize}
+\item
+  ¿Los hombres son más probables a sufrir un ataque que las mujeres?
+\item
+  ¿El nivel de azúcar en sangre es determinante para que una persona
+  pueda padecer un ataque?
+\item
+  ¿Hay diferencias significativas en el nivel de colesterol según
+  padezca o no un ataque y según el sexo del paciente?
+\item
+  ¿Las personas mayores sufren más ataques?
+\item
+  ¿Hubo algún indicio de sufrir más fácilmente un ataque al corazón
+  según el dolor de pecho del paciente ?
+\item
+  ¿Qué factores son los más influyentes para sufrir un ataque?
+\end{itemize}
+
+En nuestro caso, se va a analizar el conjunto de datos \emph{heart.csv}
+para intentar respuesta a las preguntas anteriores. Para ello, se harán
+diferentes contrastes de hipótesis realizando diferentes análisis
+estádisticos como la \emph{prueba t de student}, el \emph{test de
+Wilcoxon} y el \emph{test de chi cuadrado}. Además, se construirá un
+modelo de regresión logística para poder analizar qué variables son las
+que más influyen a la hora de un paciente sufra o no un ataque al
+corazón, tomando como variable dependiente \emph{heart\_attack}.
+
+Se comparará el valor de \emph{cholesterol}, la edad de los pacientes
+(\emph{age}) y la presión arterial en reposo
+(\emph{resting\_blood\_pressure}) entre sufrir o no un ataque
+(\emph{heart\_attack}). También se comparará el valor de
+\emph{cholesterol} entre hombres y mujeres (\emph{sex}), y se analizará
+si hay diferencias significativas entre las variables categóricas
+\emph{sex}, \emph{fasting\_blood\_sugar} y el dolor de pecho
+(\emph{chest\_pain\_type}) con \emph{heart\_attack} y entre el nivel de
+azúcar en sangre (\emph{fasting\_blood\_sugar}) y \emph{sex}.
+
+A la hora de aplicar algunos tests estadísticos, se tendrá que tener en
+cuenta la normalidad y la homocedasticidad de las variables como se verá
+en el apartado siguiente.
+
+\hypertarget{comprobaciuxf3n-de-la-normalidad-y-homogeneidad-de-la-varianza.}{%
+\subsection{Comprobación de la normalidad y homogeneidad de la
+varianza.}\label{comprobaciuxf3n-de-la-normalidad-y-homogeneidad-de-la-varianza.}}
+
+\hypertarget{normalidad}{%
+\subsubsection{Normalidad}\label{normalidad}}
+
+Se va a analizar la normalidad y la homocedasticidad de las variables
+cuantitativas que nos servirán para dar respuesta a las preguntas
+anteriores.
+
+Para ello, vamos a representar mediante histogramas la distribución de
+los datos de las variables en comparación con la normal teórica para
+poder ver visualmente si siguen una distribución normal. No obstante,
+después lo verificaremos mediante el test de \emph{Shapiro Wilk} y
+mediante el gráfico \emph{Q-Q plot} mediante las funciones de R
+\texttt{qqnorm} y \texttt{qqline}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Indices de las variables cuantitativas}
+\NormalTok{idx\_var\_cuant }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{12}\NormalTok{)}
+\CommentTok{\# Histograma de la distribución de la variable VS la distribucion normal teorica}
+\CommentTok{\# multi.hist(x = heart\_data[,idx\_var\_cuant], }
+\CommentTok{\#             dcol = c("blue", "red"), }
+\CommentTok{\#             dlty = c("dotted", "solid"),}
+\CommentTok{\#             global=FALSE)}
+\end{Highlighting}
+\end{Shaded}
+
+Podemos comprobar como visualmente no siguen una distribución normal
+ninguna de las variables, no obstante, algunas variables como
+\emph{age}, \emph{cholesterol}, \emph{max\_heart\_rate\_achieved} y
+\emph{resting\_blood\_pressure} no se le alejan mucho de la normal.
+
+A continuación, se va a ratificar lo anterior aplicando el test de
+Shapiro Wilk a cada una de las variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Devuelve el p{-}valor aplicando el test de Shapiro Wilk}
+\NormalTok{p\_value\_shapiro\_wilk }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{  }
+\NormalTok{  p\_value }\OtherTok{\textless{}{-}} \FunctionTok{shapiro.test}\NormalTok{(x)[}\StringTok{"p.value"}\NormalTok{]}
+  \FunctionTok{return}\NormalTok{ (p\_value)}
+\NormalTok{\}}
+
+\CommentTok{\# Se crea una dataframe con los p{-}valores obtenidos para cada variable}
+\NormalTok{df\_p\_value\_shapiro\_wilk }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+\StringTok{"P{-}Value"} \OtherTok{=} \FunctionTok{sapply}\NormalTok{(heart\_data[,idx\_var\_cuant],p\_value\_shapiro\_wilk))}
+
+\CommentTok{\# Se le añade el nombre a las variables}
+\FunctionTok{colnames}\NormalTok{(df\_p\_value\_shapiro\_wilk) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Age"}\NormalTok{,}\StringTok{"Resting\_Blood\_Pressure"}\NormalTok{,}
+                                       \StringTok{"Cholesterol"}\NormalTok{,}
+                                       \StringTok{"Max\_heart\_rate\_achieved"}\NormalTok{,}
+                                       \StringTok{"st\_depression"}\NormalTok{,}
+                                       \StringTok{"num\_major\_vessels"}\NormalTok{)}
+
+\CommentTok{\# Se visualiza el dataframe creado}
+\FunctionTok{kable}\NormalTok{(df\_p\_value\_shapiro\_wilk,}\AttributeTok{digits=}\DecValTok{3}\NormalTok{, }
+      \AttributeTok{caption=}\StringTok{"P{-}Valores de las variables cuantitativas aplicando Shapiro Wilk"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-15}P-Valores de las variables cuantitativas aplicando Shapiro Wilk}
+\centering
+\begin{tabular}[t]{r|r|r|r|r|r}
+\hline
+Age & Resting\_Blood\_Pressure & Cholesterol & Max\_heart\_rate\_achieved & st\_depression & num\_major\_vessels\\
+\hline
+0.006 & 0 & 0.001 & 0 & 0 & 0\\
+\hline
+\end{tabular}
+\end{table}
+
+Viendo los resultados del test con unos p-valores inferiores al nivel de
+signficancia de 0.05, se rechaza la hipótesis nula y se confirma que la
+distribución de las variables no siguen una distribución normal al
+\(95 \%\) de confianza.
+
+Por último, se muestra el \emph{Q-Q plot} que representa en el eje X los
+cuantiles teóricos (la variable normal estándar) y en el eje Y los
+valores ordenados de la muestra de cada variable, con el fin de ver la
+similitud entre la distribución de la muestra y una distribución normal
+con media 0 y desviación estándar 1.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{)) }
+\ControlFlowTok{for}\NormalTok{ (var }\ControlFlowTok{in}\NormalTok{ idx\_var\_cuant)\{}
+  \FunctionTok{qqnorm}\NormalTok{(heart\_data[,var], }\AttributeTok{main=}\FunctionTok{colnames}\NormalTok{(heart\_data)[var], }\AttributeTok{pch=}\DecValTok{1}\NormalTok{)}
+  \FunctionTok{qqline}\NormalTok{(heart\_data[,var],}\AttributeTok{col=}\StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{) \}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+Como podíamos comprobar con el histograma y con el test de \emph{Shapiro
+Wilk}, las variables \emph{age}, \emph{cholesterol},
+\emph{max\_heart\_rate\_achieved} y \emph{resting\_blood\_pressure} no
+se ajustan del todo a una distribución normal porque presentan un gran
+número de muestras en los extremos izquierdo y derecho que se encuentran
+fuera de la recta de regresión, sin embargo, se puede ver que la mayoría
+de las muestras sí. Las demás variables, \emph{st\_depression} y
+\emph{num\_major\_vessels} sí que se alejan mucho de una distribución
+normal.
+
+Por lo tanto, \emph{ninguna variable sigue una distribución normal}. Sin
+embargo, para las que más se acercan se intentará transformar los datos
+para que sean normales con la transformación de \emph{Box-Cox} y
+volviendo a aplicar el test de \emph{Shapiro Wilk} para verificar la
+transformación.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se aplica la transformación de Box Cox a las variables age,}
+\CommentTok{\# cholesterol, max\_heart\_rate\_achieved y resting\_blood\_pressure}
+
+\CommentTok{\# Age}
+\NormalTok{age\_norm }\OtherTok{\textless{}{-}} \FunctionTok{BoxCox}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{age, }
+                   \AttributeTok{lambda =} \FunctionTok{BoxCoxLambda}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{age))}
+\FunctionTok{shapiro.test}\NormalTok{(age\_norm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  age_norm
+## W = 0.98786, p-value = 0.01216
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# cholesterol}
+\NormalTok{cholesterol\_norm }\OtherTok{\textless{}{-}} \FunctionTok{BoxCox}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol, }
+                           \AttributeTok{lambda =} \FunctionTok{BoxCoxLambda}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol))}
+\FunctionTok{shapiro.test}\NormalTok{(cholesterol\_norm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  cholesterol_norm
+## W = 0.99668, p-value = 0.7855
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# max\_heart\_rate\_achieved}
+\NormalTok{max\_heart\_rate\_achieved\_norm }\OtherTok{\textless{}{-}} \FunctionTok{BoxCox}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{max\_heart\_rate\_achieved, }
+                                       \AttributeTok{lambda =} \FunctionTok{BoxCoxLambda}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{max\_heart\_rate\_achieved))}
+\FunctionTok{shapiro.test}\NormalTok{(max\_heart\_rate\_achieved\_norm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  max_heart_rate_achieved_norm
+## W = 0.99146, p-value = 0.07686
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# resting\_blood\_pressure}
+\NormalTok{resting\_blood\_pressure\_norm }\OtherTok{\textless{}{-}} \FunctionTok{BoxCox}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{resting\_blood\_pressure, }
+                                      \AttributeTok{lambda =} \FunctionTok{BoxCoxLambda}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{resting\_blood\_pressure))}
+\FunctionTok{shapiro.test}\NormalTok{(resting\_blood\_pressure\_norm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resting_blood_pressure_norm
+## W = 0.99029, p-value = 0.04192
+\end{verbatim}
+
+Podemos comprobar como después de aplicar la transformación de Box-Cox
+las variables \emph{cholesterol} y \emph{max\_heart\_rate\_achieved}
+siguen una distribución normal al tener el p-valor superior a 0.05
+aceptando la hipótesis nula de que la muestra es normal. En cambio,
+\emph{age} y \emph{resting\_blood\_pressure\_} siguen sin ser normales.
+
+Por último, incluimos al dataset la variable normal transformada de
+\emph{cholesterol} para que se pueda aplicar con ella tests de tipo
+paramétricos. No incluimos \emph{max\_heart\_rate\_achieved} aunque sea
+normal porque no se utilizará para nuestros contrastes de hipótesis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Sustituimos en la variable colesterol la variable transformada para que siga normal}
+\NormalTok{heart\_data}\SpecialCharTok{$}\NormalTok{cholesterol }\OtherTok{\textless{}{-}}\NormalTok{ cholesterol\_norm}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{homogeneidad-de-varianzas}{%
+\subsubsection{Homogeneidad de
+varianzas}\label{homogeneidad-de-varianzas}}
+
+Para comprobar si las variables que usamos para responder a las
+preguntas previamente planteadas tienen o no homogeneidad de varianzas,
+se aplicará el \emph{test de Levene} (parámetrico) si las variables
+cuantitativas son normales (en este caso es \emph{cholesterol}) y el
+\emph{test de Fligner} (no paramétrico) si no lo son (el resto de
+variables). Para ambos tests, la hipótesis nula asume igualdad de
+varianzas en los diferentes grupos de datos, por lo que un p-valor
+inferior al nivel de significancia indicará heterocedasticidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobación de homocedasticidad Cholesterol {-} Heart attack}
+\FunctionTok{LeveneTest}\NormalTok{(cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack,}\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Levene's Test for Homogeneity of Variance (center = median)
+##        Df F value Pr(>F)
+## group   1  0.4198 0.5175
+##       301
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobación de homocedasticidad Cholesterol {-} Sex}
+\FunctionTok{LeveneTest}\NormalTok{(cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex,}\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Levene's Test for Homogeneity of Variance (center = median)
+##        Df F value  Pr(>F)  
+## group   1  4.5177 0.03436 *
+##       301                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobación de homocedasticidad Age {-} Heart attack}
+\FunctionTok{fligner.test}\NormalTok{(age }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack,}\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  age by heart_attack
+## Fligner-Killeen:med chi-squared = 7.2992, df = 1, p-value = 0.006898
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Comprobación de homocedasticidad resting\_blood\_pressure {-} Heart attack}
+\FunctionTok{fligner.test}\NormalTok{(resting\_blood\_pressure }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack,}\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  resting_blood_pressure by heart_attack
+## Fligner-Killeen:med chi-squared = 1.367, df = 1, p-value = 0.2423
+\end{verbatim}
+
+Las conclusiones de estos tests son las siguientes:
+
+\begin{itemize}
+\item
+  La variable \emph{cholesterol} presenta homocedasticidad con el hecho
+  de si sufrieron un ataque al corazón y heterocedastidad con el sexo
+  del paciente, es decir, la varianza variará entre los hombres y las
+  mujeres y será similar cuando se tiene en cuenta si un paciente tiene
+  un ataque o no.
+\item
+  La variable \emph{age} presenta heterocedastidad con la variable
+  \emph{heart\_attack}, por lo que la varianza de la edad de los
+  pacientes no será constante con el hecho de si un paciente sufre o no
+  un ataque.
+\item
+  La variable \emph{resting\_blood\_pressure} presenta homocedasticidad
+  para padecer o no un ataque cardiaco, concluyendo que la varianza de
+  la presión arterial es similar entre padecer un ataque o no.
+\end{itemize}
+
+\hypertarget{aplicaciuxf3n-de-pruebas-estaduxedsticas-para-comparar-los-grupos-de-datos.-en-funciuxf3n-de-los-datos-y-el-objetivo-del-estudio-aplicar-pruebas-de-contraste-de-hipuxf3tesis-correlaciones-regresiones-etc.-aplicar-al-menos-tres-muxe9todos-de-anuxe1lisis-diferentes.}{%
+\subsection{Aplicación de pruebas estadísticas para comparar los grupos
+de datos. En función de los datos y el objetivo del estudio, aplicar
+pruebas de contraste de hipótesis, correlaciones, regresiones, etc.
+Aplicar al menos tres métodos de análisis
+diferentes.}\label{aplicaciuxf3n-de-pruebas-estaduxedsticas-para-comparar-los-grupos-de-datos.-en-funciuxf3n-de-los-datos-y-el-objetivo-del-estudio-aplicar-pruebas-de-contraste-de-hipuxf3tesis-correlaciones-regresiones-etc.-aplicar-al-menos-tres-muxe9todos-de-anuxe1lisis-diferentes.}}
+
+\hypertarget{contrastes-de-hipuxf3tesis}{%
+\subsubsection{Contrastes de
+hipótesis}\label{contrastes-de-hipuxf3tesis}}
+
+Con los resultados anteriores, se van a aplicar varios tests
+estadísticos con la finalidad de responder a las preguntas planteadas al
+principio del enunciado.
+
+En este caso, podemos aplicar tanto pruebas paramétricas como no
+paramétricas dado que tenemos variables normales y no normales.
+
+Para el caso de la variable \emph{cholesterol}, como ya es normal, y se
+ha visto que presenta homocedasticidad con la variable
+\emph{heart\_attack} (más adelante será la variable dependiente en los
+modelos de regresión logística), se va a aplicar la prueba de \emph{t de
+student}, donde la hipótesis nula asume que las medias de los grupos de
+los datos son las mismas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# se aplica el test t de student cholesterol y heart\_attack}
+\FunctionTok{t.test}\NormalTok{(cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack, }\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  cholesterol by heart_attack
+## t = 1.8921, df = 287.59, p-value = 0.05948
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.002683574  0.136055304
+## sample estimates:
+##  mean in group No mean in group Yes 
+##          6.912523          6.845837
+\end{verbatim}
+
+Viendo el resultado del test para el caso de la variable cholesterol con
+heart\_attack, como el p-valor es mayor al nivel de significancia de
+0.05, se puede observar que no hay diferencias estadísticamente
+significativas entre las medias de los grupos de datos de heart\_attack.
+
+Los siguientes tests a aplicar serán no parámetricos dado que las
+variables no son normales o no presentan homocedasticidad y por lo tanto
+no cumplen las supociones requeridas por los tests paramétricos. Se
+aplicará el \emph{test de Wilcoxon o Mann-Whitney} (ambos se aplican
+igual con la misma función \emph{wilcox.test}) donde la hipótesis nula
+asume igualdad de distribución para los diferentes grupos de la variable
+categórica.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se aplica el test no paramétrico con el resto de variables}
+
+\CommentTok{\# cholesterol vs sex}
+\FunctionTok{wilcox.test}\NormalTok{(cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex, }\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  cholesterol by sex
+## W = 11715, p-value = 0.01219
+## alternative hypothesis: true location shift is not equal to 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# age vs heart\_attack}
+\FunctionTok{wilcox.test}\NormalTok{(age }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack, }\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  age by heart_attack
+## W = 14530, p-value = 3.439e-05
+## alternative hypothesis: true location shift is not equal to 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# resting\_blood\_pressure vs heart\_attack}
+\FunctionTok{wilcox.test}\NormalTok{(resting\_blood\_pressure }\SpecialCharTok{\textasciitilde{}}\NormalTok{ heart\_attack, }\AttributeTok{data =}\NormalTok{ heart\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  resting_blood_pressure by heart_attack
+## W = 12986, p-value = 0.03465
+## alternative hypothesis: true location shift is not equal to 0
+\end{verbatim}
+
+En los 3 casos se puede ver que no se puede determinar que la
+distribución de las variables sea la misma en los diferentes grupos,
+tanto de la variable \emph{heart\_attack} como de \emph{sex}.
+
+Otro test que se va a realizar va a ser el de \(\chi^2\) para comprobar
+si existen diferencias significativas entre las variables categóricas
+\emph{heart\_attack} y \emph{sex}, entre \emph{fasting\_blood\_sugar} y
+\emph{sex}, entre \emph{fasting\_blood\_sugar} y \emph{heart\_attack}, y
+entre \emph{chest\_pain\_type} y \emph{heart\_attack}. La hipótesis nula
+que asume es que no existen diferencias significativas entre los grupos
+de ambas variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se comprueba la proporción de hombres y mujeres que sufrieron un ataque}
+\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{sex, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            
+##              No Yes
+##   Femenino   24  72
+##   Masculino 114  93
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{sex, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test with Yates' continuity correction
+## 
+## data:  table(heart_data$sex, heart_data$heart_attack)
+## X-squared = 22.717, df = 1, p-value = 1.877e-06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tuvo alguna influencia el nivel de azúcar en sangre}
+\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##                No Yes
+##   Azúcar Bajo 116 142
+##   Azúcar Alto  22  23
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test with Yates' continuity correction
+## 
+## data:  table(heart_data$fasting_blood_sugar, heart_data$heart_attack)
+## X-squared = 0.10627, df = 1, p-value = 0.7444
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tiene alguna relacion el nivel de azúcar en sangre con el sexo del paciente}
+\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar, heart\_data}\SpecialCharTok{$}\NormalTok{sex)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##               Femenino Masculino
+##   Azúcar Bajo       84       174
+##   Azúcar Alto       12        33
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{fasting\_blood\_sugar, heart\_data}\SpecialCharTok{$}\NormalTok{sex))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test with Yates' continuity correction
+## 
+## data:  table(heart_data$fasting_blood_sugar, heart_data$sex)
+## X-squared = 0.3724, df = 1, p-value = 0.5417
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tuvo alguna influencia el tipo de dolor de pecho}
+\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{chest\_pain\_type, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    
+##                      No Yes
+##   Angina típica     104  39
+##   Angina atípica      9  41
+##   Dolor no anginoso  18  69
+##   Asintomático        7  16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{chest\_pain\_type, heart\_data}\SpecialCharTok{$}\NormalTok{heart\_attack))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  table(heart_data$chest_pain_type, heart_data$heart_attack)
+## X-squared = 81.686, df = 3, p-value < 2.2e-16
+\end{verbatim}
+
+Viendo los resultados podemos decir:
+
+\begin{itemize}
+\item
+  El hecho de ser hombre o mujer y el tipo de dolor de pecho muestra
+  diferencias significativas con padecer un ataque puesto que no se
+  cumple la hipótesis nula, por lo tanto el sexo y el tipo de dolor de
+  pecho son variables que repercuten a la hora de sufrir un ataque al
+  corazón, siendo dependientes con la variable heart\_attack.
+\item
+  El nivel de azúcar en sangre no muestra diferencias significativas con
+  padecer un ataque ya que se cumple la hipótesis nula, por lo que no
+  existe a priori una relación entre ambas variables.
+\item
+  No hay una repercusión directa entre el sexo del paciente y el nivel
+  de azúcar en sangre puesto que se acepta la hipótesis nula concluyendo
+  que entre hombres y mujeres no existen diferencias significativas en
+  el nivel de azúcar.
+\end{itemize}
+
+\hypertarget{modelos-de-regresiuxf3n-loguxedstica}{%
+\subsubsection{Modelos de regresión
+logística}\label{modelos-de-regresiuxf3n-loguxedstica}}
+
+En este apartado se van a construir varios modelos de regresión
+logística para analizar la influencia de algunas de las variables de
+forma que se pueda ver cuáles son las más significativas a la hora de
+determinar si un paciente sufre o no un ataque al corazón. De esta
+forma, sabremos la relación existente entre los diferentes atributos
+sobre la variable dicotómica dependiente \emph{heart\_attack}. Además,
+se calcularán las odds-ratio y se interpretarán junto con los
+coeficientes del modelo, de esta forma sabremos si la probabilidad del
+suceso de la variable dependiente va a aumentar o disminuir según el
+signo de estos coeficientes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se estima el modelo de regresión logística}
+\NormalTok{model\_rg\_1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{heart\_attack}\SpecialCharTok{\textasciitilde{}}\NormalTok{.,}\AttributeTok{data=}\NormalTok{heart\_data, }
+                  \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\NormalTok{logit))}
+\FunctionTok{summary}\NormalTok{(model\_rg\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = heart_attack ~ ., family = binomial(link = logit), 
+##     data = heart_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.7435  -0.3504   0.1582   0.5201   2.6276  
+## 
+## Coefficients:
+##                                                  Estimate Std. Error z value
+## (Intercept)                                     7.0473730  5.4589594   1.291
+## age                                            -0.0007433  0.0236370  -0.031
+## sexMasculino                                   -1.5086509  0.5126370  -2.943
+## chest_pain_typeAngina atípica                   1.0070109  0.5665294   1.778
+## chest_pain_typeDolor no anginoso                1.8866144  0.4787523   3.941
+## chest_pain_typeAsintomático                     1.9995462  0.6520120   3.067
+## resting_blood_pressure                         -0.0158789  0.0107826  -1.473
+## cholesterol                                    -1.0509816  0.7151901  -1.470
+## fasting_blood_sugarAzúcar Alto                  0.2106506  0.5712255   0.369
+## rest_ecg_typeAnomalía de onda ST-T              0.5609417  0.3738693   1.500
+## rest_ecg_typeHipertrofia ventricular izquierda -0.3145765  2.3123159  -0.136
+## max_heart_rate_achieved                         0.0171244  0.0107101   1.599
+## exercise_induced_anginaSí                      -0.7494929  0.4275154  -1.753
+## st_depression                                  -0.4926132  0.2257259  -2.182
+## st_slope_typeNormal                            -0.6999261  0.8574112  -0.816
+## st_slope_typeAlta                               0.2085676  0.9321546   0.224
+## num_major_vessels                              -0.8357204  0.2063651  -4.050
+## thalassemia_typeFijo                            1.8181465  2.3174120   0.785
+## thalassemia_typeNormal                          1.9328592  2.2299344   0.867
+## thalassemia_typeReversible                      0.5162475  2.2384356   0.231
+##                                                Pr(>|z|)    
+## (Intercept)                                     0.19671    
+## age                                             0.97492    
+## sexMasculino                                    0.00325 ** 
+## chest_pain_typeAngina atípica                   0.07548 .  
+## chest_pain_typeDolor no anginoso               8.12e-05 ***
+## chest_pain_typeAsintomático                     0.00216 ** 
+## resting_blood_pressure                          0.14085    
+## cholesterol                                     0.14169    
+## fasting_blood_sugarAzúcar Alto                  0.71230    
+## rest_ecg_typeAnomalía de onda ST-T              0.13352    
+## rest_ecg_typeHipertrofia ventricular izquierda  0.89179    
+## max_heart_rate_achieved                         0.10984    
+## exercise_induced_anginaSí                       0.07958 .  
+## st_depression                                   0.02908 *  
+## st_slope_typeNormal                             0.41431    
+## st_slope_typeAlta                               0.82295    
+## num_major_vessels                              5.13e-05 ***
+## thalassemia_typeFijo                            0.43271    
+## thalassemia_typeNormal                          0.38606    
+## thalassemia_typeReversible                      0.81760    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 417.64  on 302  degrees of freedom
+## Residual deviance: 200.70  on 283  degrees of freedom
+## AIC: 240.7
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+Se puede observar como las variables más significativas son
+\emph{num\_major\_vessels}, \emph{chest\_pain\_type}, \emph{sex} y
+\emph{st\_depression}, tal y como vimos aplicando el test de chi
+cuadrado para el caso de \emph{chest\_pain\_type} y \emph{sex}, por lo
+tanto, será sobre estas variables sobre las que se centrará este
+análisis.
+
+A continuación, se estiman otros modelos de regresión con la combinación
+de las variables regresoras anteriores para ver cómo afectan a la
+variable dependiente heart\_attack y se calculan sus valores AIC para
+poder compararlos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Se estima varios modelos de regresión logística}
+\NormalTok{model\_rg\_2 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{heart\_attack}\SpecialCharTok{\textasciitilde{}}\NormalTok{chest\_pain\_type,}\AttributeTok{data=}\NormalTok{heart\_data, }
+                  \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\NormalTok{logit))}
+
+\NormalTok{model\_rg\_3 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{heart\_attack}\SpecialCharTok{\textasciitilde{}}\NormalTok{chest\_pain\_type }\SpecialCharTok{+}\NormalTok{ num\_major\_vessels,}\AttributeTok{data=}\NormalTok{heart\_data, }
+                  \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\NormalTok{logit))}
+
+\NormalTok{model\_rg\_4 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{heart\_attack}\SpecialCharTok{\textasciitilde{}}\NormalTok{chest\_pain\_type }\SpecialCharTok{+}\NormalTok{ num\_major\_vessels }\SpecialCharTok{+}\NormalTok{ sex ,}\AttributeTok{data=}\NormalTok{heart\_data, }
+                  \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\NormalTok{logit))}
+
+\NormalTok{model\_rg\_5 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{heart\_attack}\SpecialCharTok{\textasciitilde{}}\NormalTok{chest\_pain\_type }\SpecialCharTok{+}\NormalTok{ num\_major\_vessels }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ st\_depression ,}\AttributeTok{data=}\NormalTok{heart\_data, }
+                  \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\NormalTok{logit))}
+
+\CommentTok{\# Guardamos los valores de una tabla}
+\NormalTok{indices\_AIC }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{( }\FunctionTok{c}\NormalTok{(}\DecValTok{2}\SpecialCharTok{:}\DecValTok{5}\NormalTok{), }\FunctionTok{c}\NormalTok{(model\_rg\_2}\SpecialCharTok{$}\NormalTok{aic,model\_rg\_3}\SpecialCharTok{$}\NormalTok{aic,model\_rg\_4}\SpecialCharTok{$}\NormalTok{aic,model\_rg\_5}\SpecialCharTok{$}\NormalTok{aic))}
+\FunctionTok{colnames}\NormalTok{(indices\_AIC) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Modelo"}\NormalTok{, }\StringTok{"AIC"}\NormalTok{)}
+
+\CommentTok{\# Se muestran en una tabla los resultados de los valores AIC de cada modelo}
+\NormalTok{indices\_AIC }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"hold\_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{r|r}
+\hline
+Modelo & AIC\\
+\hline
+2 & 339.6969\\
+\hline
+3 & 307.9877\\
+\hline
+4 & 291.5398\\
+\hline
+5 & 263.2847\\
+\hline
+\end{tabular}
+\end{table}
+
+Comparando el valor AIC de cada modelo (aquel que relaciona su bondad de
+ajuste junto con su complejidad) a medida que se han ido añadiendo
+variables regresoras, se puede ver que ha ido disminuyendo y por lo
+tanto han ido mejorando los modelos, es decir, todas ellas son
+significativas para el hecho de sufrir un ataque al corazón.
+
+Por lo tanto, nos quedamos con el modelo \emph{model\_rg\_5}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(model\_rg\_5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = heart_attack ~ chest_pain_type + num_major_vessels + 
+##     sex + st_depression, family = binomial(link = logit), data = heart_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2542  -0.5818   0.2233   0.5885   2.2965  
+## 
+## Coefficients:
+##                                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                        1.4346     0.3878   3.700 0.000216 ***
+## chest_pain_typeAngina atípica      1.7514     0.4645   3.771 0.000163 ***
+## chest_pain_typeDolor no anginoso   2.4184     0.4068   5.945 2.77e-09 ***
+## chest_pain_typeAsintomático        2.3194     0.5837   3.974 7.07e-05 ***
+## num_major_vessels                 -0.7361     0.1638  -4.494 7.00e-06 ***
+## sexMasculino                      -1.3944     0.3770  -3.699 0.000217 ***
+## st_depression                     -0.8677     0.1755  -4.944 7.64e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 417.64  on 302  degrees of freedom
+## Residual deviance: 249.28  on 296  degrees of freedom
+## AIC: 263.28
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+Se puede ver como todas las variables regresoras son estadísticamente
+significativas ya que \(Pr(>|z|) < 0.05\) y tienen una repercusión
+fuerte en la variable \emph{heart\_attack}.
+
+Si calculamos sus odds ratio obtenemos lo siguiente:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Cálculo de las Odds{-}Ratio}
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{coefficients}\NormalTok{(model\_rg\_5))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      (Intercept)    chest_pain_typeAngina atípica 
+##                        4.1980325                        5.7628558 
+## chest_pain_typeDolor no anginoso      chest_pain_typeAsintomático 
+##                       11.2283857                       10.1698527 
+##                num_major_vessels                     sexMasculino 
+##                        0.4789933                        0.2479817 
+##                    st_depression 
+##                        0.4199293
+\end{verbatim}
+
+Si comentamos los resultados de los coeficientes de los regresores y sus
+odds-ratio, para el caso de la variable \emph{st\_depression} que se ha
+obtenido un coeficiente estimado negativo y una odds-Ratio de 0.41, va a
+indicar que por cada unidad que aumente la variable, la probabilidad de
+sufrir un ataque es 0.41 veces menor. Para la variable
+\emph{num\_major\_vessels}, con una odds-Ratio de 0.47 y un coeficiente
+estimado negativo, se interpreta de forma que cuántos más vasos
+principales tenga el paciente, la probabilidad de sufrir un ataque es
+0.47 veces menor.
+
+Para la variable categórica, \emph{chest\_pain\_type}, obteniendo varios
+coeficientes estimados positivos respecto al nivel de referencia
+\emph{angina típica}, y unas odds-ratio de 10.15, 5.75, 11.11, nos
+indican que la probabilidad para que un paciente sufra un ataque con el
+resto de tipos de anginas de pecho comparado con una angina típica son
+de 10.15, 5.75, 11.11 respectivamente veces mayor.
+
+Por último, para la variable \emph{sex} obteniendo un coeficiente
+negativo respecto al nivel de referencia \emph{femenino}, y una
+odd-ratio de 0.25, nos muestra que la probabilidad de que un paciente
+hombre sufra un ataque comparado con una paciente mujer es 0.25 veces
+menor.
+
+En definitiva, la probabilidad para que el paciente sufra un ataque al
+corazón aumenta teniendo dolor de pecho asintomático, angina atípica y
+dolor no anginoso, mientras que disminuye siendo hombre, a mayor número
+de vasos principales y con la depresión ST inducida por el ejercicio en
+relación con el descanso.
+
+\hypertarget{generaciuxf3n-del-archivo-con-los-datos-tratados}{%
+\subsection{Generación del archivo con los datos
+tratados}\label{generaciuxf3n-del-archivo-con-los-datos-tratados}}
+
+Se genera el fichero con los datos tratados y limpiados tal y como se
+pide en la práctica.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Dataframe tratado}
+\NormalTok{df\_heart\_final }\OtherTok{\textless{}{-}}\NormalTok{ heart\_data}
+\CommentTok{\# Se exporta a formato csv}
+\FunctionTok{write.csv}\NormalTok{(df\_heart\_final, }\AttributeTok{file =} \StringTok{"clean\_data.csv"}\NormalTok{, }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{col.names =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{representaciuxf3n-de-los-resultados-a-partir-de-tablas-y-gruxe1ficas.}{%
+\section{Representación de los resultados a partir de tablas y
+gráficas.}\label{representaciuxf3n-de-los-resultados-a-partir-de-tablas-y-gruxe1ficas.}}
+
+Este apartado se puede responder a lo largo de la práctica, sin
+necesidad de concentrar todas las representaciones en este punto de la
+práctica.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#library(corrplot)}
+\CommentTok{\#library(Hmisc)}
+\CommentTok{\# Diagrama de cajas Cholesterol {-} Heart attack}
+\FunctionTok{ggplot}\NormalTok{(heart\_data,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{heart\_attack,}\AttributeTok{y=}\NormalTok{st\_depression, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \CommentTok{\# Barras de error}
+  \FunctionTok{stat\_boxplot}\NormalTok{(}\AttributeTok{geom =} \StringTok{"errorbar"}\NormalTok{,}\AttributeTok{width =} \FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Ancho}
+  \CommentTok{\# Etiqueta Eje x y leyenda}
+  \FunctionTok{scale\_fill\_hue}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"NO"}\NormalTok{, }\StringTok{"YES"}\NormalTok{))}\SpecialCharTok{+}
+  \CommentTok{\# Título del gráfico}
+  \FunctionTok{ggtitle}\NormalTok{ (}\StringTok{"Box Plot st\_depression {-} Heart attack"}\NormalTok{)}\SpecialCharTok{+}
+  \CommentTok{\# Características del gráfico}
+    \FunctionTok{theme}\NormalTok{ (}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}
+        \AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{size=}\FunctionTok{rel}\NormalTok{(}\FloatTok{1.2}\NormalTok{),}
+        \AttributeTok{face=}\StringTok{"bold"}\NormalTok{, }
+        \AttributeTok{color=}\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Diagrama de cajas Cholesterol {-} Heart attack}
+\FunctionTok{ggplot}\NormalTok{(heart\_data,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{heart\_attack,}\AttributeTok{y=}\NormalTok{cholesterol, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \CommentTok{\# Barras de error}
+  \FunctionTok{stat\_boxplot}\NormalTok{(}\AttributeTok{geom =} \StringTok{"errorbar"}\NormalTok{,}\AttributeTok{width =} \FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Ancho}
+  \CommentTok{\# Etiqueta Eje x y leyenda}
+  \FunctionTok{scale\_fill\_hue}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"NO"}\NormalTok{, }\StringTok{"YES"}\NormalTok{))}\SpecialCharTok{+}
+  \CommentTok{\# Título del gráfico}
+  \FunctionTok{ggtitle}\NormalTok{ (}\StringTok{"Box Plot Cholesterol {-} Heart attack"}\NormalTok{)}\SpecialCharTok{+}
+  \CommentTok{\# Características del gráfico}
+    \FunctionTok{theme}\NormalTok{ (}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}
+        \AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{size=}\FunctionTok{rel}\NormalTok{(}\FloatTok{1.2}\NormalTok{),}
+        \AttributeTok{face=}\StringTok{"bold"}\NormalTok{, }
+        \AttributeTok{color=}\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Diagrama de cajas Cholesterol {-} Sex}
+\FunctionTok{ggplot}\NormalTok{(heart\_data,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{sex,}\AttributeTok{y=}\NormalTok{cholesterol, }\AttributeTok{fill=}\NormalTok{sex)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \CommentTok{\# Barras de error}
+  \FunctionTok{stat\_boxplot}\NormalTok{(}\AttributeTok{geom =} \StringTok{"errorbar"}\NormalTok{,}\AttributeTok{width =} \FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Ancho}
+  \CommentTok{\# Etiqueta Eje x y leyenda}
+  \FunctionTok{scale\_fill\_hue}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"NO"}\NormalTok{, }\StringTok{"YES"}\NormalTok{))}\SpecialCharTok{+}
+  \CommentTok{\# Título del gráfico}
+  \FunctionTok{ggtitle}\NormalTok{ (}\StringTok{"Box Plot Cholesterol {-} Sex"}\NormalTok{)}\SpecialCharTok{+}
+  \CommentTok{\# Características del gráfico}
+    \FunctionTok{theme}\NormalTok{ (}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}
+        \AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{size=}\FunctionTok{rel}\NormalTok{(}\FloatTok{1.2}\NormalTok{),}
+        \AttributeTok{face=}\StringTok{"bold"}\NormalTok{, }
+        \AttributeTok{color=}\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Diagrama de cajas Age {-} Heart attack}
+\FunctionTok{ggplot}\NormalTok{(heart\_data,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{heart\_attack,}\AttributeTok{y=}\NormalTok{age, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+}
+  
+
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  
+  \CommentTok{\# Barras de error}
+  \FunctionTok{stat\_boxplot}\NormalTok{(}\AttributeTok{geom =} \StringTok{"errorbar"}\NormalTok{,}\AttributeTok{width =} \FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Ancho}
+  
+  \CommentTok{\# Etiqueta Eje x y leyenda}
+  \FunctionTok{scale\_fill\_hue}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"NO"}\NormalTok{, }\StringTok{"YES"}\NormalTok{))}\SpecialCharTok{+}
+  
+  \CommentTok{\# Título del gráfico}
+  \FunctionTok{ggtitle}\NormalTok{ (}\StringTok{"Box Plot Age {-} Heart attack"}\NormalTok{)}\SpecialCharTok{+}
+   
+  \CommentTok{\# Características del gráfico}
+    \FunctionTok{theme}\NormalTok{ (}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}
+        \AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{size=}\FunctionTok{rel}\NormalTok{(}\FloatTok{1.2}\NormalTok{),}
+        \AttributeTok{face=}\StringTok{"bold"}\NormalTok{, }
+        \AttributeTok{color=}\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{age, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =}\DecValTok{3}\NormalTok{)}
+\NormalTok{g2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{age, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{3}\NormalTok{,}\AttributeTok{position=}\StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Frecuencia"}\NormalTok{)}
+\FunctionTok{grid.arrange}\NormalTok{(g1, g2, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Diagrama de cajas Resting blood pressure {-} Heart attack}
+\FunctionTok{ggplot}\NormalTok{(heart\_data,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{heart\_attack,}\AttributeTok{y=}\NormalTok{resting\_blood\_pressure, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+}
+  
+
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  
+  \CommentTok{\# Barras de error}
+  \FunctionTok{stat\_boxplot}\NormalTok{(}\AttributeTok{geom =} \StringTok{"errorbar"}\NormalTok{,}\AttributeTok{width =} \FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Ancho}
+  
+  \CommentTok{\# Etiqueta Eje x y leyenda}
+  \FunctionTok{scale\_fill\_hue}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"NO"}\NormalTok{, }\StringTok{"YES"}\NormalTok{))}\SpecialCharTok{+}
+  
+  \CommentTok{\# Título del gráfico}
+  \FunctionTok{ggtitle}\NormalTok{ (}\StringTok{"Box Plot Resting Blood Pressure {-} Heart attack"}\NormalTok{)}\SpecialCharTok{+}
+   
+  \CommentTok{\# Características del gráfico}
+    \FunctionTok{theme}\NormalTok{ (}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}
+        \AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{size=}\FunctionTok{rel}\NormalTok{(}\FloatTok{1.2}\NormalTok{),}
+        \AttributeTok{face=}\StringTok{"bold"}\NormalTok{, }
+        \AttributeTok{color=}\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-28-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{chest\_pain\_type, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_bar}\NormalTok{() }\SpecialCharTok{+}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\NormalTok{g2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{chest\_pain\_type, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{3}\NormalTok{,}\AttributeTok{position=}\StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{ylab}\NormalTok{(}\StringTok{"Frecuencia"}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\FunctionTok{grid.arrange}\NormalTok{(g1, g2, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{sex, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_bar}\NormalTok{() }\SpecialCharTok{+}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\NormalTok{g2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ heart\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{sex, }\AttributeTok{fill=}\NormalTok{heart\_attack)) }\SpecialCharTok{+} \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{3}\NormalTok{,}\AttributeTok{position=}\StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{ylab}\NormalTok{(}\StringTok{"Frecuencia"}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\FunctionTok{grid.arrange}\NormalTok{(g1, g2, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Limpieza_Analisis_Datos_files/figure-latex/unnamed-chunk-30-1.pdf}
+
+\hypertarget{resoluciuxf3n-del-problema.-a-partir-de-los-resultados-obtenidos-cuuxe1les-son-las-conclusiones-los-resultados-permiten-responder-al-problema}{%
+\section{Resolución del problema. A partir de los resultados obtenidos,
+¿cuáles son las conclusiones? ¿Los resultados permiten responder al
+problema?}\label{resoluciuxf3n-del-problema.-a-partir-de-los-resultados-obtenidos-cuuxe1les-son-las-conclusiones-los-resultados-permiten-responder-al-problema}}
+
+• \textbf{¿Los hombres son más probables a sufrir un ataque que las
+mujeres?}
+
+• \textbf{¿El nivel de azúcar en sangre es determinante para que una
+persona pueda padecer un ataque?}
+
+• \textbf{¿Hay diferencias significativas en el nivel de colesterol
+según padezca o no un ataque y según el sexo del paciente?}
+
+• \textbf{¿Las personas mayores sufren más ataques?}
+
+• \textbf{¿Hubo algún indicio de sufrir más fácilmente un ataque al
+corazón según el dolor de pecho del paciente?}
+
+• \textbf{¿Qué factores son los más influyentes para sufrir un ataque?}
+
+\hypertarget{cuxf3digo.}{%
+\section{Código.}\label{cuxf3digo.}}
+
+Hay que adjuntar el código, preferiblemente en R, con el que se ha
+realizado la limpieza, análisis y representación de los datos. Si lo
+preferís, también podéis trabajar en Python.
+
+\hypertarget{vuxeddeo.}{%
+\section{Vídeo.}\label{vuxeddeo.}}
+
+Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos),
+donde ambos integrantes del equipo expliquen con sus propias palabras el
+desarrollo de la práctica, basándose en las preguntas del enunciado para
+justificar y explicar el código desarrollado. Este vídeo se deberá
+entregar a través de un enlace al Google Drive de la UOC, junto con
+enlace al repositorio Git entregafo.
+
+\end{document}
