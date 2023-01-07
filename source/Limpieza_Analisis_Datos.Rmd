@@ -3,11 +3,6 @@ title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
 output:
-  pdf_document:
-    toc: yes
-    number_sections: yes
-    toc_depth: 6
-    latex_engine: xelatex
   html_document:
     code_folding: show
     df_print: paged
@@ -16,6 +11,11 @@ output:
     theme: cosmo
     toc: yes
     toc_depth: 5
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
+    latex_engine: xelatex
 header-includes: \renewcommand{\contentsname}{Índice General}
 ---
 
