@@ -768,9 +768,15 @@ Los factores más influyentes para sufrir un ataque, son el tipo de dolor de pec
 
 Hay que adjuntar el código, preferiblemente en R, con el que se ha realizado la limpieza, análisis y representación de los datos. Si lo preferís, también podéis trabajar en Python.
 
+El código de la práctica en el lenguaje R se encuentra en el repositorio de GitHub: https://github.com/LucasGomezTorres/Limpieza_Analisis_Datos. 
+
 # Vídeo.
 
-Realizar un breve vídeo explicativo de la práctica (máximo 10 minutos), donde ambos integrantes del equipo expliquen con sus propias palabras el desarrollo de la práctica, basándose en las preguntas del enunciado para justificar y explicar el código desarrollado. Este vídeo se deberá entregar a través de un enlace al Google Drive de la UOC, junto con enlace al repositorio Git entregafo.
+El vídeo realizado para detallar el proyecto realizado se encuentra en los siguientes enlaces, tanto de Google Drive como Youtube:
+
+1. Vídeo en Google Drive de la UOC: 
+2. Vídeo en Youtube: 
+
 
 # Contribuciones de los integrantes
 
