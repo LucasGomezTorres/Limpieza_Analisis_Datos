@@ -2,21 +2,19 @@
 title: "Limpieza y Análisis de Datos"
 author: "Lucas Gómez Torres y Joan Amengual Mesquida"
 date: "13 de enero, 2023"
+header-includes: 
+   - \renewcommand{\contentsname}{Índice General}
 output:
-  html_document:
-    code_folding: show
-    df_print: paged
-    highlight: tango
-    number_sections: no
-    theme: cosmo
-    toc: yes
-    toc_depth: 5
   pdf_document:
     toc: yes
     number_sections: yes
     toc_depth: 6
-    latex_engine: xelatex
-header-includes: \renewcommand{\contentsname}{Índice General}
+    latex_engine : xelatex 
+
+  html_document:
+    toc: yes
+    number_sections: yes
+    toc_depth: 6
 ---
 
 
@@ -772,7 +770,7 @@ El código de la práctica en el lenguaje R se encuentra en el repositorio de Gi
 
 # Vídeo.
 
-El vídeo realizado para detallar el proyecto realizado se encuentra en los siguientes enlaces, tanto de Google Drive como Youtube:
+El vídeo realizado para detallar el proyecto se encuentra en los siguientes enlaces, tanto de Google Drive como Youtube:
 
 1. Vídeo en Google Drive de la UOC: 
 2. Vídeo en Youtube: 
