@@ -774,8 +774,8 @@ El código de la práctica en el lenguaje R se encuentra en el repositorio de Gi
 
 El vídeo realizado para detallar el proyecto realizado se encuentra en los siguientes enlaces, tanto de Google Drive como Youtube:
 
-1. Vídeo en Google Drive de la UOC: 
-2. Vídeo en Youtube: 
+1. Vídeo en Google Drive de la UOC: https://drive.google.com/file/d/1tz2x5cRMS535CEUYc3imyvPUGqwW04fc/view?usp=sharing
+2. Vídeo en Youtube: https://youtu.be/zQspF4SBH-k
 
 
 # Contribuciones de los integrantes
